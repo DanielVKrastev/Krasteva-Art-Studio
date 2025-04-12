@@ -1,24 +1,24 @@
+import { Link } from 'react-router-dom';
 import { Navbar, NavbarBrand, NavbarCollapse, NavbarLink, NavbarToggle } from "flowbite-react";
-import Link from "next/link";
 
 export default function NavbarMenu() {
   return (
     <Navbar fluid rounded>
-      <NavbarBrand as={Link} href="https://flowbite-react.com">
-        <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
+      <NavbarBrand as={Link} to="https://flowbite-react.com">
+        <img src="./vite.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite React</span>
       </NavbarBrand>
       <NavbarToggle />
       <NavbarCollapse>
-        <NavbarLink href="#" active>
+        <NavbarLink to="#" active>
           Home
         </NavbarLink>
-        <NavbarLink as={Link} href="#">
+        <NavbarLink as={Link} to="#">
           About
         </NavbarLink>
-        <NavbarLink href="#">Services</NavbarLink>
-        <NavbarLink href="#">Pricing</NavbarLink>
-        <NavbarLink href="#">Contact</NavbarLink>
+        <NavbarLink to="#">Services</NavbarLink>
+        <NavbarLink to="#">Pricing</NavbarLink>
+        <NavbarLink to="#">Contact</NavbarLink>
       </NavbarCollapse>
     </Navbar>
   );
