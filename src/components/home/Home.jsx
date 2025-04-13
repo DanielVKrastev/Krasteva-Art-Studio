@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import FeaturesServices from "./features-services/Features";
 import ArtCategories from "../partials/art-categories/ArtCategories";
+import NewArts from "../partials/new-arts/NewArts";
 
 export default function Home() {
     return (
@@ -48,6 +49,8 @@ export default function Home() {
             <FeaturesServices />
 
             <ArtCategories />
+
+            <NewArts />
         </>
 
     )
