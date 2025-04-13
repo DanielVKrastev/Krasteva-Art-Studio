@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import NavbarMenu from './components/navbar-menu/NavbarMenu';
-import "./App.css";
+import Footer from './components/footer/Footer';
 
 function App() {
 
@@ -11,6 +11,8 @@ function App() {
       <Routes>
         <Route path='/' element={<h1>hello</h1>} />
       </Routes>
+
+      <Footer />
     </>
   )
 }
