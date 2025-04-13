@@ -35,7 +35,7 @@ const paintings = [
 const categories = ["Пейзаж", "Портрет", "Абстракция"];
 const sizes = ["20x30", "30x40", "40x60"];
 
-export default function ArtShop() {
+export default function Portfolio() {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
 
@@ -51,7 +51,7 @@ export default function ArtShop() {
                 <div className="text-sm text-gray-500 mb-4">
                     <Link to="/" className="hover:underline">Начало</Link>
                     <span className="mx-2">/</span>
-                    <span className="text-black font-semibold">Арт магазин</span>
+                    <span className="text-black font-semibold">Портфолио</span>
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-8">
@@ -114,7 +114,7 @@ export default function ArtShop() {
                         {/* Заглавие и сортиране */}
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
                             <h2 className="text-2xl font-bold text-gray-800">
-                                Арт магазин {selectedCategory ? `- ${selectedCategory}` : ""}
+                                Портфолио {selectedCategory ? `- ${selectedCategory}` : ""}
                             </h2>
                             <div className="mt-4 sm:mt-0">
                                 <select className="border rounded px-3 py-2 text-sm">
@@ -149,10 +149,8 @@ export default function ArtShop() {
                                                 <Link to={`/artshop/${paint.id}`} className="hover:text-indigo-600">{paint.name}</Link>
                                             </h3>
                                             <p className="text-sm text-gray-500">Размери: {paint.size}</p>
-                                            <p className="text-indigo-600 font-bold">{paint.price} лв.</p>
                                             <div className="mt-4 flex justify-center gap-2">
-                                                <button className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Купи</button>
-                                                <button className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-100">Добави</button>
+                                                <button className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Детайли</button>
                                             </div>
                                         </div>
                                     </div>

@@ -4,6 +4,7 @@ import "./App.css";
 import Footer from './components/footer/Footer';
 import Home from './components/Home/home';
 import ArtShop from './components/art-shop/ArtShop';
+import Portfolio from './components/portfolio/Portfolio';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/artshop' element={<ArtShop />} />
+        <Route path='/portfolio' element={<Portfolio />} />
       </Routes>
 
       <Footer />
