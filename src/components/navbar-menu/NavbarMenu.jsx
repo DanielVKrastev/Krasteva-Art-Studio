@@ -1,59 +1,63 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 
 export default function NavbarMenu() {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
-    <header className="site-navbar" role="banner">
-        <div className="site-navbar-top">
-            <div className="container">
-            <div className="row align-items-center">
-    
-                <div className="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
-                <form action="" className="site-block-top-search">
-                    <span className="icon icon-search2"></span>
-                    <input type="text" className="form-control border-0" placeholder="Търси" />
-                </form>
-                </div>
-    
-                <div className="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
-                <div className="site-logo">
-                    <Link to="/" className="js-logo-clone">Krasteva Gallery</Link>
-                </div>
-                </div>
-    
-                <div className="col-6 col-md-4 order-3 order-md-3 text-right">
-                <div className="site-top-icons">
-                    <ul>
-                    <li><Link to="#"><span className="icon icon-person"></span></Link></li> 
-                     <li><Link to="#"><span className="icon icon-heart-o"></span></Link></li>
-                    <li>
-                        <Link to="cart.html" className="site-cart">
-                        <span className="icon icon-shopping_cart"></span>
-                        <span className="count">2</span>
-                        </Link>
-                    </li> 
-                    <li className="d-inline-block d-md-none ml-md-0"><Link to="#" className="site-menu-toggle js-menu-toggle"><span className="icon-menu"></span></Link></li>
-                    </ul>
-                </div> 
-                </div>
-    
+    <header className="bg-white shadow">
+      {/* Top bar */}
+      <div className="border-b">
+        <div className="max-w-7xl mx-auto px-4 py-2 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0">
+            {/* Search */}
+            <div className="w-full md:w-1/3">
+              <form className="relative">
+                <input
+                  type="text"
+                  placeholder="Търси"
+                  className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                />
+                <span className="absolute left-3 top-2.5 text-gray-400">
+                  🔍
+                </span>
+              </form>
             </div>
-            </div>
-        </div> 
-        <nav className="site-navigation text-right text-md-center" role="navigation">
-            <div className="container">
-            <ul className="site-menu js-clone-nav d-none d-md-block">
 
-                <li className="active"><Link to="/">Начало</Link></li>
-                <li><Link to="/artshop">Магазин</Link></li>
-                <li><Link to="/portfolio">Портфолио</Link></li>
-                <li><Link to="/about">За мен</Link></li>
-                <li><Link to="/contact">Контакти</Link></li>
-            </ul>
+            {/* Logo */}
+            <div className="text-center w-full md:w-1/3">
+              <Link to="/" className="text-2xl font-bold text-gray-800 hover:text-indigo-600 transition">
+                Krasteva Gallery
+              </Link>
             </div>
-        </nav>
+
+            {/* Icons */}
+            <div className="flex items-center justify-end w-full md:w-1/3 space-x-4">
+              <Link to="#" className="text-gray-600 hover:text-indigo-600 text-xl">👤</Link>
+              <Link to="#" className="text-gray-600 hover:text-indigo-600 text-xl">❤️</Link>
+              <Link to="/cart" className="relative text-gray-600 hover:text-indigo-600 text-xl">
+                🛒
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  2
+                </span>
+              </Link>
+              <button className="md:hidden text-gray-600 hover:text-indigo-600 text-xl">
+                ☰
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main navigation */}
+      <nav className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ul className="hidden md:flex justify-center space-x-8 py-4 text-sm font-medium text-gray-700">
+            <li><Link to="/" className="hover:text-indigo-600">Начало</Link></li>
+            <li><Link to="/artshop" className="hover:text-indigo-600">Магазин</Link></li>
+            <li><Link to="/portfolio" className="hover:text-indigo-600">Портфолио</Link></li>
+            <li><Link to="/about" className="hover:text-indigo-600">За мен</Link></li>
+            <li><Link to="/contact" className="hover:text-indigo-600">Контакти</Link></li>
+          </ul>
+        </div>
+      </nav>
     </header>
   );
 }
