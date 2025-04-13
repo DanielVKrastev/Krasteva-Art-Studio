@@ -50,7 +50,13 @@ export default function NavbarMenu() {
             />
           </div>
 
-          <ShoppingCartIcon className="ml-8 mr-2 mt-1 w-8 h-8 text-indigo-700" />
+          <div className="relative ml-8">
+            <ShoppingCartIcon className="mr-2 w-8 h-8 text-indigo-700" />
+
+            <span className="absolute mr-2 -top-2 -right-2 bg-red-600 text-white text-xs font-semibold rounded-full px-1.5 py-0.5">
+              2
+            </span>
+          </div>
           <button
             data-collapse-toggle="navbar-search"
             type="button"
