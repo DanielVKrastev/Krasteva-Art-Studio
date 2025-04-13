@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+
 export default function NavbarMenu() {
   const [openMobileNav, setOpenMobileNav] = useState(true);
 
@@ -20,31 +22,6 @@ export default function NavbarMenu() {
         </Link>
 
         <div className="flex md:order-2">
-          <button
-            type="button"
-            data-collapse-toggle="navbar-search"
-            aria-controls="navbar-search"
-            aria-expanded="false"
-            className="md:hidden text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 rounded-lg text-sm p-2.5 me-1"
-            onClick={closeOpenHandlerMobileMenu}
-          >
-            <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
-            <span className="sr-only">Search</span>
-          </button>
 
           <div className="relative hidden md:block">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -73,6 +50,7 @@ export default function NavbarMenu() {
             />
           </div>
 
+          <ShoppingCartIcon className="ml-8 mr-2 mt-1 w-8 h-8 text-indigo-700" />
           <button
             data-collapse-toggle="navbar-search"
             type="button"

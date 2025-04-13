@@ -3,6 +3,7 @@ import NavbarMenu from './components/navbar-menu/NavbarMenu';
 import "./App.css";
 import Footer from './components/footer/Footer';
 import Home from './components/Home/home';
+import ArtShop from './components/art-shop/ArtShop';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
 
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/artshop' element={<ArtShop />} />
       </Routes>
 
       <Footer />
