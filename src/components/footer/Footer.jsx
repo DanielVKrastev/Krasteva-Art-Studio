@@ -2,13 +2,13 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-white">
+    <footer className="border-t border-gray-300 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Навигация */}
+
           <div>
             <h3 className="text-lg font-semibold mb-4">Навигация</h3>
-            <ul className="space-y-2">
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
               <li><Link to="/" className="hover:text-indigo-600">Начало</Link></li>
               <li><Link to="/artshop" className="hover:text-indigo-600">Магазин</Link></li>
               <li><Link to="/portfolio" className="hover:text-indigo-600">Портфолио</Link></li>
@@ -18,17 +18,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Контакти */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Контакти</h3>
-            <ul className="space-y-2 text-sm">
-              <li className="text-gray-600">България, Попово, ул. Фейк</li>
-              <li><a href="tel://23923929210" className="text-indigo-600 hover:underline">+359 89 392 9210</a></li>
-              <li className="text-gray-600">info@krastevagallery.com</li>
-            </ul>
-          </div>
-
-          {/* Абониране */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Абониране</h3>
             <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
@@ -46,7 +35,15 @@ export default function Footer() {
             </form>
           </div>
 
-          {/* Социални мрежи */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Контакти</h3>
+            <ul className="space-y-2 text-sm">
+              <li className="text-gray-600">България, Попово, ул. Фейк</li>
+              <li><a href="tel://23923929210" className="text-indigo-600 hover:underline">+359 89 392 9210</a></li>
+              <li className="text-gray-600">info@krastevagallery.com</li>
+            </ul>
+          </div>
+
           <div>
             <h3 className="text-lg font-semibold mb-4">Последвай ни:</h3>
             <div className="flex space-x-4">
@@ -59,17 +56,8 @@ export default function Footer() {
 
         {/* Footer bottom */}
         <div className="mt-12 border-t pt-6 text-center text-sm text-gray-500">
-          <p>&copy; Krasteva Gallery. Всички права запазени. Уеб дизайн Colorlib</p>
           <p>
-            &copy; {new Date().getFullYear()} Всички права запазени | Web design by Daniel Krastev, based on template by
-            <a
-              href="https://colorlib.com"
-              target="_blank"
-              rel="noreferrer"
-              className="text-indigo-600 ml-1 hover:underline"
-            >
-              Colorlib
-            </a>
+            &copy; {new Date().getFullYear()} Krasteva Art Gallery. Всички права запазени | Уеб дизайн Daniel Krastev
           </p>
         </div>
       </div>
