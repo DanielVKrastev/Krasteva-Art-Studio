@@ -14,7 +14,7 @@ export default function NewArts() {
             data-aos-delay={100}
           >
             <img
-              src="./images/test_draw.jpg"
+              src="/images/test_draw.jpg"
               alt=""
               className="w-full h-60 object-cover"
             />
@@ -32,7 +32,7 @@ export default function NewArts() {
             data-aos-delay={200}
           >
             <img
-              src="./images/test_draw_swan.jpg"
+              src="/images/test_draw_swan.jpg"
               alt=""
               className="w-full h-60 object-cover"
             />

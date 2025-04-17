@@ -25,7 +25,7 @@ export default function ArtCategories() {
                         >
                             <div className="overflow-hidden m-0 p-0">
                                 <img
-                                    src="./images/test_draw.jpg"
+                                    src="/images/test_draw.jpg"
                                     alt={item.title}
                                     className="w-full h-72 object-cover transform transition-transform duration-500 group-hover:scale-110"
                                 />
