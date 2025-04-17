@@ -17,14 +17,14 @@ const cartItems = [
         imageUrl: "https://example.com/art2.jpg"
     },
     {
-        id: 2,
+        id: 3,
         name: "Абстрактно лято",
         size: "30x40 см",
         price: 220,
         imageUrl: "https://example.com/art2.jpg"
     },
     {
-        id: 2,
+        id: 4,
         name: "Абстрактно лято",
         size: "30x40 см",
         price: 220,
