@@ -1,12 +1,33 @@
+import { useEffect } from "react";
+import { useState } from "react";
+import categoryApi from "../../../api/categoryApi";
+import sizeApi from "../../../api/sizeApi";
+
 export default function Filters({
     selectedCategory,
     selectedSize,
     setSelectedCategory,
     setSelectedSize
-}) {    
-    const categories = ["Пейзаж", "Портрет", "Абстракция"];
-    const sizes = ["20x30", "30x40", "40x60"];
+}) {
+    const [categories, setCagetories] = useState([]);
+    const [sizes, setSizes] = useState([]);
 
+    useEffect(() => {
+
+        (async function getCategories() {
+            //TODO: Create hooks
+            const getCategories = await categoryApi.getAll();
+            setCagetories(getCategories);
+        })();
+
+        (async function getSizes() {
+             //TODO: Create hooks
+            const getSizes = await sizeApi.getAll();
+            setSizes(getSizes);
+        })();
+
+    }, [])
+    
     return (
         <>
             {/* Sidebar Filters */}
@@ -15,14 +36,14 @@ export default function Filters({
                 <div className="bg-white p-4 rounded-lg shadow">
                     <h3 className="text-lg font-semibold mb-3">Категории</h3>
                     <ul className="space-y-2 text-sm">
-                        {categories.map((cat) => (
-                            <li key={cat}>
+                        {categories.map((category) => (
+                            <li key={category.id}>
                                 <button
-                                    onClick={() => setSelectedCategory(cat)}
-                                    className={`hover:underline ${selectedCategory === cat ? "font-bold text-indigo-600" : ""
+                                    onClick={() => setSelectedCategory(category.name)}
+                                    className={`hover:underline ${selectedCategory === category ? "font-bold text-indigo-600" : ""
                                         }`}
                                 >
-                                    {cat}
+                                    {category.name}
                                 </button>
                             </li>
                         ))}
