@@ -20,7 +20,7 @@ function App() {
         <Route path='/artshop' element={<ArtShop />} />
         <Route path='/artshop/details/:paintingId' element={<PaintingDetails />} />
         <Route path='/portfolio' element={<Portfolio />} />
-        <Route path='/portfolio/details/:paintingI' element={<PaintingDetailsPortfolio />} />
+        <Route path='/portfolio/details/:paintingId' element={<PaintingDetailsPortfolio />} />
         <Route path='/about' element={<About />} />
       </Routes>
 

@@ -34,8 +34,8 @@ export default function PaintingDetails() {
                 <div className="flex-1 md:w-1/2 px-6">
                     <h2 className="text-3xl font-bold text-black">{painting.name}</h2>
                     <p className="mt-4 text-gray-600">{painting.description}</p>
-                    
-                    <div className="mt-6">
+
+                    <div className="mt-6 space-y-2">
                         <p><i><b>Размери: {painting.size}</b></i></p>
                         <p><i><b>Категория: {painting.category}</b></i></p>
                         <p><i><b>Бои: {painting.paints}</b></i></p>

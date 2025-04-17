@@ -137,7 +137,7 @@ export default function Portfolio() {
                                         key={paint.id}
                                         className="bg-white rounded-lg shadow hover:shadow-xl transition overflow-hidden"
                                     >
-                                        <Link to={`/artshop/${paint.id}`}>
+                                        <Link to={`/portfolio/details/${paint.id}`}>
                                             <img
                                                 src={paint.imageUrl}
                                                 alt={paint.name}
@@ -146,11 +146,11 @@ export default function Portfolio() {
                                         </Link>
                                         <div className="p-4 text-center">
                                             <h3 className="font-semibold text-lg">
-                                                <Link to={`/artshop/${paint.id}`} className="hover:text-indigo-600">{paint.name}</Link>
+                                                <Link to={`/portfolio/details/${paint.id}`} className="hover:text-indigo-600">{paint.name}</Link>
                                             </h3>
                                             <p className="text-sm text-gray-500">Размери: {paint.size}</p>
                                             <div className="mt-4 flex justify-center gap-2">
-                                                <button className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Детайли</button>
+                                                <Link type="button" to={`/portfolio/details/${paint.id}`} className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Детайли</Link>
                                             </div>
                                         </div>
                                     </div>
