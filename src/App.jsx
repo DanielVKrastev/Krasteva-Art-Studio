@@ -9,6 +9,7 @@ import About from './components/about/About';
 import PaintingDetails from './components/art-shop/painting-details/PaintingDetails';
 import PaintingDetailsPortfolio from './components/portfolio/painting-details/PaintingDetailsPortfolio';
 import Cart from './components/cart/Cart';
+import Checkout from './components/checkout/Checkout';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path='/portfolio/details/:paintingId' element={<PaintingDetailsPortfolio />} />
         <Route path='/about' element={<About />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/checkout' element={<Checkout />} />
       </Routes>
 
       <Footer />

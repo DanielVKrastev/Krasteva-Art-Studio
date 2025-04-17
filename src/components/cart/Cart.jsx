@@ -32,7 +32,7 @@ export default function Cart() {
 
     return (
         <div className="container mx-auto py-10 px-4 md:px-8">
-            <h1 className="text-3xl font-bold mb-8">Вашата количка</h1>
+            <h1 className="text-3xl font-bold text-black mb-6 border-l-4 border-indigo-600 pl-4">Вашата количка</h1>
 
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Left: Cart Items */}
@@ -57,7 +57,7 @@ export default function Cart() {
                 </div>
 
                 {/* Right: Summary */}
-                <div className="w-full h-min md:w-1/3 bg-gray-50 p-6 rounded-lg shadow-md">
+                <div className="w-full h-min md:w-1/3 bg-white p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold mb-4">Обобщение</h2>
                     <div className="space-y-2">
                         <p className="flex justify-between">
