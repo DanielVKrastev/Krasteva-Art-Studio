@@ -48,8 +48,8 @@ export default function ArtShop() {
         <>
             <div className="bg-gray-100 py-16 px-6 sm:px-16 lg:px-20">
                 {/* Breadcrumb */}
-                <div className="text-sm text-gray-500 mb-4">
-                    <Link to="/" className="hover:underline">Начало</Link>
+                <div className="mb-6 text-sm text-gray-500">
+                    <Link to="/" className="text-indigo-600 hover:underline">Начало</Link>
                     <span className="mx-2">/</span>
                     <span className="text-black font-semibold">Арт магазин</span>
                 </div>
