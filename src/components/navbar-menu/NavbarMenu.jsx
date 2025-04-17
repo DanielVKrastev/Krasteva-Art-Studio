@@ -51,7 +51,7 @@ export default function NavbarMenu() {
           </div>
 
           <div className="relative ml-8">
-            <ShoppingCartIcon className="mr-2 w-8 h-8 text-indigo-700" />
+            <Link to="/cart"><ShoppingCartIcon className="mr-2 w-8 h-8 text-indigo-700" /></Link>
 
             <span className="absolute mr-2 -top-2 -right-2 bg-red-600 text-white text-xs font-semibold rounded-full px-1.5 py-0.5">
               2

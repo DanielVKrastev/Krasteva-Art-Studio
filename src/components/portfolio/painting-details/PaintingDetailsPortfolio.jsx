@@ -14,7 +14,6 @@ const painting = {
 export default function PaintingDetailsPortfolio() {
     const handleSubmit = (e) => {
         e.preventDefault();
-        // тук можеш да добавиш логика за изпращане на формата
         alert("Формата е изпратена!");
     };
 
