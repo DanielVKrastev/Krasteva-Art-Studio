@@ -15,7 +15,7 @@ export default function NavbarMenu() {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img
-            src="./images/krasteva-art-studio-logo.png"
+            src="/images/krasteva-art-studio-logo.png"
             className="w-25"
             alt="Krasteva Logo"
           />

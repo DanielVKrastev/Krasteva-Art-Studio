@@ -137,7 +137,7 @@ export default function ArtShop() {
                                         key={paint.id}
                                         className="bg-white rounded-lg shadow hover:shadow-xl transition overflow-hidden"
                                     >
-                                        <Link to={`/artshop/${paint.id}`}>
+                                        <Link to={`/artshop/details/${paint.id}`}>
                                             <img
                                                 src={paint.imageUrl}
                                                 alt={paint.name}
@@ -146,12 +146,12 @@ export default function ArtShop() {
                                         </Link>
                                         <div className="p-4 text-center">
                                             <h3 className="font-semibold text-lg">
-                                                <Link to={`/artshop/${paint.id}`} className="hover:text-indigo-600">{paint.name}</Link>
+                                                <Link to={`/artshop/details/${paint.id}`} className="hover:text-indigo-600">{paint.name}</Link>
                                             </h3>
                                             <p className="text-sm text-gray-500">Размери: {paint.size}</p>
                                             <p className="text-indigo-600 font-bold">{paint.price} лв.</p>
                                             <div className="mt-4 flex justify-center gap-2">
-                                                <button className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Купи</button>
+                                                <Link type="button" to={`/artshop/details/${paint.id}`} className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Купи</Link>
                                                 <button className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-100">Добави</button>
                                             </div>
                                         </div>
