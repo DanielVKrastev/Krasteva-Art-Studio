@@ -10,6 +10,7 @@ import PaintingDetails from './components/art-shop/painting-details/PaintingDeta
 import PaintingDetailsPortfolio from './components/portfolio/painting-details/PaintingDetailsPortfolio';
 import Cart from './components/cart/Cart';
 import Checkout from './components/checkout/Checkout';
+import SearchResults from './components/search/SearchResults';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/checkout' element={<Checkout />} />
+        <Route path='/search' element={<SearchResults />} />
       </Routes>
 
       <Footer />
