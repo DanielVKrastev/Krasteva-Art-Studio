@@ -16,7 +16,7 @@ export default function Home() {
                     </p>
                     <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
                         <Link
-                            to="/rent-a-motorcycle"
+                            to="/artshop"
                             className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-indigo-700 hover:bg-indigo-900 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-900"
                         >
                             Разгледай

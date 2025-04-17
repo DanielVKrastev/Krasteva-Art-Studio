@@ -2,7 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 import NavbarMenu from './components/navbar-menu/NavbarMenu';
 import "./App.css";
 import Footer from './components/footer/Footer';
-import Home from './components/Home/home';
+
+import Home from './components/home/Home';
 import ArtShop from './components/art-shop/ArtShop';
 import Portfolio from './components/portfolio/Portfolio';
 import About from './components/about/About';
@@ -11,6 +12,7 @@ import PaintingDetailsPortfolio from './components/portfolio/painting-details/Pa
 import Cart from './components/cart/Cart';
 import Checkout from './components/checkout/Checkout';
 import SearchResults from './components/search/SearchResults';
+import PageNotFound from './components/page-not-found/PageNotFound';
 
 function App() {
 
@@ -28,6 +30,7 @@ function App() {
         <Route path='/cart' element={<Cart />} />
         <Route path='/checkout' element={<Checkout />} />
         <Route path='/search' element={<SearchResults />} />
+        <Route path='*' element={<PageNotFound />} />
       </Routes>
 
       <Footer />
