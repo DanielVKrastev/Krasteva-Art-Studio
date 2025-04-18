@@ -85,15 +85,21 @@ export default function ArtShop() {
                             <h2 className="text-2xl font-bold text-gray-800">
                                 Арт магазин {selectedCategory ? `- ${selectedCategory}` : ""}
                             </h2>
+                            {/*
                             <div className="mt-4 sm:mt-0">
-                                <select className="border rounded px-3 py-2 text-sm">
-                                    <option>Сортиране</option>
-                                    <option>Име, А до Я</option>
-                                    <option>Име, Я до А</option>
-                                    <option>Цена, възходяща</option>
-                                    <option>Цена, низходяща</option>
+                                <select 
+                                    className="border rounded px-3 py-2 text-sm" 
+                                    defaultValue={""}>
+                                    <option disabled value="">Сортиране</option>
+                                    <option value="oldest">От стара към нова</option>
+                                    <option value="newest">От нова към стара</option>
+                                    <option value="name-asc">Име, А до Я</option>
+                                    <option value="name-desc">Име, Я до А</option>
+                                    <option value="price-asc">Цена, възходяща</option>
+                                    <option value="price-desc">Цена, низходяща</option>
                                 </select>
                             </div>
+                            */}
                         </div>
 
                         {/* Grid with pagination */}
@@ -106,7 +112,7 @@ export default function ArtShop() {
                                         key={paint.id}
                                         className="bg-white rounded-lg shadow hover:shadow-xl transition overflow-hidden"
                                     >
-                                        <Link to={`/portfolio/details/${paint.id}`}>
+                                        <Link to={`/artshop/details/${paint.id}`}>
                                             <img
                                                 src={paint.imageUrl}
                                                 alt={paint.name}
@@ -115,11 +121,13 @@ export default function ArtShop() {
                                         </Link>
                                         <div className="p-4 text-center">
                                             <h3 className="font-semibold text-lg">
-                                                <Link to={`/portfolio/details/${paint.id}`} className="hover:text-indigo-600">{paint.name}</Link>
+                                                <Link to={`/artshop/details/${paint.id}`} className="hover:text-indigo-600">{paint.name}</Link>
                                             </h3>
                                             <p className="text-sm text-gray-500">Размери: {paint.size}</p>
+                                            <p className="text-indigo-600 font-bold">{paint.price} лв.</p>
                                             <div className="mt-4 flex justify-center gap-2">
-                                                <Link to={`/portfolio/details/${paint.id}`} className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Детайли</Link>
+                                                <Link type="button" to={`/artshop/details/${paint.id}`} className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Купи</Link>
+                                                <button className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-100 cursor-pointer">Добави</button>
                                             </div>
                                         </div>
                                     </div>
