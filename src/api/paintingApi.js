@@ -1,41 +1,18 @@
+import { BASE_URL } from "../constants";
+import requester from "../utils/requester";
 
-const baseUrl = 'https://painting-shop-krasteva-default-rtdb.europe-west1.firebasedatabase.app/paintings';
+const baseUrl = `${BASE_URL}/paintings`;
 
 async function getAll() {
-    const response = await fetch(`${baseUrl}.json`);
-    
-    if(!response.ok){
-        return await new Error(response.json());
-    }
-
-    const result = await response.json();
-
-    return Object.values(result);
+    return await requester.get(`${baseUrl}.json`);
 }
 
 async function getAllForSales() {
-    const response = await fetch(`${baseUrl}.json?orderBy="sold"&equalTo="no"`);
-    
-    if(!response.ok){
-        return await new Error(response.json());
-    }
-
-    const result = await response.json();
-
-    return Object.values(result);
+    return await requester.get(`${baseUrl}.json?orderBy="sold"&equalTo="no"`);
 }
 
-
 async function getOne(id) {
-    const response = await fetch(`${baseUrl}/${id}.json`);
-
-    if(!response.ok){
-        return await new Error(response.json());
-    }
-
-    const result = await response.json();
-
-    return result;
+    return await requester.get(`${baseUrl}/${id}.json`);
 }
 
 async function getEqualSort(equalToCategory, equalToSizes) {

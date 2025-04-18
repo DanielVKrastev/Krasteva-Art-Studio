@@ -1,30 +1,18 @@
-const baseUrl = 'https://painting-shop-krasteva-default-rtdb.europe-west1.firebasedatabase.app/category';
+import { BASE_URL } from "../constants";
+import requester from "../utils/requester";
+
+const baseUrl = `${BASE_URL}/category`;
 
 async function getAll() {
-    const response = await fetch(`${baseUrl}.json`);
-    
-    if(!response.ok){
-        return await new Error(response.json());
-    }
-
-    const result = await (response.json());
-
-    return Object.values(result);
+    return await requester.get(`${baseUrl}.json`);
 }
 
 async function getOne(id) {
-    const response = await fetch(`${baseUrl}/${id}.json`);
-
-    if(!response.ok){
-        return await new Error(response.json());
-    }
-
-    const result = await response.json();
-
-    return result;
+    return await requester.get(`${baseUrl}/${id}.json`);
 }
 
 async function create(data, token) {
+    /*
     const response = await fetch(`${baseUrl}.json?auth=${token}`, {
         method: "POST",
         headers: {
@@ -35,6 +23,8 @@ async function create(data, token) {
 
     const result = await response.json();
     return result;
+    */
+    return await requester.post(`${baseUrl}.json?auth=${token}`, data);
 }
 
 export default{
