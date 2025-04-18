@@ -94,12 +94,12 @@ export default function PaintingDetails() {
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="flex flex-col md:flex-row md:space-x-4">
                                         <div className="flex-1">
-                                            <label htmlFor="c_fname" className="block text-sm font-medium text-gray-700 mb-1">
+                                            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
                                                 Име <span className="text-red-500">*</span>
                                             </label>
                                             <input
-                                                id="c_fname"
-                                                name="c_fname"
+                                                id="firstName"
+                                                name="firstName"
                                                 type="text"
                                                 required
                                                 className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -107,12 +107,12 @@ export default function PaintingDetails() {
                                         </div>
 
                                         <div className="flex-1 mt-4 md:mt-0">
-                                            <label htmlFor="c_lname" className="block text-sm font-medium text-gray-700 mb-1">
+                                            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
                                                 Фамилия <span className="text-red-500">*</span>
                                             </label>
                                             <input
-                                                id="c_lname"
-                                                name="c_lname"
+                                                id="lastName"
+                                                name="lastName"
                                                 type="text"
                                                 required
                                                 className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -120,17 +120,34 @@ export default function PaintingDetails() {
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <label htmlFor="c_email" className="block text-sm font-medium text-gray-700 mb-1">
-                                            Имейл <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            id="c_email"
-                                            name="c_email"
-                                            type="email"
-                                            required
-                                            className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                        />
+                                    <div className="flex flex-col md:flex-row md:space-x-4">
+                                        <div className="flex-1">
+                                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                                                Имейл <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                id="email"
+                                                name="email"
+                                                type="email"
+                                                required
+                                                className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            />
+                                        </div>
+
+                                        <div className="flex-1 mt-4 md:mt-0">
+                                            <label htmlFor="telephone" className="block text-sm font-medium text-gray-700 mb-1">
+                                                Телефон <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                defaultValue={"+359"}
+                                                maxlength={16}
+                                                id="telephone"
+                                                name="telephone"
+                                                type="text"
+                                                required
+                                                className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            />
+                                        </div>
                                     </div>
 
                                     <button
