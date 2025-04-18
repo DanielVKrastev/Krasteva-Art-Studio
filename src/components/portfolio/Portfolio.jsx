@@ -15,7 +15,7 @@ export default function Portfolio() {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6;
 
-    
+
     const updateURLParamsPage = (page) => {
         const params = new URLSearchParams(location.search);
 
@@ -105,6 +105,24 @@ export default function Portfolio() {
                                             <Link to={`/portfolio/details/${paint.id}`} className="hover:text-indigo-600">{paint.name}</Link>
                                         </h3>
                                         <p className="text-sm text-gray-500">Размери: {paint.size}</p>
+
+                                        {/* SOLD badge */}
+                                        {paint.sold === 'yes' ? (
+                                            <div className="mt-2">
+                                                <span className="inline-block bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                                    Продадена
+                                                </span>
+                                            </div>
+                                        ):
+                                        (
+                                            <div className="mt-2">
+                                                <span className="inline-block bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                                    В наличност
+                                                </span>
+                                            </div>
+                                        )
+                                        }
+
                                         <div className="mt-4 flex justify-center gap-2">
                                             <Link to={`/portfolio/details/${paint.id}`} className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Детайли</Link>
                                         </div>
@@ -150,14 +168,14 @@ export default function Portfolio() {
                                     </li>
                                 ))}
                                 <li>
-                                    <button 
+                                    <button
                                         className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
                                         disabled={currentPage === totalPages}
                                         onClick={() => {
                                             handlePageChange(currentPage + 1);
                                             updateURLParamsPage(currentPage + 1);
                                         }}
-                                        >
+                                    >
                                         <span className="sr-only">Next</span>
                                         <svg className="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
