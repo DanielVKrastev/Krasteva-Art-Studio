@@ -126,7 +126,7 @@ export default function ArtShop() {
                                             <p className="text-sm text-gray-500">Размери: {paint.size}</p>
                                             <p className="text-indigo-600 font-bold">{paint.price} лв.</p>
                                             <div className="mt-4 flex justify-center gap-2">
-                                                <Link type="button" to={`/artshop/details/${paint.id}`} className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Купи</Link>
+                                                <Link type="button" to={`/artshop/details/${paint.id}`} className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Детайли</Link>
                                                 <button className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-100 cursor-pointer">Добави</button>
                                             </div>
                                         </div>
