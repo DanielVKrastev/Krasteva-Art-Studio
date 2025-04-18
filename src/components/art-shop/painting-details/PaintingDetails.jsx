@@ -1,19 +1,18 @@
-import { Link } from "react-router-dom";
-import ArtCategories from "../../partials/art-categories/ArtCategories";
+import { Link, useParams } from "react-router-dom";
 import NewArts from "../../partials/new-arts/NewArts";
-
-const painting = {
-    imageUrl: "https://example.com/painting.jpg",
-    name: "Заглавие на картината",
-    description: "Това е описание на картината. Може да съдържа информация за автор, техника, стил и вдъхновение.",
-    size: "60x80 см",
-    category: "Пейзаж",
-    paints: "Маслени бои",
-    price: "250",
-    id: "1"
-};
+import paintingApi from "../../../api/paintingApi";
+import { useEffect, useState } from "react";
 
 export default function PaintingDetails() {
+    const [painting, setPainting] = useState([]);
+    const { paintingId } = useParams();
+
+    useEffect(() => {
+        (async function () {
+            const painting = await paintingApi.getOne(paintingId);
+            setPainting(painting);
+        })();
+    }, []);
     return (
         <>
             <div className="container mx-auto py-8 mb-30">
@@ -30,7 +29,7 @@ export default function PaintingDetails() {
                 <div className="flex flex-col md:flex-row items-center md:items-start space-y-8 md:space-y-0">
                     {/* Image Section */}
                     <div className="flex-1 md:w-1/2">
-                        <img src="/images/test_draw.jpg" alt={painting.name} className="w-full h-auto rounded-lg shadow-lg" />
+                        <img src={painting.imageUrl} alt={painting.name} className="w-full h-auto rounded-lg shadow-lg" />
                     </div>
 
                     {/* Description Section */}
