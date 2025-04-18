@@ -7,7 +7,7 @@ import useActiveSection from '../../hooks/useActiveSection';
 export default function NavbarMenu() {
   const [openMobileNav, setOpenMobileNav] = useState(true);
 
-  const [ activeTab ] = useActiveSection();
+  const [ activeSection ] = useActiveSection();
 
   function closeOpenHandlerMobileMenu() {
     setOpenMobileNav(state => !state);
@@ -124,7 +124,7 @@ export default function NavbarMenu() {
               <Link
                 to="/"
                 className={
-                  activeTab === ''? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                  activeSection === ''? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
                   : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
                 aria-current="page"
@@ -136,7 +136,7 @@ export default function NavbarMenu() {
               <Link
                 to="/artshop"
                 className={
-                  activeTab === 'artshop'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                  activeSection === 'artshop'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
                   : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
                 aria-current="page"
@@ -148,7 +148,7 @@ export default function NavbarMenu() {
               <Link
                 to="/portfolio"
                 className={
-                  activeTab === 'portfolio'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                  activeSection === 'portfolio'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
                   : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
                 aria-current="page"
@@ -160,7 +160,7 @@ export default function NavbarMenu() {
               <Link
                 to="/about"
                 className={
-                  activeTab === 'about'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                  activeSection === 'about'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
                   : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
               >

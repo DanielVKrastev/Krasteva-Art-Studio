@@ -1,16 +1,18 @@
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import NewArts from "../partials/new-arts/NewArts";
 import paintingApi from "../../api/paintingApi";
 import { useEffect, useState } from "react";
+import useActiveSection from "../../hooks/useActiveSection";
 
 export default function PaintingDetails() {
     const [painting, setPainting] = useState({});
     const { paintingId } = useParams();
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const pathParts = location.pathname.split('/');
-    const sectionPage = pathParts[1];
+
+    const [ activeSection  ] = useActiveSection();
+    console.log(activeSection);
+    
 
     useEffect(() => {
         (async function () {
@@ -18,21 +20,21 @@ export default function PaintingDetails() {
             setPainting(painting);
 
             if(!painting){
-                navigate(`/${sectionPage}`); //redirect when id is incorrect
+                navigate(`/${activeSection}`); //redirect when id is incorrect
                 return;
             }
         })();
 
-        if (sectionPage === 'artshop' && painting?.sold === 'yes') {
+        if (activeSection === 'artshop' && painting?.sold === 'yes') {
             navigate('/artshop');
         }
     }, [paintingId]);
 
     useEffect(() => {
-        if (sectionPage === 'artshop' && painting?.sold === 'yes') {
+        if (activeSection === 'artshop' && painting?.sold === 'yes') {
             navigate('/artshop'); //redirect when painting is sold
         }
-    }, [painting, sectionPage, navigate]);
+    }, [painting, activeSection, navigate]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -47,10 +49,10 @@ export default function PaintingDetails() {
                     <Link to="/" className="text-indigo-600 hover:underline">Начало</Link>
                     <span className="mx-2">/</span>
                     <Link 
-                        to={sectionPage === 'artshop'? '/artshop' : '/portfolio'} 
+                        to={activeSection === 'artshop'? '/artshop' : '/portfolio'} 
                         className="text-indigo-600 hover:underline"
                     >
-                        {sectionPage === 'artshop' && 'Арт магазин'} {sectionPage === 'portfolio' && 'Портфолио'}
+                        {activeSection === 'artshop' && 'Арт магазин'} {activeSection === 'portfolio' && 'Портфолио'}
                     </Link>
                     <span className="mx-2">/</span>
                     <span className="text-black font-semibold">{painting?.name}</span>
@@ -140,7 +142,7 @@ export default function PaintingDetails() {
                                             </label>
                                             <input
                                                 defaultValue={"+359"}
-                                                maxlength={16}
+                                                maxLength={16}
                                                 id="telephone"
                                                 name="telephone"
                                                 type="text"

@@ -3,16 +3,16 @@ import { useLocation } from "react-router";
 
 export default function useActiveSection() {
     const location = useLocation();
-    const [activeTab, setActiveTab] = useState('');
+    const [activeSection, setActiveSection] = useState('');
     useEffect(() => {
         const pathParts = location.pathname.split('/');
         const sectionPage = pathParts[1];
 
-        setActiveTab(sectionPage);
+        setActiveSection(sectionPage);
         
     }, [location])
 
     return [
-        activeTab
+        activeSection
     ];
 }
