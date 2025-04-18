@@ -68,7 +68,7 @@ export default function Portfolio() {
                     selectedSize={selectedSize}
                     setSelectedCategory={(val) => {
                         setSelectedCategory(val);
-                        setCurrentPage(1); // Рестартирай страницата при нов филтър
+                        setCurrentPage(1);
                     }}
                     setSelectedSize={(val) => {
                         setSelectedSize(val);
