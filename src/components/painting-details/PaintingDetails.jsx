@@ -1,0 +1,154 @@
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import NewArts from "../partials/new-arts/NewArts";
+import paintingApi from "../../api/paintingApi";
+import { useEffect, useState } from "react";
+
+export default function PaintingDetails() {
+    const [painting, setPainting] = useState({});
+    const { paintingId } = useParams();
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const pathParts = location.pathname.split('/');
+    const sectionPage = pathParts[1];
+
+    useEffect(() => {
+        (async function () {
+            const painting = await paintingApi.getOne(paintingId);
+            setPainting(painting);
+
+            if(!painting){
+                navigate(`/${sectionPage}`); //redirect when id is incorrect
+                return;
+            }
+        })();
+
+        if (sectionPage === 'artshop' && painting?.sold === 'yes') {
+            navigate('/artshop');
+        }
+    }, [paintingId]);
+
+    useEffect(() => {
+        if (sectionPage === 'artshop' && painting?.sold === 'yes') {
+            navigate('/artshop'); //redirect when painting is sold
+        }
+    }, [painting, sectionPage, navigate]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        alert("Формата е изпратена!");
+    };
+
+    return (
+        <>
+            <div className="container mx-auto py-8 mb-30">
+                {/* Breadcrumb */}
+                <div className="mb-6 text-sm text-gray-500">
+                    <Link to="/" className="text-indigo-600 hover:underline">Начало</Link>
+                    <span className="mx-2">/</span>
+                    <Link 
+                        to={sectionPage === 'artshop'? '/artshop' : '/portfolio'} 
+                        className="text-indigo-600 hover:underline"
+                    >
+                        {sectionPage === 'artshop' && 'Арт магазин'} {sectionPage === 'portfolio' && 'Портфолио'}
+                    </Link>
+                    <span className="mx-2">/</span>
+                    <span className="text-black font-semibold">{painting?.name}</span>
+                </div>
+
+                {/* Painting Section */}
+                <div className="flex flex-col md:flex-row items-center md:items-start space-y-8 md:space-y-0">
+                    {/* Image Section */}
+                    <div className="flex-1 md:w-1/2">
+                        <img src={painting?.imageUrl} alt={painting?.name} className="w-full h-auto rounded-lg shadow-lg" />
+                    </div>
+
+                    {/* Description Section */}
+                    <div className="flex-1 md:w-1/2 px-6">
+                        <h2 className="text-3xl font-bold text-black">{painting?.name}</h2>
+                        <p className="mt-4 text-gray-600">{painting?.description}</p>
+
+                        <div className="mt-6 space-y-2">
+                            <p><i><b>Размери: {painting?.size}</b></i></p>
+                            <p><i><b>Категория: {painting?.category}</b></i></p>
+                            <p><i><b>Бои: {painting?.paints}</b></i></p>
+                        </div>
+
+                        {painting?.sold !== 'yes' ?
+                            <>
+                                <p className="mt-4 text-2xl text-primary font-semibold text-indigo-600">Цена: {painting?.price} лв.</p>
+
+                                <div className="mt-6 flex gap-2">
+                                    <Link type="button" to={`/artshop/details/${painting?.id}`} className="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">Купи</Link>
+                                    <button className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-100 cursor-pointer">Добави</button>
+                                </div>
+                            </>
+                            :
+
+                            <div className="mt-6">
+                                <p className="mb-4">
+                                    Направете запитване за поръчка.<br />
+                                    Или се обадете на: <span className="font-semibold">+359 11 111 1111</span>
+                                </p>
+
+                                <form onSubmit={handleSubmit} className="space-y-4">
+                                    <div className="flex flex-col md:flex-row md:space-x-4">
+                                        <div className="flex-1">
+                                            <label htmlFor="c_fname" className="block text-sm font-medium text-gray-700 mb-1">
+                                                Име <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                id="c_fname"
+                                                name="c_fname"
+                                                type="text"
+                                                required
+                                                className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            />
+                                        </div>
+
+                                        <div className="flex-1 mt-4 md:mt-0">
+                                            <label htmlFor="c_lname" className="block text-sm font-medium text-gray-700 mb-1">
+                                                Фамилия <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                id="c_lname"
+                                                name="c_lname"
+                                                type="text"
+                                                required
+                                                className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="c_email" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Имейл <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            id="c_email"
+                                            name="c_email"
+                                            type="email"
+                                            required
+                                            className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        />
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition duration-300"
+                                    >
+                                        Направи запитване
+                                    </button>
+                                </form>
+                            </div>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+
+            <NewArts />
+        </>
+    );
+};

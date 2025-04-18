@@ -11,8 +11,6 @@ export default function NewArts() {
           setPaintings(paintings);
       })();
   }, []);
-
-  console.log(paintings);
   
   return (
     <section className="py-12 border border-gray-300">
