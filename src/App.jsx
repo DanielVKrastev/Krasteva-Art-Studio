@@ -13,11 +13,13 @@ import Cart from './components/cart/Cart';
 import Checkout from './components/checkout/Checkout';
 import SearchResults from './components/search/SearchResults';
 import PageNotFound from './components/page-not-found/PageNotFound';
+import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 
 function App() {
 
   return (
     <>
+      <ScrollToTop />
       <NavbarMenu />
 
       <Routes>
