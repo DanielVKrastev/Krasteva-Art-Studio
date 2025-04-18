@@ -11,9 +11,7 @@ export default function PaintingDetails() {
     const navigate = useNavigate();
 
     const [ activeSection  ] = useActiveSection();
-    console.log(activeSection);
     
-
     useEffect(() => {
         (async function () {
             const painting = await paintingApi.getOne(paintingId);
