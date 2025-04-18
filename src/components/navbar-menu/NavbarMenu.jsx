@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { act, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+import useActiveSection from '../../hooks/useActiveSection';
 
 export default function NavbarMenu() {
   const [openMobileNav, setOpenMobileNav] = useState(true);
+
+  const [ activeTab ] = useActiveSection();
 
   function closeOpenHandlerMobileMenu() {
     setOpenMobileNav(state => !state);
@@ -120,7 +123,10 @@ export default function NavbarMenu() {
             <li>
               <Link
                 to="/"
-                className="block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                className={
+                  activeTab === ''? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                  : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                }
                 aria-current="page"
               >
                 Начало
@@ -129,7 +135,10 @@ export default function NavbarMenu() {
             <li>
               <Link
                 to="/artshop"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                className={
+                  activeTab === 'artshop'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                  : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                }
                 aria-current="page"
               >
                 Магазин
@@ -138,7 +147,10 @@ export default function NavbarMenu() {
             <li>
               <Link
                 to="/portfolio"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                className={
+                  activeTab === 'portfolio'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                  : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                }
                 aria-current="page"
               >
                 Портфолио
@@ -147,7 +159,10 @@ export default function NavbarMenu() {
             <li>
               <Link
                 to="/about"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                className={
+                  activeTab === 'about'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                  : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                }
               >
                 За мен
               </Link>
