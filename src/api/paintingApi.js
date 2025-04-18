@@ -8,6 +8,11 @@ async function getAll() {
     return Object.values(result);
 }
 
+async function getLimit(limit) {
+    const result = await requester.get(`${baseUrl}.json?orderBy="id"&limitToFirst=${limit}`);
+    return Object.values(result);
+}
+
 async function getAllForSales() {
     const result = await requester.get(`${baseUrl}.json?orderBy="sold"&equalTo="no"`);
     return Object.values(result);
@@ -140,6 +145,7 @@ async function updateData(idPainting, data) {
 
 export default{
     getAll,
+    getLimit,
     getAllForSales,
     getOne,
     getEqualSort,
