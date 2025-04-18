@@ -4,11 +4,13 @@ import requester from "../utils/requester";
 const baseUrl = `${BASE_URL}/paintings`;
 
 async function getAll() {
-    return await requester.get(`${baseUrl}.json`);
+    const result = await requester.get(`${baseUrl}.json`);
+    return Object.values(result);
 }
 
 async function getAllForSales() {
-    return await requester.get(`${baseUrl}.json?orderBy="sold"&equalTo="no"`);
+    const result = await requester.get(`${baseUrl}.json?orderBy="sold"&equalTo="no"`);
+    return Object.values(result);
 }
 
 async function getOne(id) {
