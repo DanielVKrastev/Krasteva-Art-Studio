@@ -4,7 +4,6 @@ export const saveCartData = (cartData) => {
 
 export const getCartData = () => {
     const items = JSON.parse(localStorage.getItem('items')) || [];
-    console.log(items);
     
     return {
         items,
@@ -20,9 +19,20 @@ export const addItemInCart = (item) => {
         saveCartData(updatedItems);
         return { items: updatedItems };
     }
-    
+
     return { items };
 }
+
+export const removeItemFromCart = (id) => {
+    const { items } = getCartData();
+
+    const updatedItems = items.filter(item => item.id !== id);
+
+    saveCartData(updatedItems);
+
+    return { items: updatedItems };
+}
+
 
 export const clearCartData = () => {
     localStorage.removeItem('items');
