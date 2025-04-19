@@ -1,17 +1,32 @@
-import { act, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import useActiveSection from '../../hooks/useActiveSection';
 
 export default function NavbarMenu() {
   const [openMobileNav, setOpenMobileNav] = useState(true);
+  const navigate = useNavigate();
 
-  const [ activeSection ] = useActiveSection();
+  const [activeSection] = useActiveSection();
 
   function closeOpenHandlerMobileMenu() {
     setOpenMobileNav(state => !state);
   };
+
+  function submitHandlerSearch(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const searchParams = formData.get('search');
+    e.target.reset();
+    
+    if(!searchParams) {
+      return;
+    }
+
+    navigate(`/search?query=${searchParams}`);
+  }
 
   return (
     <nav className="sticky top-0 bg-white w-full z-50 border-b border-gray-200 transition-all duration-300">
@@ -27,30 +42,33 @@ export default function NavbarMenu() {
         <div className="flex md:order-2">
 
           <div className="relative hidden md:block">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-gray-500"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-              <span className="sr-only">Search icon</span>
-            </div>
-            <input
-              type="text"
-              id="search-navbar"
-              className="block w-full p-2 ps-10 text-sm text-indigo-900 border border-indigo-300 rounded-lg bg-gray-50 focus:ring-indigo-700 focus:border-indigo-700"
-              placeholder="Тъсене..."
-            />
+            <form onSubmit={submitHandlerSearch}>
+              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg
+                  className="w-4 h-4 text-gray-500"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+                <span className="sr-only">Search icon</span>
+              </div>
+              <input
+                type="text"
+                id="search"
+                name="search"
+                className="block w-full p-2 ps-10 text-sm text-indigo-900 border border-indigo-300 rounded-lg bg-gray-50 focus:ring-indigo-700 focus:border-indigo-700"
+                placeholder="Тъсене..."
+              />
+            </form>
           </div>
 
           <div className="relative ml-8">
@@ -124,8 +142,8 @@ export default function NavbarMenu() {
               <Link
                 to="/"
                 className={
-                  activeSection === ''? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
-                  : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                  activeSection === '' ? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                    : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
                 aria-current="page"
               >
@@ -136,8 +154,8 @@ export default function NavbarMenu() {
               <Link
                 to="/artshop"
                 className={
-                  activeSection === 'artshop'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
-                  : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                  activeSection === 'artshop' ? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                    : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
                 aria-current="page"
               >
@@ -148,8 +166,8 @@ export default function NavbarMenu() {
               <Link
                 to="/portfolio"
                 className={
-                  activeSection === 'portfolio'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
-                  : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                  activeSection === 'portfolio' ? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                    : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
                 aria-current="page"
               >
@@ -160,8 +178,8 @@ export default function NavbarMenu() {
               <Link
                 to="/about"
                 className={
-                  activeSection === 'about'? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
-                  : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
+                  activeSection === 'about' ? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
+                    : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
               >
                 За мен
