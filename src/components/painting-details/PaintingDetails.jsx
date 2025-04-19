@@ -1,12 +1,17 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import NewArts from "../partials/new-arts/NewArts";
-import paintingApi from "../../api/paintingApi";
 import { useEffect, useState } from "react";
+
+import paintingApi from "../../api/paintingApi";
+
+import NewArts from "../partials/new-arts/NewArts";
 import useActiveSection from "../../hooks/useActiveSection";
+import usePersistedState from "../../hooks/usePersistedState";
 
 export default function PaintingDetails() {
     const [painting, setPainting] = useState({});
     const { paintingId } = useParams();
+
+    const [cart, setCart] = usePersistedState('items', {});
 
     const navigate = useNavigate();
 
@@ -33,6 +38,15 @@ export default function PaintingDetails() {
             navigate('/artshop'); //redirect when painting is sold
         }
     }, [painting, activeSection, navigate]);
+
+    const handleBuyPainting = (painting) => {
+        setCart(painting); // set in local storage cart item
+        navigate('/cart');
+    };
+
+    const handleAddInCart = (painting) => {
+        setCart(painting); // set in local storage cart item
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -79,8 +93,8 @@ export default function PaintingDetails() {
                                 <p className="mt-4 text-2xl text-primary font-semibold text-indigo-600">Цена: {painting?.price} лв.</p>
 
                                 <div className="mt-6 flex gap-2">
-                                    <Link type="button" to={`/artshop/details/${painting?.id}`} className="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">Купи</Link>
-                                    <button className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-100 cursor-pointer">Добави</button>
+                                    <button onClick={() => handleBuyPainting(painting)} className="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">Купи</button>
+                                    <button onClick={() => handleAddInCart(painting)} className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-100 cursor-pointer">Добави</button>
                                 </div>
                             </>
                             :
