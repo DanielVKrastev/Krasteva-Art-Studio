@@ -1,34 +1,15 @@
 import { Link } from "react-router-dom";
-
-const cartItems = [
-    {
-        id: 1,
-        name: "Пейзаж в утро",
-        imageUrl: "https://example.com/art1.jpg",
-        price: 180,
-    },
-    {
-        id: 2,
-        name: "Абстрактно лято",
-        imageUrl: "https://example.com/art2.jpg",
-        price: 220,
-    },
-    {
-        id: 3,
-        name: "Абстрактно лято",
-        imageUrl: "https://example.com/art2.jpg",
-        price: 220,
-    },
-    {
-        id: 4,
-        name: "Абстрактно лято",
-        imageUrl: "https://example.com/art2.jpg",
-        price: 220,
-    },
-];
+import usePersistedState from "../../hooks/usePersistedState";
 
 export default function Cart() {
-    const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
+    const [cart, setCart, removeItem] = usePersistedState('items', {});
+    const cartItems = cart?.items ?? [];
+
+    const totalPrice = cartItems.reduce((sum, item) => sum + Number(item.price), 0);
+
+    const handleRemoveItem = (id) => {
+        removeItem(id);
+    }
 
     return (
         <div className="container mx-auto py-10 px-4 md:px-8">
@@ -49,7 +30,7 @@ export default function Cart() {
                                     <p className="text-gray-600">{item.price} лв.</p>
                                 </div>
                             </div>
-                            <button className="text-red-500 hover:underline text-sm">
+                            <button onClick={() => handleRemoveItem(item.id)} className="text-red-500 hover:underline text-sm">
                                 Премахни
                             </button>
                         </div>

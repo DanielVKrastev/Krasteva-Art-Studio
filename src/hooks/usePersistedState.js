@@ -4,6 +4,7 @@ import { addItemInCart, clearCartData, getCartData, removeItemFromCart } from ".
 export default function usePersistedState(initialState) {
     const [state, setState] = useState(() => {
         const persistedState = getCartData();
+        
         if(!persistedState){
             return initialState;
         }
@@ -27,10 +28,10 @@ export default function usePersistedState(initialState) {
         const updatedState = removeItemFromCart(id);
         setState(updatedState);
     };
-
+    
     return [
         state,
         setPersistedState,
-        removePersistedItem
+        removePersistedItem,
     ];
 }
