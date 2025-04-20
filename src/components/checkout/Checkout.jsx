@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCartContext } from "../../contexts/CartContext";
+import orderApi from "../../api/orderApi";
+import paintingApi from "../../api/paintingApi";
 
 export default function Checkout() {
     const { cart: cartItems, setCart, removeFromCart } = useCartContext();
@@ -17,9 +19,26 @@ export default function Checkout() {
 
     const [deliveryMethod, setDeliveryMethod] = useState("econt");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert("Поръчката е приета!");
+        const formData = new FormData(e.currentTarget);
+        let orderData = Object.fromEntries(formData);
+        orderData = {
+            ...orderData,
+            totalPrice: total
+        }
+
+        const paintingIds = cartItems.map(painting => painting.id);
+        
+        try{
+            await orderApi.create(orderData, paintingIds);
+            await paintingApi.markAsSold(cartItems);
+            setCart();
+            console.log('success order');
+            navigate('/');
+        }catch(err){
+            console.log(err.message);
+        }
     };
 
     return (
