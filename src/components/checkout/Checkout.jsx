@@ -1,39 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-
-const cartItems = [
-    {
-        id: 1,
-        name: "Пейзаж в утро",
-        size: "20x30 см",
-        price: 180,
-        imageUrl: "https://example.com/art1.jpg"
-    },
-    {
-        id: 2,
-        name: "Абстрактно лято",
-        size: "30x40 см",
-        price: 220,
-        imageUrl: "https://example.com/art2.jpg"
-    },
-    {
-        id: 3,
-        name: "Абстрактно лято",
-        size: "30x40 см",
-        price: 220,
-        imageUrl: "https://example.com/art2.jpg"
-    },
-    {
-        id: 4,
-        name: "Абстрактно лято",
-        size: "30x40 см",
-        price: 220,
-        imageUrl: "https://example.com/art2.jpg"
-    },
-];
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useCartContext } from "../../contexts/CartContext";
 
 export default function Checkout() {
-    const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+    const { cart: cartItems, setCart, removeFromCart } = useCartContext();
+    const total = (cartItems.reduce((sum, item) => sum + Number(item.price), 0));
+    const isCartEmpty = cartItems.length === 0;
+
+    const navigate = useNavigate();
+    //If cart is empty redirect to Home Page
+    useEffect(() => {
+        if(isCartEmpty){
+            navigate('/');
+        }
+    }, [isCartEmpty])
+
     const [deliveryMethod, setDeliveryMethod] = useState("econt");
 
     const handleSubmit = (e) => {
@@ -127,20 +108,20 @@ export default function Checkout() {
                     <h2 className="text-xl font-semibold mb-6 text-gray-800">Вашите артикули</h2>
 
                     <div className="space-y-5">
-                        {cartItems.map(item => (
-                            <div key={item.id} className="flex items-center gap-4 border-b border-gray-300 pb-4">
+                        {cartItems.map(painting => (
+                            <div key={painting.id} className="flex items-center gap-4 border-b border-gray-300 pb-4">
                                 <img
-                                    src="/images/test_draw.jpg"
-                                    alt={item.name}
+                                    src={painting.imageUrl}
+                                    alt={painting.name}
                                     className="w-16 h-16 object-cover rounded-md shadow-sm"
                                 />
                                 <div className="flex justify-between items-center w-full">
                                     <div className="text-sm">
-                                        <p className="font-medium text-gray-800">{item.name}</p>
-                                        <p className="text-gray-500">{item.size}</p>
+                                        <p className="font-medium text-gray-800">{painting.name}</p>
+                                        <p className="text-gray-500">{painting.size}</p>
                                     </div>
                                     <div className="text-base font-semibold text-gray-700">
-                                        {item.price} лв.
+                                        {painting.price} лв.
                                     </div>
                                 </div>
                             </div>
@@ -161,7 +142,7 @@ export default function Checkout() {
                         </Link>
                         <button
                             form="checkout-form"
-                            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+                            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer"
                         >
                             Продължи
                         </button>
