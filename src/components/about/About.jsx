@@ -1,6 +1,19 @@
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
+import contactMessageApi from "../../api/contactMessageApi";
 
 export default function About() {
+
+    const handleSubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            const messageData = Object.fromEntries(formData);
+            try{
+                await contactMessageApi.create(messageData);
+                
+            }catch(err){
+                console.log(err.message);
+            }
+        };
     return (
         <>
             <div className="bg-gray-100 py-16 px-6 sm:px-16 lg:px-20">
@@ -42,7 +55,7 @@ export default function About() {
                     <h2 className="text-3xl font-bold text-black mb-4 border-l-4 border-indigo-600 pl-4">Свържи се с мен</h2>
                     <div className="grid md:grid-cols-2 gap-12">
                         {/* Form */}
-                        <form className="bg-white p-6 rounded-lg shadow-md space-y-6">
+                        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Име <span className="text-red-500">*</span></label>
