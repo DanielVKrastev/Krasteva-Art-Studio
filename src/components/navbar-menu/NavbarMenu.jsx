@@ -1,12 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import useActiveSection from '../../hooks/useActiveSection';
+import { useCartContext } from '../../contexts/CartContext';
 
 export default function NavbarMenu() {
   const [openMobileNav, setOpenMobileNav] = useState(true);
   const navigate = useNavigate();
+
+  // for count items in cart
+  const { cart: cartItems } = useCartContext();
 
   const [activeSection] = useActiveSection();
 
@@ -75,7 +79,7 @@ export default function NavbarMenu() {
             <Link to="/cart"><ShoppingCartIcon className="mr-2 w-8 h-8 text-indigo-700" /></Link>
 
             <span className="absolute mr-2 -top-2 -right-2 bg-red-600 text-white text-xs font-semibold rounded-full px-1.5 py-0.5">
-              2
+              {cartItems.length}
             </span>
           </div>
           <button
