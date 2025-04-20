@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import usePersistedState from "../../hooks/usePersistedState";
+import { useCartContext } from "../../contexts/CartContext";
 
 export default function Cart() {
-    const [cart, setCart, removeItem] = usePersistedState('items', {});
-    const cartItems = cart?.items ?? [];
+
+    const { cart: cartItems, setCart, removeFromCart } = useCartContext();;
 
     const totalPrice = cartItems.reduce((sum, item) => sum + Number(item.price), 0);
 
     const handleRemoveItem = (id) => {
-        removeItem(id);
+        removeFromCart(id);
     }
 
     return (
