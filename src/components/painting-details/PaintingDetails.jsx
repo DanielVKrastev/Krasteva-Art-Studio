@@ -7,6 +7,7 @@ import NewArts from "../partials/new-arts/NewArts";
 import useActiveSection from "../../hooks/useActiveSection";
 import { useCartContext } from "../../contexts/CartContext";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import availabilityInquiryApi from "../../api/availabilityInquiryApi";
 
 export default function PaintingDetails() {
     const [painting, setPainting] = useState({});
@@ -49,9 +50,21 @@ export default function PaintingDetails() {
         setCart(painting); // set in local storage cart item
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert("Формата е изпратена!");
+        const formData = new FormData(e.currentTarget);
+        let inquiryData = Object.fromEntries(formData);
+        inquiryData = {
+            paintingId,
+            ...inquiryData,
+        }
+
+        try {
+            await availabilityInquiryApi.create(inquiryData);
+            console.log('success inquiry');
+        } catch (err) {
+            console.log(err.message);
+        }
     };
 
     return (
