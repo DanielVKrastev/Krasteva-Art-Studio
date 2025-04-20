@@ -3,8 +3,7 @@ import { useCartContext } from "../../contexts/CartContext";
 
 export default function Cart() {
 
-    const { cart: cartItems, setCart, removeFromCart } = useCartContext();;
-
+    const { cart: cartItems, setCart, removeFromCart } = useCartContext();
     const totalPrice = cartItems.reduce((sum, item) => sum + Number(item.price), 0);
     const isCartEmpty = cartItems.length === 0;
 
@@ -19,19 +18,19 @@ export default function Cart() {
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Left: Cart Items */}
                 <div className="flex-1 space-y-6">
-                    {cartItems.map(item => (
+                    {cartItems.map(painting => (
                         <div
-                            key={item.id}
+                            key={painting.id}
                             className="flex items-center justify-between p-4 border border-gray-300 rounded-lg shadow-sm bg-white"
                         >
                             <div className="flex items-center space-x-4">
-                                <img src="/images/test_draw.jpg" alt={item.name} className="w-24 h-24 object-cover rounded" />
+                                <img src={painting.imageUrl} alt={painting.name} className="w-24 h-24 object-cover rounded" />
                                 <div>
-                                    <h2 className="text-lg font-semibold">{item.name}</h2>
-                                    <p className="text-gray-600">{item.price} лв.</p>
+                                    <h2 className="text-lg font-semibold">{painting.name}</h2>
+                                    <p className="text-gray-600">{painting.price} лв.</p>
                                 </div>
                             </div>
-                            <button onClick={() => handleRemoveItem(item.id)} className="text-red-500 hover:underline text-sm">
+                            <button onClick={() => handleRemoveItem(painting.id)} className="text-red-500 hover:underline text-sm">
                                 Премахни
                             </button>
                         </div>
