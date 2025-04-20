@@ -1,6 +1,9 @@
 import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
+import { database } from '../../firebase';
+import { ref, update } from "firebase/database";
+
 const baseUrl = `${BASE_URL}/paintings`;
 
 async function getAll() {
@@ -20,45 +23,6 @@ async function getAllForSales() {
 
 async function getOne(id) {
     return await requester.get(`${baseUrl}/${id}.json`);
-}
-
-async function getEqualSort(equalToCategory, equalToSizes) {
-    try {
-        let fetchUrl = `${baseUrl}.json?`; // Start URL-то
-        
-        const queryParams = [];
-        
-        if (equalToCategory) {
-            queryParams.push(`orderBy="category"&equalTo="${equalToCategory}"`);
-        }
-
-        if (equalToSizes && equalToSizes.length > 0) {
-            equalToSizes.forEach(size => {
-                queryParams.push(`orderBy="size"&equalTo="${size}"`);
-            });
-        }
-
-        // If have another parameters add to url
-        if (queryParams.length > 0) {
-            fetchUrl += queryParams.join('&');
-        }
-
-        console.log('Изпратена заявка към:', fetchUrl);
-
-        // Get query
-        const response = await fetch(fetchUrl);
-
-        if (!response.ok) {
-            return await new Error(response.json());
-        }
-
-        const result = await response.json();
-        return Object.values(result);
-    } catch (error) {
-        console.error(error);
-        return [];
-    }
-    
 }
 
 async function getPaintingsByCategory(category) {
@@ -124,34 +88,36 @@ async function create(data, token) {
     return result;
 }
 
+const markAsSold = async (cartItems) => {
+    const updates = {};
+    
+    cartItems.forEach(item => {
+      const itemRef = `paintings/${item.id}`; 
+      updates[`${itemRef}/sold`] = "yes"; 
+    });
+  
+    try {
+      await update(ref(database), updates);
+      console.log("All paintings are marked as sold.");
+    } catch (error) {
+      console.error("Update sold error", error);
+    }
+  };
+
 
 async function updateData(idPainting, data) {
-    const response = await fetch(`${baseUrl}/${idPainting}.json`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-        throw new Error(`Грешка: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    return result;
+    return await requester.post(`${baseUrl}/${idPainting}.json`, data);
 }
-
 
 export default{
     getAll,
     getLimit,
     getAllForSales,
     getOne,
-    getEqualSort,
     getPaintingsByCategory,
     getPaintingsBySize,
     getCombinedPaintings,
     create,
-    updateData
+    updateData,
+    markAsSold
 }

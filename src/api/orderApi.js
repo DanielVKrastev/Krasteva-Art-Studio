@@ -1,6 +1,9 @@
 import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
+import { database } from '../../firebase';
+import { ref, push, serverTimestamp, set } from "firebase/database";
+
 const baseUrl = `${BASE_URL}/orders`;
 
 async function getAll() {
@@ -11,21 +14,22 @@ async function getOne(id) {
     return await requester.get(`${baseUrl}/${id}.json`);
 }
 
-async function create(data) {
-    /*
-    const response = await fetch(`${baseUrl}.json?auth=${token}`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    });
-
-    const result = await response.json();
-    return result;
-    */
-    return await requester.post(`${baseUrl}.json?auth=${token}`, data);
-}
+const create = async (data, paintingIds) => {
+    const newOrder = {
+      paintingIds, 
+      createdAt: serverTimestamp(), 
+      status: "pending", 
+      ...data 
+    };
+  
+    try {
+      const orderRef = push(ref(database, 'orders'));
+      await set(orderRef, newOrder); 
+      console.log("The order is saved with ID::", orderRef.key);
+    } catch (error) {
+      console.error("Error while saving order:", error);
+    }
+  };
 
 export default{
     getAll,
