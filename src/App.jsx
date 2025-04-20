@@ -13,11 +13,12 @@ import Checkout from './components/checkout/Checkout';
 import SearchResults from './components/search/SearchResults';
 import PageNotFound from './components/page-not-found/PageNotFound';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
+import CartProvider from './providers/cartProvider';
 
 function App() {
 
   return (
-    <>
+    <CartProvider>
       <ScrollToTop />
       <NavbarMenu />
 
@@ -35,7 +36,7 @@ function App() {
       </Routes>
 
       <Footer />
-    </>
+    </CartProvider>
   )
 }
 
