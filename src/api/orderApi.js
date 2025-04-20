@@ -15,21 +15,25 @@ async function getOne(id) {
 }
 
 const create = async (data, paintingIds) => {
+  try {
+    const orderRef = push(ref(database, 'orders'));
+    const orderId = orderRef.key;
+
     const newOrder = {
-      paintingIds, 
-      createdAt: serverTimestamp(), 
-      status: "pending", 
-      ...data 
+      id: orderId,
+      paintingIds,
+      createdAt: serverTimestamp(),
+      status: "pending",
+      ...data
     };
-  
-    try {
-      const orderRef = push(ref(database, 'orders'));
-      await set(orderRef, newOrder); 
-      console.log("The order is saved with ID::", orderRef.key);
-    } catch (error) {
-      console.error("Error while saving order:", error);
-    }
-  };
+
+    await set(orderRef, newOrder);
+    console.log("The order is saved");
+  } catch (error) {
+    console.error("Error while saving order:", error);
+  }
+};
+
 
 export default{
     getAll,
