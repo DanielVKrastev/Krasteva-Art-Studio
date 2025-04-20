@@ -13,8 +13,8 @@ export default function Footer() {
               <li><Link to="/artshop" className="hover:text-indigo-600">Магазин</Link></li>
               <li><Link to="/portfolio" className="hover:text-indigo-600">Портфолио</Link></li>
               <li><Link to="/about" className="hover:text-indigo-600">За мен</Link></li>
-              <li><Link to="/contact" className="hover:text-indigo-600">Контакти</Link></li>
-              <li><Link to="#" className="hover:text-indigo-600">Количка</Link></li>
+              <li><Link to="/about" className="hover:text-indigo-600">Контакти</Link></li>
+              <li><Link to="/cart" className="hover:text-indigo-600">Количка</Link></li>
             </ul>
           </div>
 
