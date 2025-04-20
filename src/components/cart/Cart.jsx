@@ -18,6 +18,7 @@ export default function Cart() {
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Left: Cart Items */}
                 <div className="flex-1 space-y-6">
+                    {cartItems.length === 0 && <p className="text-gray-600">Вашата количка е празна</p>}
                     {cartItems.map(painting => (
                         <div
                             key={painting.id}
@@ -57,7 +58,11 @@ export default function Cart() {
 
 
                     <div className="mt-6 flex gap-2">
-                        <Link type="button" to="/artshop" className="px-4 py-1 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-100">Разгледай още</Link>
+                        {isCartEmpty? 
+                            <Link type="button" to="/artshop" className={"px-4 py-1 border border-indigo-600 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500"}>Продължи към разглеждане</Link>
+                            :
+                            <Link type="button" to="/artshop" className={"px-4 py-1 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-100"}>Разгледай още</Link>
+                        }
                         <Link 
                             type="button" 
                             to={`${isCartEmpty? '#' : '/checkout'}`} 
