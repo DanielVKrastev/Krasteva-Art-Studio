@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Filters from "../partials/filters/Filters";
 import paintingApi from "../../api/paintingApi";
+import { useCartContext } from "../../contexts/CartContext";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 export default function ArtShop() {
     const location = useLocation();
@@ -11,11 +13,13 @@ export default function ArtShop() {
     const [selectedSize, setSelectedSize] = useState(null);
     const [paintings, setPaintings] = useState([]);
 
+    const { cart, setCart } = useCartContext();
+
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6;
 
-    
+
     const updateURLParamsPage = (page) => {
         const params = new URLSearchParams(location.search);
 
@@ -51,6 +55,10 @@ export default function ArtShop() {
             setCurrentPage(page);
             window.scrollTo({ top: 0, behavior: "smooth" });
         }
+    };
+
+    const handleAddInCart = (painting) => {
+        setCart(painting); // set in local storage cart item
     };
 
     return (
@@ -107,27 +115,33 @@ export default function ArtShop() {
                             <p className="text-gray-600">Няма налични картини</p>
                         ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {paginatedPaintings.map((paint) => (
+                                {paginatedPaintings.map((painting) => (
                                     <div
-                                        key={paint.id}
+                                        key={painting.id}
                                         className="bg-white rounded-lg shadow hover:shadow-xl transition overflow-hidden"
                                     >
-                                        <Link to={`/artshop/details/${paint.id}`}>
+                                        <Link to={`/artshop/details/${painting.id}`}>
                                             <img
-                                                src={paint.imageUrl}
-                                                alt={paint.name}
+                                                src={painting.imageUrl}
+                                                alt={painting.name}
                                                 className="w-full h-56 object-cover"
                                             />
                                         </Link>
                                         <div className="p-4 text-center">
                                             <h3 className="font-semibold text-lg">
-                                                <Link to={`/artshop/details/${paint.id}`} className="hover:text-indigo-600">{paint.name}</Link>
+                                                <Link to={`/artshop/details/${painting.id}`} className="hover:text-indigo-600">{painting.name}</Link>
                                             </h3>
-                                            <p className="text-sm text-gray-500">Размери: {paint.size}</p>
-                                            <p className="text-indigo-600 font-bold">{paint.price} лв.</p>
+                                            <p className="text-sm text-gray-500">Размери: {painting.size}</p>
+                                            <p className="text-indigo-600 font-bold">{painting.price} лв.</p>
                                             <div className="mt-4 flex justify-center gap-2">
-                                                <Link type="button" to={`/artshop/details/${paint.id}`} className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Детайли</Link>
-                                                <button className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-100 cursor-pointer">Добави</button>
+                                                <Link type="button" to={`/artshop/details/${painting.id}`} className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Детайли</Link>
+                                                <button
+                                                    onClick={() => handleAddInCart(painting)}
+                                                    className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-100 cursor-pointer flex items-center gap-1"
+                                                >
+                                                    <ShoppingCartIcon className="w-5 h-5 text-indigo-700" />
+                                                    Добави
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
