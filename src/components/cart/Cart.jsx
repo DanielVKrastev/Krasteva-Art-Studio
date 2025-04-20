@@ -6,6 +6,7 @@ export default function Cart() {
     const { cart: cartItems, setCart, removeFromCart } = useCartContext();;
 
     const totalPrice = cartItems.reduce((sum, item) => sum + Number(item.price), 0);
+    const isCartEmpty = cartItems.length === 0;
 
     const handleRemoveItem = (id) => {
         removeFromCart(id);
@@ -58,7 +59,18 @@ export default function Cart() {
 
                     <div className="mt-6 flex gap-2">
                         <Link type="button" to="/artshop" className="px-4 py-1 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-100">Разгледай още</Link>
-                        <Link type="button" to={`/checkout`} className="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">Към поръчка</Link>
+                        <Link 
+                            type="button" 
+                            to={`${isCartEmpty? '#' : '/checkout'}`} 
+                            className={`py-2 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 
+                                ${isCartEmpty 
+                                    ? "bg-gray-400 cursor-not-allowed text-white" 
+                                    : "bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500"
+                                }`
+                            }
+                        >
+                            Към поръчка
+                        </Link>
                     </div>
 
                     <p className="text-xs text-gray-500 mt-2">
