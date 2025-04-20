@@ -5,24 +5,25 @@ import paintingApi from "../../api/paintingApi";
 
 import NewArts from "../partials/new-arts/NewArts";
 import useActiveSection from "../../hooks/useActiveSection";
-import usePersistedState from "../../hooks/usePersistedState";
+import { useCartContext } from "../../contexts/CartContext";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 export default function PaintingDetails() {
     const [painting, setPainting] = useState({});
     const { paintingId } = useParams();
 
-    const [cart, setCart] = usePersistedState('items', {});
+    const { cart, setCart } = useCartContext();
 
     const navigate = useNavigate();
 
-    const [ activeSection  ] = useActiveSection();
-    
+    const [activeSection] = useActiveSection();
+
     useEffect(() => {
         (async function () {
             const painting = await paintingApi.getOne(paintingId);
             setPainting(painting);
 
-            if(!painting){
+            if (!painting) {
                 navigate(`/${activeSection}`); //redirect when id is incorrect
                 return;
             }
@@ -60,8 +61,8 @@ export default function PaintingDetails() {
                 <div className="mb-6 text-sm text-gray-500">
                     <Link to="/" className="text-indigo-600 hover:underline">Начало</Link>
                     <span className="mx-2">/</span>
-                    <Link 
-                        to={activeSection === 'artshop'? '/artshop' : '/portfolio'} 
+                    <Link
+                        to={activeSection === 'artshop' ? '/artshop' : '/portfolio'}
                         className="text-indigo-600 hover:underline"
                     >
                         {activeSection === 'artshop' && 'Арт магазин'} {activeSection === 'portfolio' && 'Портфолио'}
@@ -93,8 +94,14 @@ export default function PaintingDetails() {
                                 <p className="mt-4 text-2xl text-primary font-semibold text-indigo-600">Цена: {painting?.price} лв.</p>
 
                                 <div className="mt-6 flex gap-2">
-                                    <button onClick={() => handleBuyPainting(painting)} className="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">Купи</button>
-                                    <button onClick={() => handleAddInCart(painting)} className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-100 cursor-pointer">Добави</button>
+                                    <button onClick={() => handleBuyPainting(painting)} className="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer">Купи</button>
+                                    <button
+                                        onClick={() => handleAddInCart(painting)}
+                                        className="px-4 py-1 text-sm border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-100 cursor-pointer flex items-center gap-1"
+                                    >
+                                        <ShoppingCartIcon className="w-5 h-5 text-indigo-700" />
+                                        Добави
+                                    </button>
                                 </div>
                             </>
                             :
