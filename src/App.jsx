@@ -14,29 +14,27 @@ import SearchResults from './components/search/SearchResults';
 import PageNotFound from './components/page-not-found/PageNotFound';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import CartProvider from './providers/cartProvider';
+import UserLayout from './layouts/user-layout/UserLayout';
 
 function App() {
 
   return (
-    <CartProvider>
-      <ScrollToTop />
-      <NavbarMenu />
-
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/artshop' element={<ArtShop />} />
-        <Route path='/artshop/details/:paintingId' element={<PaintingDetails />} />
-        <Route path='/portfolio' element={<Portfolio />} />
-        <Route path='/portfolio/details/:paintingId' element={<PaintingDetails />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/cart' element={<Cart />} />
-        <Route path='/checkout' element={<Checkout />} />
-        <Route path='/search' element={<SearchResults />} />
-        <Route path='*' element={<PageNotFound />} />
-      </Routes>
+        <Route element={<UserLayout />}>
+          <Route path='/' element={<Home />} />
+          <Route path='/artshop' element={<ArtShop />} />
+          <Route path='/artshop/details/:paintingId' element={<PaintingDetails />} />
+          <Route path='/portfolio' element={<Portfolio />} />
+          <Route path='/portfolio/details/:paintingId' element={<PaintingDetails />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/checkout' element={<Checkout />} />
+          <Route path='/search' element={<SearchResults />} />
+        </Route>
 
-      <Footer />
-    </CartProvider>
+        <Route path='*' element={<PageNotFound />} />
+        
+      </Routes>
   )
 }
 
