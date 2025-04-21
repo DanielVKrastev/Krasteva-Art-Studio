@@ -5,12 +5,17 @@ import { useState } from "react";
 
 export default function Sidebar() {
     const [openCrudMenu, setOpenCrudMenu] = useState(true);
+    const [openUserMenu, setOpenUserMenu] = useState(true);
 
     const openCrudHandleMenu = () => {
         setOpenCrudMenu(state => !state);
-    }
+    };
 
-    console.log(openCrudMenu);
+    const openUserDropMenu = () => {
+        setOpenUserMenu(state => !state);
+    };
+
+    console.log(openUserMenu);
 
 
     return (
@@ -50,13 +55,12 @@ export default function Sidebar() {
                             </Link>
                         </div>
                         <div className="flex items-center">
-                            <div className="flex items-center ms-3">
+                            <div className="relative items-center ms-3">
                                 <div>
                                     <button
+                                        onClick={openUserDropMenu}
                                         type="button"
                                         className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
-                                        aria-expanded="false"
-                                        data-dropdown-toggle="dropdown-user"
                                     >
                                         <span className="sr-only">Open user menu</span>
                                         <img
@@ -67,40 +71,39 @@ export default function Sidebar() {
                                     </button>
                                 </div>
                                 <div
-                                    className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-s"
-                                    id="dropdown-user"
+                                    className={`${!openUserMenu? 'hidden' : ''} absolute right-0 z-50 mt-2 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-lg`}
                                 >
                                     <div className="px-4 py-3" role="none">
                                         <p
                                             className="text-sm text-gray-900"
                                             role="none"
                                         >
-                                            Neil Sims
+                                            Elica Krasteva
                                         </p>
                                         <p
                                             className="text-sm font-medium text-gray-900 truncate"
                                             role="none"
                                         >
-                                            neil.sims@flowbite.com
+                                            elicakrasteva@gmail.com
                                         </p>
                                     </div>
                                     <ul className="py-1" role="none">
                                         <li>
                                             <Link
-                                                href="#"
+                                                href="/"
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                 role="menuitem"
                                             >
-                                                Dashboard
+                                                Табло
                                             </Link>
                                         </li>
                                         <li>
                                             <Link
-                                                href="#"
+                                                href="/settings"
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                 role="menuitem"
                                             >
-                                                Settings
+                                                Настройки
                                             </Link>
                                         </li>
                                         <li>
@@ -109,16 +112,7 @@ export default function Sidebar() {
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
                                                 role="menuitem"
                                             >
-                                                Earnings
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href="#"
-                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-                                                role="menuitem"
-                                            >
-                                                Sign out
+                                                Изход
                                             </Link>
                                         </li>
                                     </ul>
