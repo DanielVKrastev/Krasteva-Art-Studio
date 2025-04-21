@@ -1,7 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import NavbarMenu from './components/navbar-menu/NavbarMenu';
 import "./App.css";
-import Footer from './components/footer/Footer';
 
 import Home from './components/home/Home';
 import ArtShop from './components/art-shop/ArtShop';
@@ -12,29 +10,33 @@ import Cart from './components/cart/Cart';
 import Checkout from './components/checkout/Checkout';
 import SearchResults from './components/search/SearchResults';
 import PageNotFound from './components/page-not-found/PageNotFound';
-import ScrollToTop from './components/scroll-to-top/ScrollToTop';
-import CartProvider from './providers/cartProvider';
 import UserLayout from './layouts/user-layout/UserLayout';
+import AdminLayout from './layouts/admin-layout/AdminLayout';
 
 function App() {
 
   return (
-      <Routes>
-        <Route element={<UserLayout />}>
-          <Route path='/' element={<Home />} />
-          <Route path='/artshop' element={<ArtShop />} />
-          <Route path='/artshop/details/:paintingId' element={<PaintingDetails />} />
-          <Route path='/portfolio' element={<Portfolio />} />
-          <Route path='/portfolio/details/:paintingId' element={<PaintingDetails />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/checkout' element={<Checkout />} />
-          <Route path='/search' element={<SearchResults />} />
-        </Route>
+    <Routes>
+      <Route element={<UserLayout />}>
+        <Route path='/' element={<Home />} />
+        <Route path='/artshop' element={<ArtShop />} />
+        <Route path='/artshop/details/:paintingId' element={<PaintingDetails />} />
+        <Route path='/portfolio' element={<Portfolio />} />
+        <Route path='/portfolio/details/:paintingId' element={<PaintingDetails />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/cart' element={<Cart />} />
+        <Route path='/checkout' element={<Checkout />} />
+        <Route path='/search' element={<SearchResults />} />
+      </Route>
 
-        <Route path='*' element={<PageNotFound />} />
-        
-      </Routes>
+      {/* Admin layout */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<h1>Admin Dashboard</h1>} />
+      </Route>
+
+      <Route path='*' element={<PageNotFound />} />
+
+    </Routes>
   )
 }
 
