@@ -11,11 +11,6 @@ async function getAll() {
     return Object.values(result);
 }
 
-async function getLimit(limit) {
-    const result = await requester.get(`${baseUrl}.json?orderBy="id"&limitToFirst=${limit}`);
-    return Object.values(result);
-}
-
 async function getAllForSales() {
     const result = await requester.get(`${baseUrl}.json?orderBy="sold"&equalTo="no"`);
     return Object.values(result);
@@ -26,20 +21,20 @@ async function getOne(id) {
 }
 
 async function getPaintingsByCategory(category) {
-    
+
     const paintings = await getAllForSales();
 
-    const categorySort = paintings.filter(c=>c.category === category);
-    
+    const categorySort = paintings.filter(c => c.category === category);
+
     return categorySort;
 }
 
 async function getPaintingsBySize(size) {
 
     const paintings = await getAllForSales();
-    
-    const sizeSort = paintings.filter(s=>s.size == size);
-    
+
+    const sizeSort = paintings.filter(s => s.size == size);
+
     return sizeSort;
 }
 
@@ -83,35 +78,34 @@ async function create(data, token) {
     const id = result.name;
 
     //add Id as row
-    await updateData(id, { id: id});
-    
+    await updateData(id, { id: id });
+
     return result;
 }
 
 const markAsSold = async (cartItems) => {
     const updates = {};
-    
+
     cartItems.forEach(item => {
-      const itemRef = `paintings/${item.id}`; 
-      updates[`${itemRef}/sold`] = "yes"; 
+        const itemRef = `paintings/${item.id}`;
+        updates[`${itemRef}/sold`] = "yes";
     });
-  
+
     try {
-      await update(ref(database), updates);
-      console.log("All paintings are marked as sold.");
+        await update(ref(database), updates);
+        console.log("All paintings are marked as sold.");
     } catch (error) {
-      console.error("Update sold error", error);
+        console.error("Update sold error", error);
     }
-  };
+};
 
 
 async function updateData(idPainting, data) {
     return await requester.post(`${baseUrl}/${idPainting}.json`, data);
 }
 
-export default{
+export default {
     getAll,
-    getLimit,
     getAllForSales,
     getOne,
     getPaintingsByCategory,
