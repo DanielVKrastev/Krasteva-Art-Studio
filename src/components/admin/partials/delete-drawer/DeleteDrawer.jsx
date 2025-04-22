@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
 export default function DeleteDrawer({
+    deleteId,
+    item,
     closeDrawerDelete
 }) {
     return (
@@ -11,7 +13,7 @@ export default function DeleteDrawer({
                 tabIndex="-1"
             >
                 <h5 className="inline-flex items-center text-sm font-semibold text-gray-500 uppercase" id="drawer-delete-label">
-                    Изтриване на запис
+                    Изтриване на запис "{item}"
                 </h5>
                 <button
                     aria-controls="drawer-delete-product-default"
@@ -36,7 +38,7 @@ export default function DeleteDrawer({
                         d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                 </svg>
-                <h3 className="mb-6 text-lg text-gray-500">Сигурни ли сте, че искате да изтриете този запис?</h3>
+                <h3 className="mb-6 text-lg text-gray-500">Сигурни ли сте, че искате да изтриете "{item}"?</h3>
                 <div className="flex space-x-4">
                     <Link
                         to="#"
