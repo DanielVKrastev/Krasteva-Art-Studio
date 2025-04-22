@@ -1,41 +1,40 @@
 import { Cog6ToothIcon, TrashIcon } from "@heroicons/react/16/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-const paitings = [
-    {
-        id: 0,
-        active: "yes",
-        category: "портрети",
-        description: "Картината изобразява спокойна горска сцена, където брези са подредени покрай малко езеро. Водата отразява светлината, която прониква през дърветата, създавайки усещане за тишина и хармония. Зелените тонове на природата и светлината в дълбочината на гората придават усещане за свежест и спокойствие.",
-        imageUrl: "https://lh3.googleusercontent.com/pw/AP1GczPeh6PTyogk7TnmzXsUr2bS9AUUjs3QjLmzptUKK8HHYo_vbRCNIGHz167fpVK3jFo-_HZqyANfOPQJUtbcngIiFjyDb4VVX2tSsrcvqkLPuULIBpPC_8XIeo9DGmP-HEygDRxTH2ZPY9DP_hIQhWD17Q=w1737-h1356-s-no-gm?authuser=0",
-        name: "Брезова гора",
-        paints: "акрил",
-        price: 100,
-        size: "25см / 35см",
-        sold: "no"
-    },
-    {
-        id: 1,
-        active: "yes",
-        category: "пейзажи",
-        description: "Картината изобразява спокойна горска сцена, където брези са подредени покрай малко езеро. Водата отразява светлината, която прониква през дърветата, създавайки усещане за тишина и хармония. Зелените тонове на природата и светлината в дълбочината на гората придават усещане за свежест и спокойствие.",
-        imageUrl: "https://lh3.googleusercontent.com/pw/AP1GczPeh6PTyogk7TnmzXsUr2bS9AUUjs3QjLmzptUKK8HHYo_vbRCNIGHz167fpVK3jFo-_HZqyANfOPQJUtbcngIiFjyDb4VVX2tSsrcvqkLPuULIBpPC_8XIeo9DGmP-HEygDRxTH2ZPY9DP_hIQhWD17Q=w1737-h1356-s-no-gm?authuser=0",
-        name: "Лебедово езеро",
-        paints: "акрил",
-        price: 90,
-        size: "25см / 35см",
-        sold: "yes"
-    }
-];
-
+import paintingApi from "../../../api/paintingApi";
+import Pagination from "../partials/pagination/Pagination";
+import NavigationLinks from "../partials/navigation-links/NavigationLinks";
+import DeleteDrawer from "../partials/delete-drawer/DeleteDrawer";
 
 export default function Paintings() {
     let sn = 0;
+    const [paintings, setPaintings] = useState([]);
+    const [recordsPerPage, setRecordsPerPage] = useState(3);
+
+    useEffect(() => {
+        const fetchInitial = async () => {
+            const data = await paintingApi.getAll();
+            setPaintings(data);
+        };
+        fetchInitial();
+    }, [recordsPerPage]);
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const totalPages = Math.ceil(paintings.length / recordsPerPage);
+    const startIndex = (currentPage - 1) * recordsPerPage;
+    const currentPaintings = paintings.slice(startIndex, startIndex + recordsPerPage);
+
+    const handlePagination = (page) => {
+        setCurrentPage(page);
+    };
+
+    const setRecordsPerPagePaginationHandler = (e) => {
+        setRecordsPerPage(e.target.value);
+    };
 
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const [isOpenDelete, setIsOpenDelete] = useState(false);
-
 
     const openDrawerUpdate = () => {
         setIsOpenUpdate(true);
@@ -55,49 +54,12 @@ export default function Paintings() {
 
     return (
         <>
-            <div className="p-4 bg-white text-gray-900 sm:ml-60 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
+            <div className="p-6 bg-white text-gray-900 sm:ml-55 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
                 <div className="mt-14">
                     <div className="mb-4">
-                        <nav className="flex mb-5" aria-label="Breadcrumb">
-                            <ol className="inline-flex items-center space-x-2 text-sm font-medium">
-                                <li className="inline-flex items-center">
-                                    <Link
-                                        to="/admin"
-                                        className="inline-flex items-center text-gray-600 hover:text-indigo-700"
-                                    >
-                                        <svg
-                                            className="w-5 h-5 mr-2.5"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                        >
-                                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                                        </svg>
-                                        Админ Табло
-                                    </Link>
-                                </li>
-                                <li>
-                                    <div className="flex items-center">
-                                        <svg
-                                            className="w-6 h-6 text-gray-400"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                        <span
-                                            className="ml-2 text-gray-400"
-                                            aria-current="page"
-                                        >
-                                            Картини
-                                        </span>
-                                    </div>
-                                </li>
-                            </ol>
-                        </nav>
+                        <NavigationLinks 
+                            pageName={'Картини'}
+                        />
                         <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl">
                             Всички картини
                         </h1>
@@ -112,10 +74,16 @@ export default function Paintings() {
                                         type="text"
                                         id="products-search"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
-                                        placeholder="Търси картини"
+                                        placeholder="Search for products"
                                     />
                                 </div>
                             </form>
+
+                            <div className="flex items-center w-full sm:justify-end mr-2">
+                                <div className="flex pl-2 space-x-1">
+                                    <TrashIcon onClick={openDrawerDelete} className="inline-flex items-center w-11 h-11 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-300" />
+                                </div>
+                            </div>
                         </div>
 
                         <button
@@ -128,15 +96,14 @@ export default function Paintings() {
                 </div>
             </div>
 
-
-            <div className="flex flex-col sm:ml-60">
+            <div className="flex flex-col sm:ml-55">
                 <div className="overflow-x-auto">
                     <div className="inline-block min-w-full align-middle">
                         <div className="overflow-hidden shadow">
                             <table className="min-w-full divide-y divide-gray-200 table-fixed">
                                 <thead className="bg-gray-100">
                                     <tr>
-                                        <th scope="col" className="p-4">
+                                        <th scope="col" className="p-6">
                                             <input
                                                 id="checkbox-all"
                                                 type="checkbox"
@@ -146,7 +113,7 @@ export default function Paintings() {
                                         {["Име / ID", "Категория", "Размери", "Бои", "Описание", "Цена", "Снимка", "Продадена", "Активна", "Действия"].map((title) => (
                                             <th
                                                 key={title}
-                                                className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                                                className="p-6 text-xs font-medium text-left text-gray-500 uppercase"
                                             >
                                                 {title}
                                             </th>
@@ -154,9 +121,9 @@ export default function Paintings() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {paitings.map((painting) => (
+                                    {currentPaintings.map((painting, index) => (
                                         <tr key={painting.id} className="hover:bg-gray-50">
-                                            <td className="w-4 p-4">
+                                            <td className="w-4 p-6">
                                                 <input
                                                     id={`checkbox-${painting.id}`}
                                                     type="checkbox"
@@ -165,7 +132,7 @@ export default function Paintings() {
                                             </td>
                                             <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
                                                 <div className="text-base font-semibold text-gray-900">{painting.name}</div>
-                                                <div className="text-sm font-normal text-gray-500">{sn++}</div>
+                                                <div className="text-sm font-normal text-gray-500">{startIndex + index + 1}</div>
                                             </td>
                                             <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
                                                 {painting.category}
@@ -177,7 +144,7 @@ export default function Paintings() {
                                                 {painting.paints}
                                             </td>
                                             <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                                                {painting.description.slice(0, 20)}...
+                                                {painting.description?.slice(0, 20)}...
                                             </td>
                                             <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
                                                 {painting.price}
@@ -205,62 +172,14 @@ export default function Paintings() {
                 </div>
             </div>
 
-
-            <div className="sm:ml-60 sticky bottom-0 right-0 p-4 bg-white border-t border-gray-200">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-                    {/* Counter + arrows */}
-                    <div className="flex items-center space-x-2">
-                        <button className="inline-flex justify-center p-1 text-gray-500 rounded hover:text-gray-900 hover:bg-gray-100">
-                            <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    fillRule="evenodd"
-                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        </button>
-                        <button className="inline-flex justify-center p-1 text-gray-500 rounded hover:text-gray-900 hover:bg-gray-100">
-                            <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    fillRule="evenodd"
-                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        </button>
-                        <span className="text-sm font-normal text-gray-500">
-                            Показани <span className="font-semibold text-gray-900">1–20</span> от{' '}
-                            <span className="font-semibold text-gray-900">2290</span>
-                        </span>
-                    </div>
-
-                    {/* Prev / Next бутони */}
-                    <div className="flex items-center space-x-3 justify-start sm:justify-end">
-                        <button className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-indigo-700 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300">
-                            <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    fillRule="evenodd"
-                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                            Назад
-                        </button>
-                        <button className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-indigo-700 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300">
-                            Напред
-                            <svg className="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    fillRule="evenodd"
-                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-
+          <Pagination 
+              paintings={paintings}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              currentPaintings={currentPaintings}
+              setRecordsPerPagePaginationHandler={setRecordsPerPagePaginationHandler}
+              handlePagination={handlePagination}
+          />
 
             <div>
                 {/* UPDATE DRAWER */}
@@ -316,10 +235,10 @@ export default function Paintings() {
                                     id="update-category"
                                     className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
                                 >
-                                    <option selected>Flowbite</option>
-                                    <option value="RE">React</option>
-                                    <option value="AN">Angular</option>
-                                    <option value="VU">Vue JS</option>
+                                    <option>Flowbite</option>
+                                    <option defaultValue="RE">React</option>
+                                    <option defaultValue="AN">Angular</option>
+                                    <option defaultValue="VU">Vue JS</option>
                                 </select>
                             </div>
                             <div>
@@ -356,13 +275,13 @@ export default function Paintings() {
                                     id="update-discount"
                                     className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
                                 >
-                                    <option selected>No</option>
-                                    <option value="5">5%</option>
-                                    <option value="10">10%</option>
-                                    <option value="20">20%</option>
-                                    <option value="30">30%</option>
-                                    <option value="40">40%</option>
-                                    <option value="50">50%</option>
+                                    <option>No</option>
+                                    <option defaultValue="5">5%</option>
+                                    <option defaultValue="10">10%</option>
+                                    <option defaultValue="20">20%</option>
+                                    <option defaultValue="30">30%</option>
+                                    <option defaultValue="40">40%</option>
+                                    <option defaultValue="50">50%</option>
                                 </select>
                             </div>
                         </div>
@@ -386,55 +305,13 @@ export default function Paintings() {
                 </div>
 
                 {/* DELETE DRAWER */}
-                <div
-                    className={`fixed top-0 right-0 z-50 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform ${isOpenDelete ? 'translate-x-0' : 'translate-x-full'} bg-white`}
-                    tabIndex="-1"
-                >
-                    <h5 className="inline-flex items-center text-sm font-semibold text-gray-500 uppercase" id="drawer-delete-label">
-                        Delete item
-                    </h5>
-                    <button
-                        aria-controls="drawer-delete-product-default"
-                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5"
-                        onClick={closeDrawerDelete}
-                        type="button"
-                    >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            />
-                        </svg>
-                        <span className="sr-only">Close menu</span>
-                    </button>
-                    <svg className="w-10 h-10 mt-8 mb-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                    </svg>
-                    <h3 className="mb-6 text-lg text-gray-500">Are you sure you want to delete this product?</h3>
-                    <div className="flex space-x-4">
-                        <Link
-                            to="#"
-                            className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center"
-                        >
-                            Yes, I'm sure
-                        </Link>
-                        <Link
-                            to="#"
-                            onClick={closeDrawerDelete}
-                            className="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 border border-gray-200 font-medium rounded-lg text-sm px-3 py-2.5 text-center"
-                        >
-                            No, cancel
-                        </Link>
-                    </div>
-                </div>
+                {isOpenDelete && <DeleteDrawer 
+                                    closeDrawerDelete={closeDrawerDelete}
+                                />
+                }
 
             </div>
+
             {(isOpenUpdate || isOpenDelete) && <div onClick={() => { closeDrawerUpdate(); closeDrawerDelete() }} className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-49"></div>}
 
         </>
