@@ -21,6 +21,7 @@ import Inquiry from './components/admin/inquiry/Inquiry';
 import ContactMessages from './components/admin/contact-messages/ContactMessages';
 import Settings from './components/admin/settings/Settings';
 import Dashboard from './components/admin/dashboard/Dashboard';
+import Login from './components/admin/login/Login';
 
 function App() {
 
@@ -49,6 +50,7 @@ function App() {
         <Route path='contact-messages' element={<ContactMessages />} />
         <Route path='settings' element={<Settings />} />
       </Route>
+      <Route path='/admin/login' element={<Login />} />
 
       <Route path='*' element={<PageNotFound />} />
 
