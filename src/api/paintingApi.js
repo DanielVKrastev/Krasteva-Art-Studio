@@ -2,7 +2,7 @@ import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
 import { database } from '../../firebase';
-import { ref, update } from "firebase/database";
+import { ref, remove, update } from "firebase/database";
 
 const baseUrl = `${BASE_URL}/paintings`;
 
@@ -109,6 +109,17 @@ async function updateData(idPainting, data) {
     return await requester.post(`${baseUrl}/${idPainting}.json`, data);
 }
 
+async function deletePainting(paintingId) {
+    const paintingRef = ref(database, `paintings/${paintingId}`);
+  
+    try {
+      await remove(paintingRef);
+      console.log("The painting has delete success.");
+    } catch (error) {
+      console.error("Error Delete painting:", error);
+    }
+  }
+
 export default {
     getAll,
     getAllForSales,
@@ -119,5 +130,6 @@ export default {
     getCombinedPaintings,
     create,
     updateData,
-    markAsSold
+    markAsSold,
+    deletePainting
 }

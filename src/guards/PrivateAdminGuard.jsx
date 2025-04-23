@@ -5,7 +5,6 @@ import { AdminContext } from "../contexts/AdminContext";
 export default function PrivateAdminGuard({ children }) {
   const { admin, loading } = useContext(AdminContext);
   const location = useLocation();
-  console.log(admin);
   
   if (loading) {
     return <div>Зареждане...</div>; // or loader/spinner

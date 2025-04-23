@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 export default function DeleteDrawer({
     deleteId,
     item,
-    closeDrawerDelete
+    closeDrawerDelete,
+    handlerDelete
 }) {
     return (
         <>
@@ -40,12 +41,13 @@ export default function DeleteDrawer({
                 </svg>
                 <h3 className="mb-6 text-lg text-gray-500">Сигурни ли сте, че искате да изтриете "{item}"?</h3>
                 <div className="flex space-x-4">
-                    <Link
-                        to="#"
+                    <button
+                        onClick={() => {handlerDelete(deleteId); closeDrawerDelete()}}
+                        
                         className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center"
                     >
                         Да, сигурен съм
-                    </Link>
+                    </button>
                     <Link
                         to="#"
                         onClick={closeDrawerDelete}

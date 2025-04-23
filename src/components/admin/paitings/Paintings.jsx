@@ -17,7 +17,7 @@ export default function Paintings() {
             setPaintings(data);
         };
         fetchInitial();
-    }, [recordsPerPage]);
+    }, [recordsPerPage, paintings]);
 
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -43,6 +43,14 @@ export default function Paintings() {
         setUpdateItem({id, name});
     };
 
+    const deletePainting = (id) => {
+        try{
+            paintingApi.deletePainting(id);
+        }catch(err){
+            console.log(err);
+        }
+    };
+ 
     const closeDrawerUpdate = () => {
         setIsOpenUpdate(false);
         setUpdateItem(null);
@@ -55,7 +63,7 @@ export default function Paintings() {
 
     const closeDrawerDelete = () => {
         setIsOpenDelete(false);
-        setDeleteId(null);
+        setDeleteItem(null);
     };
 
     return (
@@ -132,6 +140,7 @@ export default function Paintings() {
                     deleteId={deleteItem.id}
                     item={deleteItem.name}
                     closeDrawerDelete={closeDrawerDelete}
+                    handlerDelete={deletePainting}
                 />
                 }
 
