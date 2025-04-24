@@ -7,6 +7,7 @@ import DeleteDrawer from "../partials/delete-drawer/DeleteDrawer";
 import TablePaintings from "./table-paintings/TablePaintings";
 import UpdateDrawer from "./update-drawer/UpdateDrawer";
 import CreateDrawer from "./create-drawer/CreateDrawer";
+import deleteImage from "../../../utils/deleteImage";
 
 export default function Paintings() {
     const [paintings, setPaintings] = useState([]);
@@ -38,42 +39,22 @@ export default function Paintings() {
             setPaintings(data);
         };
         fetchInitial();
-    }, [recordsPerPage, isOpenDelete, updateItem]);
+    }, [recordsPerPage, isOpenDelete, isOpenCreate, isOpenUpdate]);
 
     const deletePainting = async (id) => {
         try{
             const painting = await paintingApi.getOne(id);
             await paintingApi.deletePainting(id);
+            setPaintings(state => state.filter(painting => painting.id !== id));
             if(painting.deletehash){
-                handleDeleteImage(painting.deletehash);
+                deleteImage(painting.deletehash);
             }
         }catch(err){
             console.log(err);
         }
     };
 
-    const handleDeleteImage = async (deletehash) => {
-        try {
-          const response = await fetch(`http://localhost:3000/delete/${deletehash}`, { //TODO: when deploy: https://api.imgur.com/3/image/${deletehash}
-            method: 'DELETE',
-            /*
-                headers: {
-                'Authorization': `Client-ID ${IMGUR_CLIENT_ID}`,
-                }, 
-            */
-          });
-      
-          const data = await response.json();
-      
-          if (response.ok) {
-            console.log('Image deleted successfully:', data);
-          } else {
-            console.error('Error deleting image:', data.error);
-          }
-        } catch (err) {
-          console.error('Error:', err);
-        }
-      };
+   
 
     const openDrawerCreate = () => {
         setIsOpenCreate(true);
@@ -132,7 +113,7 @@ export default function Paintings() {
 
                             <div className="flex items-center w-full sm:justify-end mr-2">
                                 <div className="flex pl-2 space-x-1">
-                                    <TrashIcon onClick={openDrawerDelete} className="inline-flex items-center w-11 h-11 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-300" />
+                                    <TrashIcon onClick={() => console.log('click trash') } className="inline-flex items-center w-11 h-11 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-300" />
                                 </div>
                             </div>
                         </div>
