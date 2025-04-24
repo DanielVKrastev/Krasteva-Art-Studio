@@ -6,6 +6,7 @@ import NavigationLinks from "../partials/navigation-links/NavigationLinks";
 import DeleteDrawer from "../partials/delete-drawer/DeleteDrawer";
 import TablePaintings from "./table-paintings/TablePaintings";
 import UpdateDrawer from "./update-drawer/UpdateDrawer";
+import CreateDrawer from "./create-drawer/CreateDrawer";
 
 export default function Paintings() {
     const [paintings, setPaintings] = useState([]);
@@ -25,6 +26,7 @@ export default function Paintings() {
         setRecordsPerPage(e.target.value);
     };
 
+    const [isOpenCreate, setIsOpenCreate] = useState(false);
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const [updateItem, setUpdateItem] = useState(null);
     const [isOpenDelete, setIsOpenDelete] = useState(false);
@@ -38,17 +40,25 @@ export default function Paintings() {
         fetchInitial();
     }, [recordsPerPage, deleteItem, updateItem]);
 
-    const openDrawerUpdate = (id, name) => {
-        setIsOpenUpdate(true);
-        setUpdateItem({id, name});
-    };
-
     const deletePainting = (id) => {
         try{
             paintingApi.deletePainting(id);
         }catch(err){
             console.log(err);
         }
+    };
+
+    const openDrawerCreate = () => {
+        setIsOpenCreate(true);
+    };
+ 
+    const closeDrawerCreate = () => {
+        setIsOpenCreate(false);
+    };
+
+    const openDrawerUpdate = (id, name) => {
+        setIsOpenUpdate(true);
+        setUpdateItem({id, name});
     };
  
     const closeDrawerUpdate = () => {
@@ -103,6 +113,7 @@ export default function Paintings() {
                         <button
                             className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
                             type="button"
+                            onClick={openDrawerCreate}
                         >
                             Добави картина
                         </button>
@@ -127,6 +138,12 @@ export default function Paintings() {
             />
 
             <div>
+                {/* Create DRAWER */}
+                {isOpenCreate && <CreateDrawer
+                    closeDrawerCreate={closeDrawerCreate}
+                />
+                }
+
                 {/* UPDATE DRAWER */}
                 {isOpenUpdate && <UpdateDrawer
                     updateId={updateItem.id}
@@ -146,7 +163,7 @@ export default function Paintings() {
 
             </div>
 
-            {(isOpenUpdate || isOpenDelete) && <div onClick={() => { closeDrawerUpdate(); closeDrawerDelete() }} className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-49"></div>}
+            {(isOpenUpdate || isOpenDelete || isOpenCreate) && <div onClick={() => { closeDrawerUpdate(); closeDrawerDelete(); closeDrawerCreate(); }} className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-49"></div>}
 
         </>
     );
