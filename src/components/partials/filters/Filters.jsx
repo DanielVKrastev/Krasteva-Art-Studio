@@ -96,18 +96,18 @@ export default function Filters({
                     <h3 className="text-lg font-semibold mb-3">Размери</h3>
                     <div className="space-y-2 text-sm">
                         {sizes.map((size) => (
-                            <label key={size} className="flex items-center space-x-2">
+                            <label key={size.id} className="flex items-center space-x-2">
                                 <input
                                     type="radio"
                                     name="size"
-                                    value={size}
-                                    checked={selectedSize === size}
+                                    value={size.size}
+                                    checked={selectedSize === size.size}
                                     onChange={() => {
-                                        setSelectedSize(size);
-                                        updateURLParams(selectedCategory, size);
+                                        setSelectedSize(size.size);
+                                        updateURLParams(selectedCategory, size.size);
                                     }}
                                 />
-                                <span>{size}</span>
+                                <span>{size.size}</span>
                             </label>
                         ))}
                         <button
