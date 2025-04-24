@@ -2,39 +2,51 @@ import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
 import { database } from '../../firebase';
-import { ref, push, serverTimestamp, set } from "firebase/database";
+import { ref, push, serverTimestamp, set, remove } from "firebase/database";
 
 const baseUrl = `${BASE_URL}/availabilityInquiry`;
 
 async function getAll() {
-    const result = await requester.get(`${baseUrl}.json?orderBy="createdAt"`);
-    return Object.values(result);
+  const result = await requester.get(`${baseUrl}.json?orderBy="createdAt"`);
+  return Object.values(result);
 }
 
 async function getOne(id) {
-    return await requester.get(`${baseUrl}/${id}.json`);
+  return await requester.get(`${baseUrl}/${id}.json`);
 }
 
 const create = async (data) => {
-    try {
-      const inquiryRef = push(ref(database, 'availabilityInquiry'));
-      const inquiryId = inquiryRef.key;
-  
-      const messageData = {
-        id: inquiryId,
-        ...data,
-        createdAt: serverTimestamp(),
-      };
-  
-      await set(inquiryRef, messageData);
-      console.log("The inquiry is sent");
-    } catch (error) {
-      console.error("Error while saving inquiry:", error);
-    }
-  };
+  try {
+    const inquiryRef = push(ref(database, 'availabilityInquiry'));
+    const inquiryId = inquiryRef.key;
 
-export default{
-    getAll,
-    getOne,
-    create
+    const messageData = {
+      id: inquiryId,
+      ...data,
+      createdAt: serverTimestamp(),
+    };
+
+    await set(inquiryRef, messageData);
+    console.log("The inquiry is sent");
+  } catch (error) {
+    console.error("Error while saving inquiry:", error);
+  }
+};
+
+async function deleteInquiry(inquiryId) {
+  const inquiryRef = ref(database, `availabilityInquiry/${inquiryId}`);
+
+  try {
+    await remove(inquiryRef);
+    console.log("The inquiry has delete success.");
+  } catch (error) {
+    console.error("Error Delete inquiry:", error);
+  }
+}
+
+export default {
+  getAll,
+  getOne,
+  create,
+  deleteInquiry
 }

@@ -38,7 +38,7 @@ export default function Inquiry() {
         fetchInitial();
     }, [recordsPerPage, isOpenDelete, isOpenUpdate]);
 
-    const deleteSize = async (id) => {
+    const deleteInquiry = async (id) => {
         try{
             await availabilityInquiryApi.deleteInquiry(id);
             setInquiry(state => state.filter(painting => painting.id !== id));
@@ -136,13 +136,13 @@ export default function Inquiry() {
                     deleteId={deleteItem.id}
                     item={deleteItem.name}
                     closeDrawerDelete={closeDrawerDelete}
-                    handlerDelete={deleteSize}
+                    handlerDelete={deleteInquiry}
                 />
                 }
 
             </div>
 
-            {(isOpenUpdate || isOpenDelete) && <div onClick={() => { closeDrawerUpdate(); closeDrawerDelete(); closeDrawerCreate(); }} className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-49"></div>}
+            {(isOpenUpdate || isOpenDelete) && <div onClick={() => { closeDrawerUpdate(); closeDrawerDelete(); }} className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-49"></div>}
 
         </>
     );
