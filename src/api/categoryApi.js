@@ -1,6 +1,7 @@
 import { ref, remove, serverTimestamp } from "firebase/database";
 import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
+import { database } from "../../firebase";
 
 const baseUrl = `${BASE_URL}/category`;
 
@@ -55,5 +56,6 @@ export default {
     getAll,
     getOne,
     create,
+    updateData,
     deleteCategory
 }
