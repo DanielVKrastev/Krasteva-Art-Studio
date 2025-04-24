@@ -38,15 +38,42 @@ export default function Paintings() {
             setPaintings(data);
         };
         fetchInitial();
-    }, [recordsPerPage, deleteItem, updateItem]);
+    }, [recordsPerPage, isOpenDelete, updateItem]);
 
-    const deletePainting = (id) => {
+    const deletePainting = async (id) => {
         try{
-            paintingApi.deletePainting(id);
+            const painting = await paintingApi.getOne(id);
+            await paintingApi.deletePainting(id);
+            if(painting.deletehash){
+                handleDeleteImage(painting.deletehash);
+            }
         }catch(err){
             console.log(err);
         }
     };
+
+    const handleDeleteImage = async (deletehash) => {
+        try {
+          const response = await fetch(`http://localhost:3000/delete/${deletehash}`, { //TODO: when deploy: https://api.imgur.com/3/image/${deletehash}
+            method: 'DELETE',
+            /*
+                headers: {
+                'Authorization': `Client-ID ${IMGUR_CLIENT_ID}`,
+                }, 
+            */
+          });
+      
+          const data = await response.json();
+      
+          if (response.ok) {
+            console.log('Image deleted successfully:', data);
+          } else {
+            console.error('Error deleting image:', data.error);
+          }
+        } catch (err) {
+          console.error('Error:', err);
+        }
+      };
 
     const openDrawerCreate = () => {
         setIsOpenCreate(true);
