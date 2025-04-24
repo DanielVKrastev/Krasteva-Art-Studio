@@ -113,9 +113,8 @@ export default function UpdateDrawer({
             active
         }
         try {
-            console.log(updatePaintingData);
-            
-
+            await paintingApi.updateData(updateId ,updatePaintingData);
+            closeDrawerUpdate();
         } catch (err) {
             console.log(err.message);
         }
@@ -316,6 +315,7 @@ export default function UpdateDrawer({
                             <button
                                 type="submit"
                                 className="w-full justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                
                             >
                                 Редактирай
                             </button>

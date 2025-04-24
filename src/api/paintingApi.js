@@ -106,7 +106,7 @@ const markAsSold = async (cartItems) => {
 
 
 async function updateData(idPainting, data) {
-    return await requester.post(`${baseUrl}/${idPainting}.json`, data);
+    return await requester.patch(`${baseUrl}/${idPainting}.json`, data);
 }
 
 async function deletePainting(paintingId) {
