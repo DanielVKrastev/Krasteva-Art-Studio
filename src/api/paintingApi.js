@@ -12,7 +12,7 @@ async function getAll() {
 }
 
 async function getLimit(limit) {
-    const result = await requester.get(`${baseUrl}.json?orderBy="createdAt"&limitToFirst=${limit}`);
+    const result = await requester.get(`${baseUrl}.json?orderBy="createdAt"&limitToLast=${limit}`);
     return Object.values(result);
 }
 
