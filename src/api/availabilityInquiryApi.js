@@ -7,7 +7,8 @@ import { ref, push, serverTimestamp, set } from "firebase/database";
 const baseUrl = `${BASE_URL}/availabilityInquiry`;
 
 async function getAll() {
-    return await requester.get(`${baseUrl}.json`);
+    const result = await requester.get(`${baseUrl}.json?orderBy="createdAt"`);
+    return Object.values(result);
 }
 
 async function getOne(id) {
