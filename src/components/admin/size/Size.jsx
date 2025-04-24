@@ -5,13 +5,12 @@ import NavigationLinks from "../partials/navigation-links/NavigationLinks";
 import DeleteDrawer from "../partials/delete-drawer/DeleteDrawer";
 import UpdateDrawer from "./update-drawer/UpdateDrawer";
 import CreateDrawer from "./create-drawer/CreateDrawer";
-import deleteImage from "../../../utils/deleteImage";
-import TableCategories from "./table-categories/TableCategories";
+import TableSize from "./table-size/TableSize";
 import sizeApi from "../../../api/sizeApi";
 
 export default function Size() {
     const [size, setSize] = useState([]);
-    const [recordsPerPage, setRecordsPerPage] = useState(3);
+    const [recordsPerPage, setRecordsPerPage] = useState(10);
     
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -123,7 +122,7 @@ export default function Size() {
                 </div>
             </div>
 
-            <TableCategories
+            <TableSize
                 currentSize={currentSize}
                 startIndex={startIndex}
                 openDrawerUpdate={openDrawerUpdate}

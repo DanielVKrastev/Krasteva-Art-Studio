@@ -1,6 +1,6 @@
 import { Cog6ToothIcon, TrashIcon } from "@heroicons/react/16/solid";
 
-export default function TableCategories({
+export default function TableSize({
     currentSize,
     startIndex,
     openDrawerUpdate,

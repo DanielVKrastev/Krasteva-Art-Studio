@@ -11,7 +11,7 @@ import deleteImage from "../../../utils/deleteImage";
 
 export default function Paintings() {
     const [paintings, setPaintings] = useState([]);
-    const [recordsPerPage, setRecordsPerPage] = useState(3);
+    const [recordsPerPage, setRecordsPerPage] = useState(10);
     
     const [currentPage, setCurrentPage] = useState(1);
 

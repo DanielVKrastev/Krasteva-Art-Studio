@@ -11,7 +11,7 @@ import categoryApi from "../../../api/categoryApi";
 
 export default function Paintings() {
     const [categories, setCategories] = useState([]);
-    const [recordsPerPage, setRecordsPerPage] = useState(3);
+    const [recordsPerPage, setRecordsPerPage] = useState(10);
     
     const [currentPage, setCurrentPage] = useState(1);
 
