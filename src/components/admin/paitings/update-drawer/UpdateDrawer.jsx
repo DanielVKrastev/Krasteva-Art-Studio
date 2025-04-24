@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import paintingApi from "../../../../api/paintingApi";
 import categoryApi from "../../../../api/categoryApi";
 import sizeApi from "../../../../api/sizeApi";
+import deleteImage from "../../../../utils/deleteImage";
 
 export default function UpdateDrawer({
     updateId,
@@ -101,19 +102,53 @@ export default function UpdateDrawer({
         const sold = formData.get('sold');
         const active = formData.get('active');
 
-        const updatePaintingData = {
-            name,
-            category,
-            size,
-            paints,
-            description,
-            price,
-            imageUrl,
-            sold,
-            active
-        }
         try {
-            await paintingApi.updateData(updateId ,updatePaintingData);
+            const updatePaintingData = {
+                name,
+                category,
+                size,
+                paints,
+                description,
+                price,
+                sold,
+                active,
+                imageUrl,
+                deletehash: painting?.deletehash
+            };
+
+            // Качване в Imgur
+            if (image.size !== 0) {
+                if(painting.imageUrl != ""){
+                    deleteImage(painting.deletehash);
+                }
+
+                const imageData = new FormData();
+                imageData.append("image", image);
+
+                const uploadRes = await fetch('http://localhost:3000/upload', { // TODO: when deploy: https://api.imgur.com/3/upload
+                    method: 'POST',
+                    /*
+                    headers: {
+                            'Authorization': `Client-ID ${IMGUR_CLIENT_ID}`,
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                    */
+                    body: imageData,
+                });
+
+                const data = await uploadRes.json();
+
+                if (!uploadRes.ok) throw new Error(data?.error || 'Upload failed');
+
+                const { link, deletehash } = data;
+
+                updatePaintingData.imageUrl = link;
+                updatePaintingData.deletehash = deletehash;
+            }
+
+            console.log("Painting data to update:");
+            
+            await paintingApi.updateData(updateId, updatePaintingData);
             closeDrawerUpdate();
         } catch (err) {
             console.log(err.message);
@@ -252,7 +287,7 @@ export default function UpdateDrawer({
                                 value={price}
                                 placeholder="100.00"
                                 min={0}
-                                step="0.10"
+                                step="0.01"
                                 required
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                                 onChange={handleChange}
@@ -270,7 +305,7 @@ export default function UpdateDrawer({
                                 className="hidden"
                             />
 
-                            <input type="hidden" name="imageUrl" defaultValue={painting?.imageUrl}/>
+                            <input type="hidden" name="imageUrl" defaultValue={painting?.imageUrl} />
 
                             <label
                                 htmlFor="update-image"
@@ -315,7 +350,7 @@ export default function UpdateDrawer({
                             <button
                                 type="submit"
                                 className="w-full justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                
+
                             >
                                 Редактирай
                             </button>

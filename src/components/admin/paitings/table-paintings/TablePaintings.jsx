@@ -61,7 +61,7 @@ export default function TablePaintings({
                                             {painting.price}
                                         </td>
                                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                                            <img src={painting.imageUrl} alt={painting.name} className="w-20" />
+                                            <img src={painting?.imageUrl} alt={painting.name} className="w-20" />
                                         </td>
                                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
                                             {painting.sold}
