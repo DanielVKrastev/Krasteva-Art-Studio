@@ -39,8 +39,6 @@ export default function UpdateDrawer({
         }
 
     }
-    console.log(size);
-    
 
     return (
         <>

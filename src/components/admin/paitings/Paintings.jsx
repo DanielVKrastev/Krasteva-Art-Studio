@@ -137,10 +137,10 @@ export default function Paintings() {
             />
 
             <Pagination
-                paintings={paintings}
+                item={paintings}
                 currentPage={currentPage}
                 totalPages={totalPages}
-                currentPaintings={currentPaintings}
+                currentItem={currentPaintings}
                 setRecordsPerPagePaginationHandler={setRecordsPerPagePaginationHandler}
                 handlePagination={handlePagination}
             />

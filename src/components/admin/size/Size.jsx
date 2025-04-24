@@ -50,8 +50,6 @@ export default function Size() {
         }
     };
 
-   
-
     const openDrawerCreate = () => {
         setIsOpenCreate(true);
     };
@@ -133,10 +131,10 @@ export default function Size() {
             />
 
             <Pagination
-                paintings={size}
+                item={size}
                 currentPage={currentPage}
                 totalPages={totalPages}
-                currentPaintings={currentSize}
+                currentItem={currentSize}
                 setRecordsPerPagePaginationHandler={setRecordsPerPagePaginationHandler}
                 handlePagination={handlePagination}
             />

@@ -1,10 +1,10 @@
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from "@heroicons/react/16/solid";
 
 export default function Pagination({
-    paintings,
+    item,
     currentPage,
     totalPages,
-    currentPaintings,
+    currentItem,
     setRecordsPerPagePaginationHandler,
     handlePagination
 }) {
@@ -14,7 +14,7 @@ export default function Pagination({
                 {/* Counter + arrows */}
                 <div className="flex items-center space-x-2">
                     <span className="text-sm font-normal text-gray-500">Резултати на страница:</span>
-                    <select name="limit" className="limit" defaultValue="3" onChange={setRecordsPerPagePaginationHandler}>
+                    <select name="limit" className="limit" defaultValue="10" onChange={setRecordsPerPagePaginationHandler}>
                         <option defaultValue="3">3</option>
                         <option defaultValue="5">5</option>
                         <option defaultValue="10">10</option>
@@ -23,8 +23,8 @@ export default function Pagination({
                     </select>
 
                     <span className="text-sm font-normal text-gray-500">
-                        Показани <span className="font-semibold text-gray-900">1–{currentPaintings.length}</span> от{' '}
-                        <span className="font-semibold text-gray-900">{paintings.length}</span>
+                        Показани <span className="font-semibold text-gray-900">1–{currentItem.length}</span> от{' '}
+                        <span className="font-semibold text-gray-900">{item.length}</span>
                     </span>
                 </div>
 

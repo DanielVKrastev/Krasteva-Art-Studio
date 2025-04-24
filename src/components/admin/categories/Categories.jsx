@@ -17,7 +17,7 @@ export default function Paintings() {
 
     const totalPages = Math.ceil(categories.length / recordsPerPage);
     const startIndex = (currentPage - 1) * recordsPerPage;
-    const currentPaintings = categories.slice(startIndex, startIndex + recordsPerPage);
+    const currentCategories = categories.slice(startIndex, startIndex + recordsPerPage);
 
     const handlePagination = (page) => {
         setCurrentPage(page);
@@ -130,17 +130,17 @@ export default function Paintings() {
             </div>
 
             <TableCategories
-                currentPaintings={currentPaintings}
+                currentPaintings={currentCategories}
                 startIndex={startIndex}
                 openDrawerUpdate={openDrawerUpdate}
                 openDrawerDelete={openDrawerDelete}
             />
 
             <Pagination
-                paintings={categories}
+                item={categories}
                 currentPage={currentPage}
                 totalPages={totalPages}
-                currentPaintings={currentPaintings}
+                currentItem={currentCategories}
                 setRecordsPerPagePaginationHandler={setRecordsPerPagePaginationHandler}
                 handlePagination={handlePagination}
             />
