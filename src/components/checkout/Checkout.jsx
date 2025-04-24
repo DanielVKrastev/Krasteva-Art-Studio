@@ -149,7 +149,7 @@ export default function Checkout() {
 
                     <div className="flex justify-between text-lg font-semibold mt-6 pt-4 border-gray-500  border-t text-gray-700">
                         <span>Общо:</span>
-                        <span>{total} лв.</span>
+                        <span>{total.toFixed(2)} лв.</span>
                     </div>
 
                     <div className="mt-6 flex gap-2">

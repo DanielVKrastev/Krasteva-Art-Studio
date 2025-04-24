@@ -52,7 +52,7 @@ export default function Cart() {
                         </p>
                         <p className="flex justify-between font-medium text-lg">
                             <span>Общо:</span>
-                            <span>{totalPrice} лв.</span>
+                            <span>{totalPrice.toFixed(2)} лв.</span>
                         </p>
                     </div>
 
