@@ -1,5 +1,7 @@
 import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
+import { ref, remove } from "firebase/database";
+import { database } from "../../firebase";
 
 const baseUrl = `${BASE_URL}/size`;
 
@@ -9,8 +11,7 @@ async function getAll() {
 }
 
 async function getOne(id) {
-    const result = await requester.get(`${baseUrl}/${id}.json`);
-    return Object.values(result);
+    return await requester.get(`${baseUrl}/${id}.json`);
 }
 
 async function create(data, token) {
@@ -36,7 +37,7 @@ async function updateData(idSize, data) {
 }
 
 async function deleteSize(sizeId) {
-    const sizeRef = ref(database, `paintings/${sizeId}`);
+    const sizeRef = ref(database, `size/${sizeId}`);
   
     try {
       await remove(sizeRef);
