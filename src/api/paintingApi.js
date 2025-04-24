@@ -2,7 +2,7 @@ import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
 import { database } from '../../firebase';
-import { ref, remove, update } from "firebase/database";
+import { ref, remove, serverTimestamp, update } from "firebase/database";
 
 const baseUrl = `${BASE_URL}/paintings`;
 
@@ -70,13 +70,17 @@ async function getCombinedPaintings(equalToCategory, equalToSizes) {
 }
 
 async function create(data, token) {
+    const newData = {
+        createdAt: serverTimestamp(),
+        ...data
+    }
 
     const response = await fetch(`${baseUrl}.json?auth=${token}`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(newData)
     });
 
     const result = await response.json();
