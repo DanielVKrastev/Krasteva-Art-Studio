@@ -3,6 +3,7 @@ import paintingApi from "../../../../api/paintingApi";
 import categoryApi from "../../../../api/categoryApi";
 import sizeApi from "../../../../api/sizeApi";
 import deleteImage from "../../../../utils/deleteImage";
+import addImage from "../../../../utils/addImage";
 
 export default function UpdateDrawer({
     updateId,
@@ -122,31 +123,13 @@ export default function UpdateDrawer({
                     deleteImage(painting.deletehash);
                 }
 
-                const imageData = new FormData();
-                imageData.append("image", image);
-
-                const uploadRes = await fetch('http://localhost:3000/upload', { // TODO: when deploy: https://api.imgur.com/3/upload
-                    method: 'POST',
-                    /*
-                    headers: {
-                            'Authorization': `Client-ID ${IMGUR_CLIENT_ID}`,
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                    */
-                    body: imageData,
-                });
-
-                const data = await uploadRes.json();
-
-                if (!uploadRes.ok) throw new Error(data?.error || 'Upload failed');
-
-                const { link, deletehash } = data;
+                const { link, deletehash } = await addImage(image);
 
                 updatePaintingData.imageUrl = link;
                 updatePaintingData.deletehash = deletehash;
             }
 
-            console.log("Painting data to update:");
+            console.log("Painting data to update.");
             
             await paintingApi.updateData(updateId, updatePaintingData);
             closeDrawerUpdate();

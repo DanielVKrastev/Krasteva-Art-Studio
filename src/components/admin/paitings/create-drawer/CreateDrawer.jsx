@@ -3,6 +3,7 @@ import categoryApi from "../../../../api/categoryApi";
 import sizeApi from "../../../../api/sizeApi";
 import axios from "axios";
 import paintingApi from "../../../../api/paintingApi";
+import addImage from "../../../../utils/addImage";
 
 const IMGUR_CLIENT_ID = "70d48422a058d29";
 
@@ -103,22 +104,7 @@ export default function CreateDrawer({
                 const imageData = new FormData();
                 imageData.append("image", image);
                 
-                const uploadRes = await fetch('http://localhost:3000/upload', { // TODO: when deploy: https://api.imgur.com/3/upload
-                    method: 'POST',
-                    /*
-                    headers: {
-                            'Authorization': `Client-ID ${IMGUR_CLIENT_ID}`,
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                    */
-                    body: imageData,
-                });
-                
-                const data = await uploadRes.json();
-                
-                if (!uploadRes.ok) throw new Error(data?.error || 'Upload failed');
-                
-                const { link, deletehash } = data;
+               const { link, deletehash } = await addImage(image);
                 
                 createPaintingData.imageUrl = link;
                 createPaintingData.deletehash = deletehash;
