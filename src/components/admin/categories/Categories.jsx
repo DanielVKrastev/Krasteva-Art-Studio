@@ -1,6 +1,5 @@
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
-import paintingApi from "../../../api/paintingApi";
 import Pagination from "../partials/pagination/Pagination";
 import NavigationLinks from "../partials/navigation-links/NavigationLinks";
 import DeleteDrawer from "../partials/delete-drawer/DeleteDrawer";
@@ -107,7 +106,7 @@ export default function Paintings() {
                                         type="text"
                                         id="products-search"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
-                                        placeholder="Търсене на картини"
+                                        placeholder="Търсене на категории"
                                     />
                                 </div>
                             </form>
