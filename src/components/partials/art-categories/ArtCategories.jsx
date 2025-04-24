@@ -1,4 +1,17 @@
+import { useEffect, useState } from "react";
+import categoryApi from "../../../api/categoryApi";
+
 export default function ArtCategories() {
+    const [categories, setCategories] = useState([]);
+
+        useEffect(() => {
+            const fetchInitial = async () => {
+                const data = await categoryApi.getAll();
+                setCategories(data);
+            };
+            fetchInitial();
+        }, []);
+
     return (
         <section className="py-12 border border-gray-300">
            <hr className="w-10 mx-auto border-t-2 border-indigo-700 text-center" />
@@ -11,11 +24,7 @@ export default function ArtCategories() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     
                  
-                    {[
-                        { title: "Портрети" },
-                        { title: "Пейзажи" },
-                        { title: "Абстрактни картини" },
-                    ].map((item, index) => (
+                    {categories.map((category, index) => (
                         <a
                             key={index}
                             href="#"
@@ -25,8 +34,8 @@ export default function ArtCategories() {
                         >
                             <div className="overflow-hidden m-0 p-0">
                                 <img
-                                    src="/images/test_draw.jpg"
-                                    alt={item.title}
+                                    src={category?.imageUrl}
+                                    alt={category?.name}
                                     className="w-full h-72 object-cover transform transition-transform duration-500 group-hover:scale-110"
                                 />
                             </div>
@@ -35,7 +44,7 @@ export default function ArtCategories() {
 
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 text-center">
                                 <span className="text-sm uppercase tracking-wide text-gray-200">Категория</span>
-                                <h3 className="text-2xl font-bold mt-2">{item.title}</h3>
+                                <h3 className="text-2xl font-bold mt-2">{category?.name}</h3>
                             </div>
                         </a>
                       
