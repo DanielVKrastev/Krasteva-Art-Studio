@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import paintingApi from "../../../../api/paintingApi";
 import categoryApi from "../../../../api/categoryApi";
 import sizeApi from "../../../../api/sizeApi";
+import axios from "axios";
+import paintingApi from "../../../../api/paintingApi";
+
+const IMGUR_CLIENT_ID = "70d48422a058d29";
 
 export default function CreateDrawer({
     closeDrawerCreate
@@ -30,13 +33,13 @@ export default function CreateDrawer({
     }, []);
 
     // For select inputs
-    const [selectedValueSold, setSelectedValueSold] = useState('');
+    const [selectedValueSold, setSelectedValueSold] = useState('no');
 
     const handleChangeSelectSold = (e) => {
         setSelectedValueSold(e.target.value);
     };
 
-    const [selectedValueActive, setSelectedValueActive] = useState('');
+    const [selectedValueActive, setSelectedValueActive] = useState('yes');
 
     const handleChangeSelectActive = (e) => {
         setSelectedValueActive(e.target.value);
@@ -81,23 +84,55 @@ export default function CreateDrawer({
         const sold = formData.get('sold');
         const active = formData.get('active');
 
-        const createPaintingData = {
-            name,
-            category,
-            size,
-            paints,
-            description,
-            price,
-            sold,
-            active
-        }
         try {
-            console.log(createPaintingData);
-            console.log(image);
-            
+            const createPaintingData = {
+                name,
+                category,
+                size,
+                paints,
+                description,
+                price,
+                sold,
+                active,
+                imageUrl: '',
+                deletehash: ''
+            };
+
+            // Качване в Imgur
+            if(image.size !== 0){
+                const imageData = new FormData();
+                imageData.append("image", image);
+                
+                const uploadRes = await fetch('http://localhost:3000/upload', { // TODO: when deploy: https://api.imgur.com/3/upload
+                    method: 'POST',
+                    /*
+                    headers: {
+                            'Authorization': `Client-ID ${IMGUR_CLIENT_ID}`,
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                    */
+                    body: imageData,
+                });
+                
+                const data = await uploadRes.json();
+                
+                if (!uploadRes.ok) throw new Error(data?.error || 'Upload failed');
+                
+                const { link, deletehash } = data;
+                
+                createPaintingData.imageUrl = link;
+                createPaintingData.deletehash = deletehash;
+            }
+
+            console.log("Painting data to save:", createPaintingData);
+
+            // Тук добави кода за запис във Firebase DB
+            // await firebaseDbApi.save(createPaintingData)
+            await paintingApi.create(createPaintingData);
+
             closeDrawerCreate();
         } catch (err) {
-            console.log(err.message);
+            console.error("Image upload or save failed:", err.message);
         }
 
     }
@@ -215,7 +250,7 @@ export default function CreateDrawer({
                                 id="update-description"
                                 name="description"
                                 rows="4"
-                                placeholder="Enter product description"
+                                placeholder="описание..."
                                 className="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                             />
                         </div>
@@ -291,7 +326,7 @@ export default function CreateDrawer({
                             <button
                                 type="submit"
                                 className="w-full justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                
+
                             >
                                 Създай
                             </button>
