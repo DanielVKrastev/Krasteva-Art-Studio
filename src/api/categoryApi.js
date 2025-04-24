@@ -1,10 +1,12 @@
+import { ref, remove, serverTimestamp } from "firebase/database";
 import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
 const baseUrl = `${BASE_URL}/category`;
 
 async function getAll() {
-    return await requester.get(`${baseUrl}.json`);
+    const result = await requester.get(`${baseUrl}.json`);
+    return Object.values(result);
 }
 
 async function getOne(id) {
@@ -12,23 +14,46 @@ async function getOne(id) {
 }
 
 async function create(data, token) {
-    /*
+    const newData = {
+        createdAt: serverTimestamp(),
+        ...data
+    }
+
     const response = await fetch(`${baseUrl}.json?auth=${token}`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(newData)
     });
 
     const result = await response.json();
+    const id = result.name;
+
+    //add Id as row
+    await updateData(id, { id: id });
+
     return result;
-    */
-    return await requester.post(`${baseUrl}.json?auth=${token}`, data);
 }
 
-export default{
+async function updateData(idCategory, data) {
+    return await requester.patch(`${baseUrl}/${idCategory}.json`, data);
+}
+
+async function deleteCategory(categoryId) {
+    const categoryRef = ref(database, `category/${categoryId}`);
+
+    try {
+        await remove(categoryRef);
+        console.log("The painting has delete success.");
+    } catch (error) {
+        console.error("Error Delete painting:", error);
+    }
+}
+
+export default {
     getAll,
     getOne,
-    create
+    create,
+    deleteCategory
 }

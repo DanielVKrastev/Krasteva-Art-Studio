@@ -1,3 +1,5 @@
+const IMGUR_CLIENT_ID = "70d48422a058d29";
+
 export default async function addImage(image) {
     const imageData = new FormData();
     imageData.append("image", image);
