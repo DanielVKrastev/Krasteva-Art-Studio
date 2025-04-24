@@ -14,7 +14,6 @@ async function getOne(id) {
 }
 
 async function create(data, token) {
-    /*
     const response = await fetch(`${baseUrl}.json?auth=${token}`, {
         method: "POST",
         headers: {
@@ -24,13 +23,33 @@ async function create(data, token) {
     });
 
     const result = await response.json();
+    const id = result.name;
+
+    //add Id as row
+    await updateData(id, { id: id });
+
     return result;
-    */
-    return await requester.post(`${baseUrl}.json?auth=${token}`, data);
 }
+
+async function updateData(idSize, data) {
+    return await requester.patch(`${baseUrl}/${idSize}.json`, data);
+}
+
+async function deleteSize(sizeId) {
+    const sizeRef = ref(database, `paintings/${sizeId}`);
+  
+    try {
+      await remove(sizeRef);
+      console.log("The size has delete success.");
+    } catch (error) {
+      console.error("Error Delete size:", error);
+    }
+  }
 
 export default{
     getAll,
     getOne,
-    create
+    create,
+    updateData,
+    deleteSize
 }
