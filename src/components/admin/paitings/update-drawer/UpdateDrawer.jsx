@@ -1,8 +1,127 @@
+import { useEffect, useState } from "react";
+import paintingApi from "../../../../api/paintingApi";
+import categoryApi from "../../../../api/categoryApi";
+import sizeApi from "../../../../api/sizeApi";
+
 export default function UpdateDrawer({
     updateId,
     item,
     closeDrawerUpdate
 }) {
+    const [painting, setPainting] = useState({});
+    const [categories, setCategories] = useState([]);
+    const [size, setSize] = useState([]);
+
+    useEffect(() => {
+        const fetchInitial = async () => {
+            try {
+                const paintingData = await paintingApi.getOne(updateId);
+                setPainting(paintingData);
+                setPrice(Number(paintingData.price).toFixed(2))
+                setSelectedValueSold(paintingData.sold);
+                setSelectedValueActive(paintingData.active);
+                setSelectedValueCategory(paintingData.category);
+                setSelectedValueSize(paintingData.size);
+            } catch (err) {
+                console.log(err.message);
+            }
+        };
+        fetchInitial();
+    }, []);
+
+    const [loadingData, setLoadingData] = useState(false);
+
+    useEffect(() => {
+        const fetchInitial = async () => {
+            try {
+                setLoadingData(true);
+                const categoriesData = await categoryApi.getAll();
+                const sizeData = await sizeApi.getAll();
+                setCategories(categoriesData);
+                setSize(sizeData);
+            } catch (err) {
+                console.log(err.message);
+            } finally {
+                setLoadingData(false);
+            }
+        };
+        fetchInitial();
+    }, []);
+
+    // For select inputs
+    const [selectedValueSold, setSelectedValueSold] = useState(painting?.sold || '');
+
+    const handleChangeSelectSold = (e) => {
+        setSelectedValueSold(e.target.value);
+    };
+
+    const [selectedValueActive, setSelectedValueActive] = useState(painting?.active || '');
+
+    const handleChangeSelectActive = (e) => {
+        setSelectedValueActive(e.target.value);
+    };
+
+    const [selectedValueCategory, setSelectedValueCategory] = useState(painting?.category || '');
+
+    const handleChangeSelectCategory = (e) => {
+        setSelectedValueCategory(e.target.value);
+    };
+
+    const [selectedValueSize, setSelectedValueSize] = useState(painting?.size || '');
+
+    const handleChangeSelectSize = (e) => {
+        setSelectedValueSize(e.target.value);
+    };
+
+    // For price fo fixed 2
+    const [price, setPrice] = useState('');
+
+    const handleBlur = () => {
+        if (price !== "") {
+            const formatted = parseFloat(price).toFixed(2);
+            setPrice(formatted);
+        }
+    };
+
+    const handleChange = (e) => {
+        setPrice(e.target.value);
+    };
+
+    const onSubmitUpdate = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const name = formData.get('name');
+        const category = formData.get('category');
+        const size = formData.get('size');
+        const paints = formData.get('paints');
+        const description = formData.get('description');
+        const price = formData.get('price');
+        const image = formData.get('image');
+        const imageUrl = formData.get('imageUrl');
+        const sold = formData.get('sold');
+        const active = formData.get('active');
+
+        const updatePaintingData = {
+            name,
+            category,
+            size,
+            paints,
+            description,
+            price,
+            imageUrl,
+            sold,
+            active
+        }
+        try {
+            console.log(updatePaintingData);
+            
+
+        } catch (err) {
+            console.log(err.message);
+        }
+
+    }
+
     return (
         <>
             {/* UPDATE DRAWER */}
@@ -30,97 +149,177 @@ export default function UpdateDrawer({
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                         />
                     </svg>
-                    <span className="sr-only">Close menu</span>
+                    <span className="sr-only">Затвори</span>
                 </button>
 
-                <form action="#">
+                <form onSubmit={onSubmitUpdate}>
                     <div className="space-y-4">
                         <div>
                             <label htmlFor="update-name" className="block mb-2 text-sm font-medium text-gray-900">
-                                Name
+                                Име на картина
                             </label>
                             <input
                                 type="text"
                                 id="update-name"
-                                name="title"
-                                defaultValue="Education Dashboard"
-                                placeholder="Type product name"
+                                name="name"
+                                defaultValue={painting?.name}
+                                placeholder="Име на картина"
                                 required
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
                         </div>
                         <div>
                             <label htmlFor="update-category" className="block mb-2 text-sm font-medium text-gray-900">
-                                Technology
+                                Категория
                             </label>
                             <select
                                 id="update-category"
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                                name="category"
+                                disabled={loadingData}
+                                value={selectedValueCategory}
+                                onChange={handleChangeSelectCategory}
                             >
-                                <option>Flowbite</option>
-                                <option defaultValue="RE">React</option>
-                                <option defaultValue="AN">Angular</option>
-                                <option defaultValue="VU">Vue JS</option>
+                                {loadingData ? (
+                                    <option>Зареждане...</option>
+                                ) : (
+                                    categories.map((category) => (
+                                        <option key={category.id} value={category.name}>
+                                            {category.name}
+                                        </option>
+                                    ))
+                                )}
+
                             </select>
                         </div>
                         <div>
-                            <label htmlFor="update-price" className="block mb-2 text-sm font-medium text-gray-900">
-                                Price
+                            <label htmlFor="update-size" className="block mb-2 text-sm font-medium text-gray-900">
+                                Размери
+                            </label>
+                            <select
+                                id="update-size"
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                                name="size"
+                                disabled={loadingData}
+                                value={selectedValueSize}
+                                onChange={handleChangeSelectSize}
+                            >
+                                {loadingData ? (
+                                    <option>Зареждане...</option>
+                                ) : (
+                                    size.map((s) => (
+                                        <option key={s} value={s}>
+                                            {s}
+                                        </option>
+                                    ))
+                                )}
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor="update-paints" className="block mb-2 text-sm font-medium text-gray-900">
+                                Бои
                             </label>
                             <input
-                                type="number"
-                                id="update-price"
-                                name="price"
-                                defaultValue="2999"
-                                placeholder="$149"
+                                type="text"
+                                id="update-paints"
+                                name="paints"
+                                defaultValue={painting?.paints}
+                                placeholder="акрил"
                                 required
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
                         </div>
                         <div>
                             <label htmlFor="update-description" className="block mb-2 text-sm font-medium text-gray-900">
-                                Description
+                                Описание
                             </label>
                             <textarea
                                 id="update-description"
+                                name="description"
                                 rows="4"
-                                defaultValue="Start developing with an open-source library of over 450+ UI components..."
+                                defaultValue={painting?.description}
                                 placeholder="Enter product description"
                                 className="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                             />
                         </div>
                         <div>
-                            <label htmlFor="update-discount" className="block mb-2 text-sm font-medium text-gray-900">
-                                Discount
+                            <label htmlFor="update-price" className="block mb-2 text-sm font-medium text-gray-900">
+                                Цена
+                            </label>
+                            <input
+                                type="number"
+                                id="update-price"
+                                name="price"
+                                value={price}
+                                placeholder="100.00"
+                                min={0}
+                                step="0.10"
+                                required
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="update-image" className="block mb-2 text-sm font-medium text-gray-900">
+                                Смимка
+                            </label>
+                            <input
+                                id="update-image"
+                                type="file"
+                                name="image"
+                                className="hidden"
+                            />
+
+                            <input type="hidden" name="imageUrl" defaultValue={painting?.imageUrl}/>
+
+                            <label
+                                htmlFor="update-image"
+                                className="inline-block w-50 text-center cursor-pointer p-2.5 bg-gray-800 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:ring-2 focus:ring-primary-600 focus:outline-none"
+                            >
+                                Избери снимка
+                            </label>
+                        </div>
+
+                        <div>
+                            <label htmlFor="update-sold" className="block mb-2 text-sm font-medium text-gray-900">
+                                Продадена
                             </label>
                             <select
-                                id="update-discount"
+                                id="update-sold"
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                                name="sold"
+                                value={selectedValueSold}
+                                onChange={handleChangeSelectSold}
                             >
-                                <option>No</option>
-                                <option defaultValue="5">5%</option>
-                                <option defaultValue="10">10%</option>
-                                <option defaultValue="20">20%</option>
-                                <option defaultValue="30">30%</option>
-                                <option defaultValue="40">40%</option>
-                                <option defaultValue="50">50%</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
                             </select>
                         </div>
-                    </div>
+                        <div>
+                            <label htmlFor="update-active" className="block mb-2 text-sm font-medium text-gray-900">
+                                Активна
+                            </label>
+                            <select
+                                id="update-active"
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                                name="active"
+                                value={selectedValueActive}
+                                onChange={handleChangeSelectActive}
+                            >
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
 
-                    <div className="bottom-0 left-0 flex justify-center w-full pb-4 mt-4 space-x-4 sm:absolute sm:px-4 sm:mt-0">
-                        <button
-                            type="submit"
-                            className="w-full justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                        >
-                            Update
-                        </button>
-                        <button
-                            type="button"
-                            className="w-full sm:w-auto text-red-600 border border-red-600 hover:text-white hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center justify-center"
-                        >
-                            Delete
-                        </button>
+                        <div className="left-0 justify-center w-full pb-4 mt-10 space-x-4 sm:absolute sm:px-4 sm:mt-0">
+                            <button
+                                type="submit"
+                                className="w-full justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                            >
+                                Редактирай
+                            </button>
+                        </div>
                     </div>
 
                 </form>

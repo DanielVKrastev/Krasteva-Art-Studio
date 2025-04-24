@@ -10,15 +10,7 @@ import UpdateDrawer from "./update-drawer/UpdateDrawer";
 export default function Paintings() {
     const [paintings, setPaintings] = useState([]);
     const [recordsPerPage, setRecordsPerPage] = useState(3);
-
-    useEffect(() => {
-        const fetchInitial = async () => {
-            const data = await paintingApi.getAll();
-            setPaintings(data);
-        };
-        fetchInitial();
-    }, [recordsPerPage, paintings]);
-
+    
     const [currentPage, setCurrentPage] = useState(1);
 
     const totalPages = Math.ceil(paintings.length / recordsPerPage);
@@ -37,6 +29,14 @@ export default function Paintings() {
     const [updateItem, setUpdateItem] = useState(null);
     const [isOpenDelete, setIsOpenDelete] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
+
+    useEffect(() => {
+        const fetchInitial = async () => {
+            const data = await paintingApi.getAll();
+            setPaintings(data);
+        };
+        fetchInitial();
+    }, [recordsPerPage, deleteItem, updateItem]);
 
     const openDrawerUpdate = (id, name) => {
         setIsOpenUpdate(true);
