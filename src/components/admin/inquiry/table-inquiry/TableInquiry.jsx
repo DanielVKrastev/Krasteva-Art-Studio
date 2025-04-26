@@ -63,7 +63,7 @@ export default function TableInquiry({
                                         </td>
                                         
                                         <td className="p-4 space-x-2 whitespace-nowrap">
-                                            <PaperAirplaneIcon onClick={() => openDrawerUpdate(inquiry.id, inquiry.email)} className="inline-flex items-center w-11 h-11 px-3 py-2 text-white bg-indigo-700 rounded-lg hover:bg-indigo-800 focus:ring-2 focus:ring-indigo-300" />
+                                            <PaperAirplaneIcon onClick={() => openDrawerUpdate(inquiry.id, inquiry.firstName + ' ' + inquiry.lastName)} className="inline-flex items-center w-11 h-11 px-3 py-2 text-white bg-indigo-700 rounded-lg hover:bg-indigo-800 focus:ring-2 focus:ring-indigo-300" />
 
                                             <TrashIcon onClick={() => openDrawerDelete(inquiry.id, inquiry.email)} className="inline-flex items-center w-11 h-11 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-300" />
                                         </td>

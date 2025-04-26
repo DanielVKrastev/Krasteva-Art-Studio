@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import sizeApi from "../../../../api/sizeApi";
 import availabilityInquiryApi from "../../../../api/availabilityInquiryApi";
+import paintingApi from "../../../../api/paintingApi";
 
 export default function AnswerInquiry({
     updateId,
@@ -8,12 +9,15 @@ export default function AnswerInquiry({
     closeDrawerUpdate
 }) {
     const [inquiry, setInquiry] = useState({});
+    const [painting, setPainting] = useState({});
    
     useEffect(() => {
         const fetchInitial = async () => {
             try {
                 const inquiryData = await availabilityInquiryApi.getOne(updateId);
                 setInquiry(inquiryData);
+                const paintingData = await paintingApi.getOne(inquiryData.paintingId);
+                setPainting(paintingData);
             } catch (err) {
                 console.log(err.message);
             }
@@ -31,9 +35,8 @@ export default function AnswerInquiry({
                 size,
             };
 
-            console.log("Size data to update.");
+            console.log("Answer.");
             
-            await sizeApi.updateData(updateId, updateSizeData);
             closeDrawerUpdate();
         } catch (err) {
             console.log(err.message);
@@ -41,12 +44,9 @@ export default function AnswerInquiry({
 
     }
 
-    console.log(inquiry);
-    
-
     return (
         <>
-            {/* UPDATE DRAWER */}
+            {/* Answer */}
             <div
                 className={`fixed top-0 right-0 z-50 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-0 bg-white`}
                 tabIndex="-1"
@@ -77,19 +77,6 @@ export default function AnswerInquiry({
                 <form onSubmit={onSubmitUpdate}>
                     <div className="space-y-4">
                         <div>
-                        <label htmlFor="update-name" className="block mb-2 text-sm font-medium text-gray-900">
-                                Име
-                            </label>
-                            <input
-                                type="text"
-                                id="update-size"
-                                name="name"
-                                defaultValue={`${inquiry.firstName} ${inquiry.lastname}`}
-                                readOnly
-                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
-                            />
-                        </div>
-                        <div>
                         <label htmlFor="update-email" className="block mb-2 text-sm font-medium text-gray-900">
                                 Email
                             </label>
@@ -97,7 +84,7 @@ export default function AnswerInquiry({
                                 type="text"
                                 id="update-email"
                                 name="size"
-                                defaultValue={inquiry.email}
+                                defaultValue={inquiry?.email}
                                 readOnly
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
@@ -123,7 +110,7 @@ export default function AnswerInquiry({
                                 type="text"
                                 id="update-painting"
                                 name="size"
-                                defaultValue={inquiry?.paintingId}
+                                defaultValue={painting.name}
                                 readOnly
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
@@ -132,7 +119,7 @@ export default function AnswerInquiry({
                         <label htmlFor="update-painting" className="block mb-2 text-sm font-medium text-gray-900">
                                 Картина
                             </label>
-                            <img src="" alt="" />
+                            <img src={painting.imageUrl} alt={painting.name} />
                         </div>
                         <div>
                             <label htmlFor="update-answer" className="block mb-2 text-sm font-medium text-gray-900">
