@@ -1,6 +1,8 @@
 import { PaperAirplaneIcon, TrashIcon } from "@heroicons/react/16/solid";
 import dateConvertor from "../../../../utils/dateConvertor";
 
+import PaintingTableData from "./painting-table-data/PaintingTableData";
+
 export default function TableInquiry({
     currentInquiry,
     startIndex,
@@ -52,12 +54,9 @@ export default function TableInquiry({
                                         <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs">
                                             {inquiry.telephone}
                                         </td>
-                                        <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                                            {inquiry.paintingId}
-                                        </td>
-                                        <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                                            <img src={inquiry.paintingId} alt={inquiry.paintingId} className="w-20" />
-                                        </td>
+                                        <PaintingTableData 
+                                            paintingId={inquiry.paintingId}
+                                        />
                                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
                                             {dateConvertor(inquiry.createdAt)}
                                         </td>
