@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../partials/pagination/Pagination";
 import NavigationLinks from "../partials/navigation-links/NavigationLinks";
 import DeleteDrawer from "../partials/delete-drawer/DeleteDrawer";
-import UpdateDrawer from "./update-drawer/UpdateDrawer";
+import AnswerInquiry from "./answer-inquiry/Answer-inquiry";
 import TableInquiry from "./table-inquiry/TableInquiry";
 import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
 
@@ -124,7 +124,7 @@ export default function Inquiry() {
             <div>
 
                 {/* UPDATE DRAWER */}
-                {isOpenUpdate && <UpdateDrawer
+                {isOpenUpdate && <AnswerInquiry
                     updateId={updateItem.id}
                     item={updateItem.name}
                     closeDrawerUpdate={closeDrawerUpdate}
