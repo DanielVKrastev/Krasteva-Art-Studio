@@ -57,7 +57,7 @@ export default function Orders() {
         setUpdateItem({id, name});
     };
  
-    const closeDrawerUpdate = () => {
+    const closeOrderUpdate = () => {
         setIsOpenUpdate(false);
         setUpdateItem(null);
     };
@@ -131,7 +131,7 @@ export default function Orders() {
                 {isOpenUpdate && <UpdateOrder
                     updateId={updateItem.id}
                     item={updateItem.name}
-                    closeDrawerUpdate={closeDrawerUpdate}
+                    closeOrderUpdate={closeOrderUpdate}
                 />
                 }
 
@@ -146,7 +146,7 @@ export default function Orders() {
 
             </div>
 
-            {(isOpenUpdate || isOpenDelete) && <div onClick={() => { closeDrawerUpdate(); closeDrawerDelete(); }} className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-49"></div>}
+            {(isOpenUpdate || isOpenDelete) && <div onClick={() => { closeOrderUpdate(); closeDrawerDelete(); }} className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-49"></div>}
 
         </>
     );
