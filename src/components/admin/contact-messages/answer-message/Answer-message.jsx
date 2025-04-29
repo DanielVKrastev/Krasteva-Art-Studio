@@ -1,24 +1,19 @@
 import { useEffect, useState } from "react";
-import sizeApi from "../../../../api/sizeApi";
-import availabilityInquiryApi from "../../../../api/availabilityInquiryApi";
-import paintingApi from "../../../../api/paintingApi";
+import contactMessageApi from "../../../../api/contactMessageApi";
 import dateConvertor from "../../../../utils/dateConvertor";
 
-export default function AnswerInquiry({
+export default function AnswerMessage({
     updateId,
     item,
-    closeDrawerUpdate
+    closeMessageUpdate
 }) {
-    const [inquiry, setInquiry] = useState({});
-    const [painting, setPainting] = useState({});
+    const [message, setMessage] = useState({});
 
     useEffect(() => {
         const fetchInitial = async () => {
             try {
-                const inquiryData = await availabilityInquiryApi.getOne(updateId);
-                setInquiry(inquiryData);
-                const paintingData = await paintingApi.getOne(inquiryData.paintingId);
-                setPainting(paintingData);
+                const messageData = await contactMessageApi.getOne(updateId);
+                setMessage(messageData);
             } catch (err) {
                 console.log(err.message);
             }
@@ -38,7 +33,7 @@ export default function AnswerInquiry({
 
             console.log("Answer.");
 
-            closeDrawerUpdate();
+            closeMessageUpdate();
         } catch (err) {
             console.log(err.message);
         }
@@ -62,7 +57,7 @@ export default function AnswerInquiry({
                     aria-controls="drawer-update-product-default"
                     className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5"
                     data-drawer-dismiss="drawer-update-product-default"
-                    onClick={closeDrawerUpdate}
+                    onClick={closeMessageUpdate}
                     type="button"
                 >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -84,8 +79,8 @@ export default function AnswerInquiry({
                             <input
                                 type="text"
                                 id="update-email"
-                                name="size"
-                                defaultValue={inquiry?.email}
+                                name="email"
+                                defaultValue={message?.email}
                                 readOnly
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
@@ -97,37 +92,31 @@ export default function AnswerInquiry({
                             <input
                                 type="text"
                                 id="update-telephone"
-                                name="size"
-                                defaultValue={inquiry?.telephone}
+                                name="telephone"
+                                defaultValue={message?.telephone}
                                 readOnly
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
                         </div>
                         <div>
-                            <label htmlFor="update-painting" className="block mb-2 text-sm font-medium text-gray-900">
-                                Запитване за картина
+                            <label htmlFor="update-message" className="block mb-2 text-sm font-medium text-gray-900">
+                                Съобщение
                             </label>
-                            <input
-                                type="text"
-                                id="update-painting"
-                                name="size"
-                                defaultValue={painting.name}
+                            <textarea
+                                id="update-message"
+                                name="message"
+                                rows="4"
+                                defaultValue={message?.message}
+                                className="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                                 readOnly
-                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
                         </div>
                         <div>
                             <label htmlFor="update-createdAt" className="block mb-2 text-sm font-medium text-gray-900">
-                                Дата на запитването
+                                Дата на съобщението
                             </label>
-                            {dateConvertor(inquiry?.createdAt)}
+                            {dateConvertor(message?.createdAt)}
 
-                        </div>
-                        <div>
-                            <label htmlFor="update-painting" className="block mb-2 text-sm font-medium text-gray-900">
-                                Картина
-                            </label>
-                            <img src={painting.imageUrl} alt={painting.name} />
                         </div>
                         <div>
                             <label htmlFor="update-answer" className="block mb-2 text-sm font-medium text-gray-900">
