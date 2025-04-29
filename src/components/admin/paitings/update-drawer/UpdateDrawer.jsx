@@ -225,8 +225,8 @@ export default function UpdateDrawer({
                                     <option>Зареждане...</option>
                                 ) : (
                                     size.map((s) => (
-                                        <option key={s} value={s}>
-                                            {s}
+                                        <option key={s.id} value={s.size}>
+                                            {s.size}
                                         </option>
                                     ))
                                 )}
