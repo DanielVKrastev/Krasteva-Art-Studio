@@ -2,7 +2,7 @@ import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
 import { database } from '../../firebase';
-import { ref, push, serverTimestamp, set } from "firebase/database";
+import { ref, push, serverTimestamp, set, remove } from "firebase/database";
 
 const baseUrl = `${BASE_URL}/contactMessages`;
 
@@ -32,8 +32,20 @@ const create = async (data) => {
     }
   };
 
+  async function deleteMessage(messageId) {
+    const inquiryRef = ref(database, `contactMessage/${messageId}`);
+  
+    try {
+      await remove(inquiryRef);
+      console.log("The inquiry has delete success.");
+    } catch (error) {
+      console.error("Error Delete inquiry:", error);
+    }
+  }
+
 export default{
     getAll,
     getOne,
-    create
+    create,
+    deleteMessage
 }
