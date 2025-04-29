@@ -73,7 +73,18 @@ export default function TableOrders({
                                             {order.totalPrice}
                                         </td>
                                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                                            {order.status}
+                                            <span className={`px-3 py-1 text-sm font-semibold rounded-full
+                                                ${order.status === 'изчакване' ? 'bg-yellow-100 text-yellow-800' :
+                                                    order.status === 'изпратена' ? 'bg-blue-100 text-blue-800' :
+                                                        order.status === 'доставена' ? 'bg-green-100 text-green-800' :
+                                                            order.status === 'отказана' ? 'bg-red-100 text-red-800' :
+                                                                order.status === 'върната' ? 'bg-gray-100 text-gray-800' :
+                                                                    'bg-gray-50 text-gray-500'
+                                                }
+                                            `}>
+                                                {order.status}
+                                            </span>
+
                                         </td>
                                         <td className="p-4 space-x-2 whitespace-nowrap">
                                             <Cog6ToothIcon onClick={() => openOrderUpdate(order.id, startIndex + index + 1)} className="inline-flex items-center w-11 h-11 px-3 py-2 text-white bg-indigo-700 rounded-lg hover:bg-indigo-800 focus:ring-2 focus:ring-indigo-300" />
