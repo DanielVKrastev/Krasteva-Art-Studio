@@ -71,6 +71,10 @@ export default function About() {
                                 <input type="email" name="email" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" required />
                             </div>
                             <div>
+                                <label className="block text-sm font-medium text-gray-700">Телефон</label>
+                                <input type="text" name="telephone" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" />
+                            </div>
+                            <div>
                                 <label className="block text-sm font-medium text-gray-700">Тема</label>
                                 <input type="text" name="theme" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" required />
                             </div>
