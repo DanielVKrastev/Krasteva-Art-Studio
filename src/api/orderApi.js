@@ -2,12 +2,13 @@ import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
 import { database } from '../../firebase';
-import { ref, push, serverTimestamp, set } from "firebase/database";
+import { ref, push, serverTimestamp, set, remove } from "firebase/database";
 
 const baseUrl = `${BASE_URL}/orders`;
 
 async function getAll() {
-    return await requester.get(`${baseUrl}.json`);
+    const result = await requester.get(`${baseUrl}.json`);
+    return Object.values(result);
 }
 
 async function getOne(id) {
@@ -34,9 +35,26 @@ const create = async (data, paintingIds) => {
   }
 };
 
+async function updateData(idSize, data) {
+    return await requester.patch(`${baseUrl}/${idSize}.json`, data);
+}
+
+async function deleteOrder(orderId) {
+    const sizeRef = ref(database, `orders/${orderId}`);
+  
+    try {
+      await remove(sizeRef);
+      console.log("The order has delete success.");
+    } catch (error) {
+      console.error("Error Delete order:", error);
+    }
+  }
+
 
 export default{
     getAll,
     getOne,
-    create
+    create,
+    updateData,
+    deleteOrder
 }
