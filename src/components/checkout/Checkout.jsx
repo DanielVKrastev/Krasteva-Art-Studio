@@ -25,7 +25,7 @@ export default function Checkout() {
         let orderData = Object.fromEntries(formData);
         orderData = {
             ...orderData,
-            totalPrice: total
+            totalPrice: total.toFixed(2)
         }
 
         const paintingIds = cartItems.map(painting => painting.id);
