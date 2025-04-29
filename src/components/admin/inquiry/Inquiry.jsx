@@ -123,7 +123,7 @@ export default function Inquiry() {
 
             <div>
 
-                {/* UPDATE DRAWER */}
+                {/* UPDATE INQUIRY */}
                 {isOpenUpdate && <AnswerInquiry
                     updateId={updateItem.id}
                     item={updateItem.name}
@@ -131,7 +131,7 @@ export default function Inquiry() {
                 />
                 }
 
-                {/* DELETE DRAWER */}
+                {/* DELETE INQUIRY */}
                 {isOpenDelete && <DeleteDrawer
                     deleteId={deleteItem.id}
                     item={deleteItem.name}
