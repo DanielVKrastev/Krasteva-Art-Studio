@@ -34,13 +34,13 @@ const create = async (data) => {
   };
 
   async function deleteMessage(messageId) {
-    const inquiryRef = ref(database, `contactMessage/${messageId}`);
+    const messageRef = ref(database, `contactMessages/${messageId}`);
   
     try {
-      await remove(inquiryRef);
-      console.log("The inquiry has delete success.");
+      await remove(messageRef);
+      console.log("The Message has delete success.");
     } catch (error) {
-      console.error("Error Delete inquiry:", error);
+      console.error("Error Delete Message:", error);
     }
   }
 
