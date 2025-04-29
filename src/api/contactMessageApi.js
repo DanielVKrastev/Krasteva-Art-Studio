@@ -7,7 +7,8 @@ import { ref, push, serverTimestamp, set, remove } from "firebase/database";
 const baseUrl = `${BASE_URL}/contactMessages`;
 
 async function getAll() {
-    return await requester.get(`${baseUrl}.json`);
+    const result = await requester.get(`${baseUrl}.json`);
+    return Object.values(result);
 }
 
 async function getOne(id) {
