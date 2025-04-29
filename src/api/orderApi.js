@@ -24,7 +24,7 @@ const create = async (data, paintingIds) => {
       id: orderId,
       paintingIds,
       createdAt: serverTimestamp(),
-      status: "pending",
+      status: "изчакване",
       ...data
     };
 
@@ -35,8 +35,8 @@ const create = async (data, paintingIds) => {
   }
 };
 
-async function updateData(idSize, data) {
-    return await requester.patch(`${baseUrl}/${idSize}.json`, data);
+async function updateData(idOrder, data) {
+    return await requester.patch(`${baseUrl}/${idOrder}.json`, data);
 }
 
 async function deleteOrder(orderId) {

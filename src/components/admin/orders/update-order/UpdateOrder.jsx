@@ -1,29 +1,23 @@
 import { useEffect, useState } from "react";
-import paintingApi from "../../../../api/paintingApi";
-import categoryApi from "../../../../api/categoryApi";
-import sizeApi from "../../../../api/sizeApi";
 import deleteImage from "../../../../utils/deleteImage";
 import addImage from "../../../../utils/addImage";
+import orderApi from "../../../../api/orderApi";
+import PaintingListCell from "../table-orders/painting-list-cell/PaintingListCell";
+import dateConvertor from "../../../../utils/dateConvertor";
 
 export default function UpdateOrder({
     updateId,
     item,
-    closeDrawerUpdate
+    closeOrderUpdate
 }) {
-    const [painting, setPainting] = useState({});
-    const [categories, setCategories] = useState([]);
-    const [size, setSize] = useState([]);
+    const [order, setOrder] = useState({});
 
     useEffect(() => {
         const fetchInitial = async () => {
             try {
-                const paintingData = await paintingApi.getOne(updateId);
-                setPainting(paintingData);
-                setPrice(Number(paintingData.price).toFixed(2))
-                setSelectedValueSold(paintingData.sold);
-                setSelectedValueActive(paintingData.active);
-                setSelectedValueCategory(paintingData.category);
-                setSelectedValueSize(paintingData.size);
+                const orderData = await orderApi.getOne(updateId);
+                setOrder(orderData);
+                setSelectedValueStatus(orderData.status);
             } catch (err) {
                 console.log(err.message);
             }
@@ -33,106 +27,33 @@ export default function UpdateOrder({
 
     const [loadingData, setLoadingData] = useState(false);
 
-    useEffect(() => {
-        const fetchInitial = async () => {
-            try {
-                setLoadingData(true);
-                const categoriesData = await categoryApi.getAll();
-                const sizeData = await sizeApi.getAll();
-                setCategories(categoriesData);
-                setSize(sizeData);
-            } catch (err) {
-                console.log(err.message);
-            } finally {
-                setLoadingData(false);
-            }
-        };
-        fetchInitial();
-    }, []);
-
     // For select inputs
-    const [selectedValueSold, setSelectedValueSold] = useState(painting?.sold || '');
+    const [selectedValueStatus, setSelectedValueStatus] = useState(order?.status || '');
 
-    const handleChangeSelectSold = (e) => {
-        setSelectedValueSold(e.target.value);
-    };
-
-    const [selectedValueActive, setSelectedValueActive] = useState(painting?.active || '');
-
-    const handleChangeSelectActive = (e) => {
-        setSelectedValueActive(e.target.value);
-    };
-
-    const [selectedValueCategory, setSelectedValueCategory] = useState(painting?.category || '');
-
-    const handleChangeSelectCategory = (e) => {
-        setSelectedValueCategory(e.target.value);
-    };
-
-    const [selectedValueSize, setSelectedValueSize] = useState(painting?.size || '');
-
-    const handleChangeSelectSize = (e) => {
-        setSelectedValueSize(e.target.value);
-    };
-
-    // For price fo fixed 2
-    const [price, setPrice] = useState('');
-
-    const handleBlur = () => {
-        if (price !== "") {
-            const formatted = parseFloat(price).toFixed(2);
-            setPrice(formatted);
-        }
-    };
-
-    const handleChange = (e) => {
-        setPrice(e.target.value);
+    const handleChangeSelectStatus = (e) => {
+        setSelectedValueStatus(e.target.value);
     };
 
     const onSubmitUpdate = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const name = formData.get('name');
-        const category = formData.get('category');
-        const size = formData.get('size');
-        const paints = formData.get('paints');
-        const description = formData.get('description');
-        const price = formData.get('price');
-        const image = formData.get('image');
-        const imageUrl = formData.get('imageUrl');
-        const sold = formData.get('sold');
-        const active = formData.get('active');
+        const town = formData.get('town');
+        const address = formData.get('address');
+        const postCode = formData.get('postCode');
+        const status = formData.get('status');
 
         try {
-            const updatePaintingData = {
-                name,
-                category,
-                size,
-                paints,
-                description,
-                price,
-                sold,
-                active,
-                imageUrl,
-                deletehash: painting?.deletehash
+            const updateOrderData = {
+                town,
+                address,
+                postCode,
+                status,
             };
 
-            // Качване в Imgur
-            if (image.size !== 0) {
-                if(painting.imageUrl != ""){
-                    deleteImage(painting.deletehash);
-                }
+            console.log("Order data to update.");
 
-                const { link, deletehash } = await addImage(image);
-
-                updatePaintingData.imageUrl = link;
-                updatePaintingData.deletehash = deletehash;
-            }
-
-            console.log("Painting data to update.");
-            
-            await paintingApi.updateData(updateId, updatePaintingData);
-            closeDrawerUpdate();
+            await orderApi.updateData(updateId, updateOrderData);
+            closeOrderUpdate();
         } catch (err) {
             console.log(err.message);
         }
@@ -156,7 +77,7 @@ export default function UpdateOrder({
                     aria-controls="drawer-update-product-default"
                     className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5"
                     data-drawer-dismiss="drawer-update-product-default"
-                    onClick={closeDrawerUpdate}
+                    onClick={closeOrderUpdate}
                     type="button"
                 >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -172,163 +93,138 @@ export default function UpdateOrder({
                 <form onSubmit={onSubmitUpdate}>
                     <div className="space-y-4">
                         <div>
-                            <label htmlFor="update-name" className="block mb-2 text-sm font-medium text-gray-900">
-                                Име на картина
+                            <label htmlFor="update-firstName" className="block mb-2 text-sm font-medium text-gray-900">
+                                Име
                             </label>
                             <input
                                 type="text"
-                                id="update-name"
-                                name="name"
-                                defaultValue={painting?.name}
-                                placeholder="Име на картина"
-                                required
+                                id="update-firstName"
+                                name="firstName"
+                                defaultValue={order?.firstName}
+                                readOnly
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
                         </div>
                         <div>
-                            <label htmlFor="update-category" className="block mb-2 text-sm font-medium text-gray-900">
-                                Категория
-                            </label>
-                            <select
-                                id="update-category"
-                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                                name="category"
-                                disabled={loadingData}
-                                value={selectedValueCategory}
-                                onChange={handleChangeSelectCategory}
-                            >
-                                {loadingData ? (
-                                    <option>Зареждане...</option>
-                                ) : (
-                                    categories.map((category) => (
-                                        <option key={category.id} value={category.name}>
-                                            {category.name}
-                                        </option>
-                                    ))
-                                )}
-
-                            </select>
-                        </div>
-                        <div>
-                            <label htmlFor="update-size" className="block mb-2 text-sm font-medium text-gray-900">
-                                Размери
-                            </label>
-                            <select
-                                id="update-size"
-                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                                name="size"
-                                disabled={loadingData}
-                                value={selectedValueSize}
-                                onChange={handleChangeSelectSize}
-                            >
-                                {loadingData ? (
-                                    <option>Зареждане...</option>
-                                ) : (
-                                    size.map((s) => (
-                                        <option key={s} value={s}>
-                                            {s}
-                                        </option>
-                                    ))
-                                )}
-                            </select>
-                        </div>
-                        <div>
-                            <label htmlFor="update-paints" className="block mb-2 text-sm font-medium text-gray-900">
-                                Бои
+                            <label htmlFor="update-lastName" className="block mb-2 text-sm font-medium text-gray-900">
+                                Фамилия
                             </label>
                             <input
                                 type="text"
-                                id="update-paints"
-                                name="paints"
-                                defaultValue={painting?.paints}
-                                placeholder="акрил"
-                                required
+                                id="update-lastName"
+                                name="lastName"
+                                defaultValue={order?.lastName}
+                                readOnly
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
                         </div>
                         <div>
-                            <label htmlFor="update-description" className="block mb-2 text-sm font-medium text-gray-900">
-                                Описание
+                            <label htmlFor="update-email" className="block mb-2 text-sm font-medium text-gray-900">
+                                Email
                             </label>
-                            <textarea
-                                id="update-description"
-                                name="description"
-                                rows="4"
-                                defaultValue={painting?.description}
-                                placeholder="Enter product description"
-                                className="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
+                            <input
+                                type="text"
+                                id="update-email"
+                                name="email"
+                                defaultValue={order?.email}
+                                readOnly
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
                         </div>
                         <div>
-                            <label htmlFor="update-price" className="block mb-2 text-sm font-medium text-gray-900">
+                            <label htmlFor="update-telephone" className="block mb-2 text-sm font-medium text-gray-900">
+                                Телефон
+                            </label>
+                            <input
+                                type="text"
+                                id="update-telephone"
+                                name="telephone"
+                                defaultValue={order?.telephone}
+                                readOnly
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+                        <div>
+                            {order.paintingIds?.map(paintingId => (
+                                <PaintingListCell key={paintingId} paintingId={paintingId} />
+                            ))}
+                        </div>
+                        <div>
+                            <label htmlFor="update-town" className="block mb-2 text-sm font-medium text-gray-900">
+                                Град
+                            </label>
+                            <input
+                                type="text"
+                                id="update-town"
+                                name="town"
+                                defaultValue={order?.town}
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="update-address" className="block mb-2 text-sm font-medium text-gray-900">
+                                Адрес
+                            </label>
+                            <input
+                                type="text"
+                                id="update-address"
+                                name="address"
+                                defaultValue={order?.address}
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="update-postCode" className="block mb-2 text-sm font-medium text-gray-900">
+                                Пощенски код
+                            </label>
+                            <input
+                                type="text"
+                                id="update-postCode"
+                                name="postCode"
+                                defaultValue={order?.postCode}
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="update-totalPrice" className="block mb-2 text-sm font-medium text-gray-900">
                                 Цена
                             </label>
                             <input
-                                type="number"
-                                id="update-price"
-                                name="price"
-                                value={price}
-                                placeholder="100.00"
-                                min={0}
-                                step="0.01"
-                                required
+                                type="text"
+                                id="update-totalPrice"
+                                defaultValue={order?.totalPrice}
+                                readOnly
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
                             />
                         </div>
                         <div>
-                            <label htmlFor="update-image" className="block mb-2 text-sm font-medium text-gray-900">
-                                Смимка
+                            <label htmlFor="update-createdAt" className="block mb-2 text-sm font-medium text-gray-900">
+                                Дата на поръчка
                             </label>
-                            <input
-                                id="update-image"
-                                type="file"
-                                name="image"
-                                className="hidden"
-                            />
-
-                            <input type="hidden" name="imageUrl" defaultValue={painting?.imageUrl} />
-
-                            <label
-                                htmlFor="update-image"
-                                className="inline-block w-50 text-center cursor-pointer p-2.5 bg-gray-800 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:ring-2 focus:ring-primary-600 focus:outline-none"
-                            >
-                                Избери снимка
-                            </label>
-                        </div>
-
-                        <div>
-                            <label htmlFor="update-sold" className="block mb-2 text-sm font-medium text-gray-900">
-                                Продадена
-                            </label>
-                            <select
-                                id="update-sold"
-                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                                name="sold"
-                                value={selectedValueSold}
-                                onChange={handleChangeSelectSold}
-                            >
-                                <option value="no">No</option>
-                                <option value="yes">Yes</option>
-                            </select>
+                            {dateConvertor(order?.createdAt)}
+                            
                         </div>
                         <div>
-                            <label htmlFor="update-active" className="block mb-2 text-sm font-medium text-gray-900">
-                                Активна
+                            <label htmlFor="update-status" className="block mb-2 text-sm font-medium text-gray-900">
+                                Статус
                             </label>
                             <select
-                                id="update-active"
+                                id="update-status"
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                                name="active"
-                                value={selectedValueActive}
-                                onChange={handleChangeSelectActive}
+                                name="status"
+                                value={selectedValueStatus}
+                                onChange={handleChangeSelectStatus}
                             >
-                                <option value="no">No</option>
-                                <option value="yes">Yes</option>
+                                {
+                                    ['изчакване', 'изпратена', 'отказана', 'доставена', 'върната'].map((status) => (
+                                        <option key={status} value={status}>
+                                            {status}
+                                        </option>
+                                    ))
+                                }
+
                             </select>
                         </div>
-
                         <div className="left-0 justify-center w-full pb-4 mt-10 space-x-4 sm:absolute sm:px-4 sm:mt-0">
                             <button
                                 type="submit"
