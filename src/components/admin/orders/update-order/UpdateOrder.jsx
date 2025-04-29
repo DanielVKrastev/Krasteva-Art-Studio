@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import deleteImage from "../../../../utils/deleteImage";
 import addImage from "../../../../utils/addImage";
 import orderApi from "../../../../api/orderApi";
-import PaintingListCell from "../table-orders/painting-list-cell/PaintingListCell";
+import PaintingListCell from "../../partials/painting-list-cell/PaintingListCell";
 import dateConvertor from "../../../../utils/dateConvertor";
 
 export default function UpdateOrder({

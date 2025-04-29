@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import paintingApi from "../../../../../api/paintingApi";
+import paintingApi from "../../../../api/paintingApi";
 
 
 export default function PaintingListCell({ paintingId }) {

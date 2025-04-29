@@ -1,7 +1,6 @@
 import { PaperAirplaneIcon, TrashIcon } from "@heroicons/react/16/solid";
 import dateConvertor from "../../../../utils/dateConvertor";
-
-import PaintingTableData from "./painting-table-data/PaintingTableData";
+import PaintingListCell from "../../partials/painting-list-cell/PaintingListCell";
 
 export default function TableInquiry({
     currentInquiry,
@@ -24,7 +23,7 @@ export default function TableInquiry({
                                             className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-indigo-500"
                                         />
                                     </th>
-                                    {["Име / ID", "Email", "Телефон", "Име на картина", "Снимка", "Дата", "Действия"].map((title) => (
+                                    {["Име / ID", "Email", "Телефон", "Картина", "Дата", "Действия"].map((title) => (
                                         <th
                                             key={title}
                                             className="p-6 text-xs font-medium text-left text-gray-500 uppercase"
@@ -54,9 +53,12 @@ export default function TableInquiry({
                                         <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs">
                                             {inquiry.telephone}
                                         </td>
-                                        <PaintingTableData 
+                                        <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                                        <PaintingListCell
                                             paintingId={inquiry.paintingId}
                                         />
+                                        </td>
+                                        
                                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
                                             {dateConvertor(inquiry.createdAt)}
                                         </td>

@@ -1,6 +1,6 @@
 import { Cog6ToothIcon, TrashIcon } from "@heroicons/react/16/solid";
 import dateConvertor from "../../../../utils/dateConvertor";
-import PaintingListCell from "./painting-list-cell/PaintingListCell";
+import PaintingListCell from "../../partials/painting-list-cell/PaintingListCell";
 import paintingApi from "../../../../api/paintingApi";
 
 export default function TableOrders({
