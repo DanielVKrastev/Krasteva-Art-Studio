@@ -44,10 +44,7 @@ const onSubmitUpdate = async (e) => {
 
             if(returnCall !== null && reply === '') {
                 updateInquiryData.reply = '(Позвънено)';
-            }
-
-            console.log(updateInquiryData);
-            
+            }            
             
             await availabilityInquiryApi.updateData(updateId, updateInquiryData);
             console.log("Reply.");

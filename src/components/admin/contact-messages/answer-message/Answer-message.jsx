@@ -40,9 +40,6 @@ export default function AnswerMessage({
             if(returnCall !== null && reply === '') {
                 updateMessageData.reply = '(Позвънено)';
             }
-
-            console.log(updateMessageData);
-            
             
             await contactMessageApi.updateData(updateId, updateMessageData);
             console.log("Reply.");
