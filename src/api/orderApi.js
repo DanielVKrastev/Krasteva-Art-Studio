@@ -20,6 +20,58 @@ async function getOne(id) {
     return await requester.get(`${baseUrl}/${id}.json`);
 }
 
+async function getProfitData() {
+  const data = await getAll();
+  
+  if (!data) return {
+    totalProfit: 0, totalOrders: 0,
+    currentMonthProfit: 0, currentMonthOrders: 0,
+    lastMonthProfit: 0, lastMonthOrders: 0,
+  };
+
+  const now = new Date();
+
+  const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+  const endOfCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59).getTime();
+
+  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).getTime();
+  const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59).getTime();
+
+  let totalProfit = 0;
+  let totalOrders = 0;
+  let currentMonthProfit = 0;
+  let currentMonthOrders = 0;
+  let lastMonthProfit = 0;
+  let lastMonthOrders = 0;
+
+  Object.values(data).forEach(order => {
+    const created = order.createdAt;
+    const price = Number(order.totalPrice) || 0;
+
+    totalProfit += Number(price);
+    totalOrders += 1;
+
+    if (created >= startOfCurrentMonth && created <= endOfCurrentMonth) {
+      currentMonthProfit += price;
+      currentMonthOrders += 1;
+    }
+
+    if (created >= startOfLastMonth && created <= endOfLastMonth) {
+      lastMonthProfit += price;
+      lastMonthOrders += 1;
+    }
+  });
+
+  return {
+    totalProfit: totalProfit.toFixed(2),
+    totalOrders,
+    currentMonthProfit: currentMonthProfit.toFixed(2),
+    currentMonthOrders,
+    lastMonthProfit: lastMonthProfit.toFixed(2),
+    lastMonthOrders
+  };
+}
+
 const create = async (data, paintingIds) => {
   try {
     const orderRef = push(ref(database, 'orders'));
@@ -60,6 +112,7 @@ export default{
     getAll,
     getOne,
     getLimit,
+    getProfitData,
     create,
     updateData,
     deleteOrder

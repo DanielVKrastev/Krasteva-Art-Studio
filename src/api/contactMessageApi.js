@@ -2,7 +2,7 @@ import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
 import { database } from '../../firebase';
-import { ref, push, serverTimestamp, set, remove } from "firebase/database";
+import { ref, push, serverTimestamp, set, remove, get } from "firebase/database";
 
 const baseUrl = `${BASE_URL}/contactMessages`;
 
@@ -13,6 +13,14 @@ async function getAll() {
 
 async function getOne(id) {
     return await requester.get(`${baseUrl}/${id}.json`);
+}
+
+async function getMessagesCount() {
+  const snapshot = await get(ref(database, 'contactMessages'));
+  if (!snapshot.exists()) return 0;
+
+  const data = snapshot.val();
+  return Object.keys(data).length;
 }
 
 const create = async (data) => {
@@ -47,6 +55,7 @@ const create = async (data) => {
 export default{
     getAll,
     getOne,
+    getMessagesCount,
     create,
     deleteMessage
 }
