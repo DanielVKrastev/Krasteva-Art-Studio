@@ -7,7 +7,9 @@ const baseUrl = `${BASE_URL}/category`;
 
 async function getAll() {
     const result = await requester.get(`${baseUrl}.json`);
-    return Object.values(result);
+    const data = Object.values(result || {});
+
+    return data.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 async function getOne(id) {

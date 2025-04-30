@@ -8,7 +8,9 @@ const baseUrl = `${BASE_URL}/orders`;
 
 async function getAll() {
     const result = await requester.get(`${baseUrl}.json`);
-    return Object.values(result);
+    const data = Object.values(result || {});
+
+    return data.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 async function getLimit(limit) {

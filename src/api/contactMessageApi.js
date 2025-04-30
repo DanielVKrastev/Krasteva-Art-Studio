@@ -8,7 +8,9 @@ const baseUrl = `${BASE_URL}/contactMessages`;
 
 async function getAll() {
   const result = await requester.get(`${baseUrl}.json`);
-  return Object.values(result);
+  const data = Object.values(result || {});
+  
+  return data.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 async function getOne(id) {
@@ -20,6 +22,11 @@ async function getMessagesCount() {
   if (!snapshot.exists()) return 0;
 
   const data = snapshot.val();
+  return Object.keys(data).length;
+}
+
+async function getNotAnswered() {
+  const data = await requester.get(`${baseUrl}.json?orderBy="answered"&equalTo="no"`);
   return Object.keys(data).length;
 }
 
@@ -60,6 +67,7 @@ export default {
   getAll,
   getOne,
   getMessagesCount,
+  getNotAnswered,
   create,
   updateData,
   deleteMessage

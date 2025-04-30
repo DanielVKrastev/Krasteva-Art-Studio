@@ -8,12 +8,16 @@ const baseUrl = `${BASE_URL}/paintings`;
 
 async function getAll() {
     const result = await requester.get(`${baseUrl}.json`);
-    return Object.values(result);
+    const data = Object.values(result || {});
+
+    return data.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 async function getLimit(limit) {
     const result = await requester.get(`${baseUrl}.json?orderBy="createdAt"&limitToLast=${limit}`);
-    return Object.values(result);
+    const data = Object.values(result || {});
+
+    return data.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 async function getAllForSales() {
@@ -28,10 +32,10 @@ async function getOne(id) {
 async function getPaintingsCount() {
     const snapshot = await get(ref(database, 'paintings'));
     if (!snapshot.exists()) return 0;
-  
+
     const data = snapshot.val();
     return Object.keys(data).length;
-  }
+}
 
 async function getPaintingsByCategory(category) {
 
@@ -123,14 +127,14 @@ async function updateData(idPainting, data) {
 
 async function deletePainting(paintingId) {
     const paintingRef = ref(database, `paintings/${paintingId}`);
-  
+
     try {
-      await remove(paintingRef);
-      console.log("The painting has delete success.");
+        await remove(paintingRef);
+        console.log("The painting has delete success.");
     } catch (error) {
-      console.error("Error Delete painting:", error);
+        console.error("Error Delete painting:", error);
     }
-  }
+}
 
 export default {
     getAll,

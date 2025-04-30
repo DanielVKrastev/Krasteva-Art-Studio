@@ -8,7 +8,9 @@ const baseUrl = `${BASE_URL}/availabilityInquiry`;
 
 async function getAll() {
   const result = await requester.get(`${baseUrl}.json?orderBy="createdAt"`);
-  return Object.values(result);
+  const data = Object.values(result || {});
+
+  return data.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 async function getOne(id) {
