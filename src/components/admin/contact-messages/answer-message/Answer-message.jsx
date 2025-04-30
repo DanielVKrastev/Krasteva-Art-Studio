@@ -24,20 +24,30 @@ export default function AnswerMessage({
     const onSubmitUpdate = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const size = formData.get('size');
+        const reply = formData.get('reply');
+        const returnCall = formData.get('return-call');
 
         try {
-            const updateSizeData = {
-                size,
+
+            const updateMessageData = {
+                reply,
+                answered: 'yes'
             };
 
-            console.log("Answer.");
+            if(returnCall !== null && reply === '') {
+                updateMessageData.reply = '(Позвънено)';
+            }
+
+            console.log(updateMessageData);
+            
+            
+            await contactMessageApi.updateData(updateId, updateMessageData);
+            console.log("Reply.");
 
             closeMessageUpdate();
         } catch (err) {
             console.log(err.message);
         }
-
     }
 
     return (
@@ -119,25 +129,33 @@ export default function AnswerMessage({
 
                         </div>
                         <div>
-                            <label htmlFor="update-answer" className="block mb-2 text-sm font-medium text-gray-900">
+                            <label htmlFor="update-reply" className="block mb-2 text-sm font-medium text-gray-900">
                                 Отговор
                             </label>
                             <textarea
-                                id="update-description"
-                                name="description"
+                                id="update-reply"
+                                name="reply"
+                                defaultValue={message?.reply}
                                 rows="4"
                                 className="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
+                                readOnly={message?.reply}
                             />
+                        </div>
+
+                        <div className="flex items-center ps-4 border border-gray-300 rounded-sm">
+                            <input id="bordered-checkbox-1" type="checkbox" name="return-call" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500" />
+                            <label htmlFor="bordered-checkbox-1" className="w-full py-4 ms-2 text-sm font-medium ">Маркирай за позвъняване</label>
                         </div>
 
                         <div className="left-0 justify-center w-full pb-4 mt-10 space-x-4 sm:absolute sm:px-4 sm:mt-0">
                             <button
                                 type="submit"
-                                className="w-full justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-
+                                className={`w-full justify-center text-white ${message?.answered === 'yes' ? `bg-gray-400` : `bg-indigo-700 hover:bg-indigo-800 focus:ring-indigo-300`}  focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer`}
+                                disabled={message?.reply}
                             >
                                 Върни отговор
                             </button>
+
                         </div>
                     </div>
 

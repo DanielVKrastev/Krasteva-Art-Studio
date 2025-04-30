@@ -7,6 +7,7 @@ export default function About() {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             const messageData = Object.fromEntries(formData);
+            messageData.answered = 'no';
             try{
                 await contactMessageApi.create(messageData);
                 

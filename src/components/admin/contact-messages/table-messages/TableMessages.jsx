@@ -34,7 +34,7 @@ export default function TableMessages({
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {currentMessages.map((message, index) => (
-                                    <tr key={message.id} className="hover:bg-gray-50">
+                                    <tr key={message.id} className={`hover:bg-gray-50 ${message.answered === 'no' && `bg-red-200`} `}>
                                         <td className="w-4 p-6">
                                             <input
                                                 id={`checkbox-${message.id}`}
