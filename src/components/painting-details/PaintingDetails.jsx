@@ -56,6 +56,7 @@ export default function PaintingDetails() {
         let inquiryData = Object.fromEntries(formData);
         inquiryData = {
             paintingId,
+            answered: 'no',
             ...inquiryData,
         }
 

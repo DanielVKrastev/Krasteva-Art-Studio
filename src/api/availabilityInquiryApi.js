@@ -41,6 +41,10 @@ const create = async (data) => {
   }
 };
 
+async function updateData(idInquiry, data) {
+  return await requester.patch(`${baseUrl}/${idInquiry}.json`, data);
+}
+
 async function deleteInquiry(inquiryId) {
   const inquiryRef = ref(database, `availabilityInquiry/${inquiryId}`);
 
@@ -57,5 +61,6 @@ export default {
   getOne,
   getInquiryCount,
   create,
+  updateData,
   deleteInquiry
 }
