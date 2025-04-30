@@ -7,12 +7,12 @@ import { ref, push, serverTimestamp, set, remove, get } from "firebase/database"
 const baseUrl = `${BASE_URL}/contactMessages`;
 
 async function getAll() {
-    const result = await requester.get(`${baseUrl}.json`);
-    return Object.values(result);
+  const result = await requester.get(`${baseUrl}.json`);
+  return Object.values(result);
 }
 
 async function getOne(id) {
-    return await requester.get(`${baseUrl}/${id}.json`);
+  return await requester.get(`${baseUrl}/${id}.json`);
 }
 
 async function getMessagesCount() {
@@ -24,38 +24,43 @@ async function getMessagesCount() {
 }
 
 const create = async (data) => {
-    try {
-      const messageRef = push(ref(database, 'contactMessages'));
-      const messageId = messageRef.key;
-  
-      const messageData = {
-        id: messageId,
-        ...data,
-        createdAt: serverTimestamp(),
-      };
-  
-      await set(messageRef, messageData);
-      console.log("The message is sent");
-    } catch (error) {
-      console.error("Error while saving message:", error);
-    }
-  };
+  try {
+    const messageRef = push(ref(database, 'contactMessages'));
+    const messageId = messageRef.key;
 
-  async function deleteMessage(messageId) {
-    const messageRef = ref(database, `contactMessages/${messageId}`);
-  
-    try {
-      await remove(messageRef);
-      console.log("The Message has delete success.");
-    } catch (error) {
-      console.error("Error Delete Message:", error);
-    }
+    const messageData = {
+      id: messageId,
+      ...data,
+      createdAt: serverTimestamp(),
+    };
+
+    await set(messageRef, messageData);
+    console.log("The message is sent");
+  } catch (error) {
+    console.error("Error while saving message:", error);
   }
+};
 
-export default{
-    getAll,
-    getOne,
-    getMessagesCount,
-    create,
-    deleteMessage
+async function updateData(idMessage, data) {
+  return await requester.patch(`${baseUrl}/${idMessage}.json`, data);
+}
+
+async function deleteMessage(messageId) {
+  const messageRef = ref(database, `contactMessages/${messageId}`);
+
+  try {
+    await remove(messageRef);
+    console.log("The Message has delete success.");
+  } catch (error) {
+    console.error("Error Delete Message:", error);
+  }
+}
+
+export default {
+  getAll,
+  getOne,
+  getMessagesCount,
+  create,
+  updateData,
+  deleteMessage
 }
