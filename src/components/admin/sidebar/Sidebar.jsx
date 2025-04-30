@@ -1,11 +1,16 @@
-import { Link } from "react-router-dom";
-import { EnvelopeOpenIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
-import { BookOpenIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, CircleStackIcon, EnvelopeIcon, PaintBrushIcon, TagIcon } from "@heroicons/react/16/solid";
-import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { BookOpenIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, EnvelopeIcon, PaintBrushIcon, TagIcon } from "@heroicons/react/16/solid";
+import { useEffect, useState } from "react";
+import contactMessageApi from "../../../api/contactMessageApi";
+import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
 
 export default function Sidebar() {
     const [openCrudMenu, setOpenCrudMenu] = useState(true);
     const [openUserMenu, setOpenUserMenu] = useState(false);
+    const [newMessages, setNewMessages] = useState(0);
+    const [newInquiry, setNewInquiry] = useState(0);
+
+    const location = useLocation();
 
     const openCrudHandleMenu = () => {
         setOpenCrudMenu(state => !state);
@@ -15,6 +20,16 @@ export default function Sidebar() {
         setOpenUserMenu(state => !state);
     };
 
+    useEffect(() => {
+        const fetchInitial = async () => {
+            const newMessagesCount = await contactMessageApi.getNotAnswered();
+            setNewMessages(newMessagesCount);
+
+            const newInquiryCount = await availabilityInquiryApi.getNotAnswered();
+            setNewInquiry(newInquiryCount);
+        };
+        fetchInitial();
+    }, [location]);
 
     return (
         <>
@@ -69,7 +84,7 @@ export default function Sidebar() {
                                     </button>
                                 </div>
                                 <div
-                                    className={`${!openUserMenu? 'hidden' : ''} absolute right-0 z-50 mt-2 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-lg`}
+                                    className={`${!openUserMenu ? 'hidden' : ''} absolute right-0 z-50 mt-2 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-lg`}
                                 >
                                     <div className="px-4 py-3" role="none">
                                         <p
@@ -155,7 +170,7 @@ export default function Sidebar() {
                                 <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
                                     Картини
                                 </span>
-                                 <div className="w-6 h-6 text-indigo-700">{openCrudMenu ? '▲' : '▼'}</div>
+                                <div className="w-6 h-6 text-indigo-700">{openCrudMenu ? '▲' : '▼'}</div>
                             </button>
                             <ul className="py-2 space-y-2" hidden={!openCrudMenu}>
                                 <li>
@@ -196,7 +211,7 @@ export default function Sidebar() {
                                 <EnvelopeIcon className="w-6 h-6 text-indigo-700" />
                                 <span className="flex-1 ms-3 whitespace-nowrap">Запитвания</span>
                                 <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">
-                                    3
+                                    {newInquiry}
                                 </span>
                             </Link>
                         </li>
@@ -208,7 +223,7 @@ export default function Sidebar() {
                                 <ChatBubbleBottomCenterIcon className="w-6 h-6 text-indigo-700" />
                                 <span className="flex-1 ms-3 whitespace-nowrap">Съобщения</span>
                                 <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">
-                                    3
+                                    {newMessages}
                                 </span>
                             </Link>
                         </li>
