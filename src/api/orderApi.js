@@ -11,6 +11,11 @@ async function getAll() {
     return Object.values(result);
 }
 
+async function getLimit(limit) {
+  const result = await requester.get(`${baseUrl}.json?orderBy="createdAt"&limitToFirst=${limit}`);
+  return Object.values(result);
+}
+
 async function getOne(id) {
     return await requester.get(`${baseUrl}/${id}.json`);
 }
@@ -54,6 +59,7 @@ async function deleteOrder(orderId) {
 export default{
     getAll,
     getOne,
+    getLimit,
     create,
     updateData,
     deleteOrder
