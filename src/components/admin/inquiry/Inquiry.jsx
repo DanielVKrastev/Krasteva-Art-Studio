@@ -47,22 +47,22 @@ export default function Inquiry() {
         }
     };
 
-    const openDrawerUpdate = (id, name) => {
+    const openInquiryUpdate = (id, name) => {
         setIsOpenUpdate(true);
         setUpdateItem({id, name});
     };
  
-    const closeDrawerUpdate = () => {
+    const closeInquiryUpdate = () => {
         setIsOpenUpdate(false);
         setUpdateItem(null);
     };
 
-    const openDrawerDelete = (id, name) => {
+    const openInquiryDelete = (id, name) => {
         setIsOpenDelete(true);
         setDeleteItem({id, name});
     };
 
-    const closeDrawerDelete = () => {
+    const closeInquiryDelete = () => {
         setIsOpenDelete(false);
         setDeleteItem(null);
     };
@@ -108,8 +108,8 @@ export default function Inquiry() {
             <TableInquiry
                 currentInquiry={currentInquiry}
                 startIndex={startIndex}
-                openDrawerUpdate={openDrawerUpdate}
-                openDrawerDelete={openDrawerDelete}
+                openDrawerUpdate={openInquiryUpdate}
+                openDrawerDelete={openInquiryDelete}
             />
 
             <Pagination
@@ -127,7 +127,7 @@ export default function Inquiry() {
                 {isOpenUpdate && <AnswerInquiry
                     updateId={updateItem.id}
                     item={updateItem.name}
-                    closeDrawerUpdate={closeDrawerUpdate}
+                    closeInquiryUpdate={closeInquiryUpdate}
                 />
                 }
 
@@ -135,14 +135,14 @@ export default function Inquiry() {
                 {isOpenDelete && <DeleteDrawer
                     deleteId={deleteItem.id}
                     item={deleteItem.name}
-                    closeDrawerDelete={closeDrawerDelete}
+                    closeDrawerDelete={closeInquiryDelete}
                     handlerDelete={deleteInquiry}
                 />
                 }
 
             </div>
 
-            {(isOpenUpdate || isOpenDelete) && <div onClick={() => { closeDrawerUpdate(); closeDrawerDelete(); }} className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-49"></div>}
+            {(isOpenUpdate || isOpenDelete) && <div onClick={() => { closeInquiryUpdate(); closeInquiryDelete(); }} className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-49"></div>}
 
         </>
     );

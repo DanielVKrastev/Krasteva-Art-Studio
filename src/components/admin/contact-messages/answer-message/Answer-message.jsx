@@ -27,6 +27,8 @@ export default function AnswerMessage({
         const reply = formData.get('reply');
         const returnCall = formData.get('return-call');
 
+        if(message.answered === 'yes') { return };
+
         try {
 
             const updateMessageData = {

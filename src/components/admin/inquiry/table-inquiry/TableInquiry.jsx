@@ -35,7 +35,7 @@ export default function TableInquiry({
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {currentInquiry.map((inquiry, index) => (
-                                    <tr key={inquiry.id} className="hover:bg-gray-50">
+                                    <tr key={inquiry.id} className={`hover:bg-gray-50 ${inquiry.answered === 'no' && `bg-red-200`} `}>
                                         <td className="w-4 p-6">
                                             <input
                                                 id={`checkbox-${inquiry.id}`}

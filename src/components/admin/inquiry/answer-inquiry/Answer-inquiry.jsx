@@ -7,7 +7,7 @@ import dateConvertor from "../../../../utils/dateConvertor";
 export default function AnswerInquiry({
     updateId,
     item,
-    closeDrawerUpdate
+    closeInquiryUpdate
 }) {
     const [inquiry, setInquiry] = useState({});
     const [painting, setPainting] = useState({});
@@ -26,23 +26,35 @@ export default function AnswerInquiry({
         fetchInitial();
     }, []);
 
-    const onSubmitUpdate = async (e) => {
+const onSubmitUpdate = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const size = formData.get('size');
-
+        const reply = formData.get('reply');
+        const returnCall = formData.get('return-call');
+4
+        if(inquiry.answered === 'yes') { return };
+        
         try {
-            const updateSizeData = {
-                size,
+
+            const updateInquiryData = {
+                reply,
+                answered: 'yes'
             };
 
-            console.log("Answer.");
+            if(returnCall !== null && reply === '') {
+                updateInquiryData.reply = '(Позвънено)';
+            }
 
-            closeDrawerUpdate();
+            console.log(updateInquiryData);
+            
+            
+            await availabilityInquiryApi.updateData(updateId, updateInquiryData);
+            console.log("Reply.");
+
+            closeInquiryUpdate();
         } catch (err) {
             console.log(err.message);
         }
-
     }
 
     return (
@@ -62,7 +74,7 @@ export default function AnswerInquiry({
                     aria-controls="drawer-update-product-default"
                     className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5"
                     data-drawer-dismiss="drawer-update-product-default"
-                    onClick={closeDrawerUpdate}
+                    onClick={closeInquiryUpdate}
                     type="button"
                 >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -130,22 +142,29 @@ export default function AnswerInquiry({
                             <img src={painting.imageUrl} alt={painting.name} />
                         </div>
                         <div>
-                            <label htmlFor="update-answer" className="block mb-2 text-sm font-medium text-gray-900">
+                            <label htmlFor="update-reply" className="block mb-2 text-sm font-medium text-gray-900">
                                 Отговор
                             </label>
                             <textarea
-                                id="update-description"
-                                name="description"
+                                id="update-reply"
+                                name="reply"
+                                defaultValue={inquiry?.reply}
+                                readOnly={inquiry?.reply}
                                 rows="4"
                                 className="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                             />
                         </div>
 
+                        <div className="flex items-center ps-4 border border-gray-300 rounded-sm">
+                            <input id="bordered-checkbox-1" type="checkbox" name="return-call" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500" />
+                            <label htmlFor="bordered-checkbox-1" className="w-full py-4 ms-2 text-sm font-medium ">Маркирай за позвъняване</label>
+                        </div>
+
                         <div className="left-0 justify-center w-full pb-4 mt-10 space-x-4 sm:absolute sm:px-4 sm:mt-0">
                             <button
                                 type="submit"
-                                className="w-full justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-
+                                className={`w-full justify-center text-white ${inquiry?.answered === 'yes' ? `bg-gray-400` : `bg-indigo-700 hover:bg-indigo-800 focus:ring-indigo-300`}  focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer`}
+                                disabled={inquiry?.reply}
                             >
                                 Върни отговор
                             </button>
