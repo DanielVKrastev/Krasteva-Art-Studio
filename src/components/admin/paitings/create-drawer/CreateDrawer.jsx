@@ -208,8 +208,8 @@ export default function CreateDrawer({
                                     <option>Зареждане...</option>
                                 ) : (
                                     size.map((s) => (
-                                        <option key={s} value={s}>
-                                            {s}
+                                        <option key={s.id} value={s.size}>
+                                            {s.size}
                                         </option>
                                     ))
                                 )}
