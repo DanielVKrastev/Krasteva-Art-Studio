@@ -4,6 +4,7 @@ import orderApi from "../../../api/orderApi";
 import paintingApi from "../../../api/paintingApi";
 import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
 import contactMessageApi from "../../../api/contactMessageApi";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
     const [orders, setOrders] = useState([]);
@@ -87,9 +88,10 @@ export default function Dashboard() {
                                 <span className="text-2xl font-bold leading-none text-gray-900 sm:text-3xl">
                                     {profitData.totalOrders}
                                 </span>
-                                <p className="flex items-center text-base font-normal text-gray-500">
+                                <Link to='/admin/orders'><p className="flex items-center text-base font-normal text-gray-500">
                                     За целия период
                                 </p>
+                                </Link>
                             </div>
                             <div className="w-full" id="new-products-chart" />
                         </div>
@@ -133,9 +135,10 @@ export default function Dashboard() {
                                 <span className="text-2xl font-bold leading-none text-gray-900 sm:text-3xl">
                                     {totalPainting}
                                 </span>
-                                <p className="flex items-center text-base font-normal text-gray-500">
-                                    Създадени
+                                <Link to='/admin/paintings'><p className="flex items-center text-base font-normal text-gray-500">
+                                    Виж
                                 </p>
+                                </Link>
                             </div>
                             <div className="w-full" id="new-products-chart" />
                         </div>
@@ -147,9 +150,10 @@ export default function Dashboard() {
                                 <span className="text-2xl font-bold leading-none text-gray-900 sm:text-3xl">
                                     {totalInquiry}
                                 </span>
-                                <p className="flex items-center text-base font-normal text-gray-500">
+                                <Link to='/admin/inquiry'><p className="flex items-center text-base font-normal text-gray-500">
                                     Виж нови
                                 </p>
+                                </Link>
                             </div>
                             <div className="w-full" id="new-products-chart" />
                         </div>
@@ -161,9 +165,10 @@ export default function Dashboard() {
                                 <span className="text-2xl font-bold leading-none text-gray-900 sm:text-3xl">
                                     {totalMessages}
                                 </span>
-                                <p className="flex items-center text-base font-normal text-gray-500">
+                                <Link to='/admin/contact-messages'><p className="flex items-center text-base font-normal text-gray-500">
                                     Виж нови
                                 </p>
+                                </Link>
                             </div>
                             <div className="w-full" id="new-products-chart" />
                         </div>
