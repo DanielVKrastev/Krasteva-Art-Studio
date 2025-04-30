@@ -28,6 +28,7 @@ export default function AnswerMessage({
         const returnCall = formData.get('return-call');
 
         if(message.answered === 'yes') { return };
+        if(message.answered === 'no' && reply === '') { return };
 
         try {
 

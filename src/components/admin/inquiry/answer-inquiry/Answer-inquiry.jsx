@@ -33,6 +33,7 @@ const onSubmitUpdate = async (e) => {
         const returnCall = formData.get('return-call');
 4
         if(inquiry.answered === 'yes') { return };
+        if(inquiry.answered === 'no' && reply === '') { return };
         
         try {
 
