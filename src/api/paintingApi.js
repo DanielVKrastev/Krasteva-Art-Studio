@@ -2,7 +2,7 @@ import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
 import { database } from '../../firebase';
-import { ref, remove, serverTimestamp, update } from "firebase/database";
+import { get, ref, remove, serverTimestamp, update } from "firebase/database";
 
 const baseUrl = `${BASE_URL}/paintings`;
 
@@ -24,6 +24,14 @@ async function getAllForSales() {
 async function getOne(id) {
     return await requester.get(`${baseUrl}/${id}.json`);
 }
+
+async function getPaintingsCount() {
+    const snapshot = await get(ref(database, 'paintings'));
+    if (!snapshot.exists()) return 0;
+  
+    const data = snapshot.val();
+    return Object.keys(data).length;
+  }
 
 async function getPaintingsByCategory(category) {
 
@@ -129,6 +137,7 @@ export default {
     getAllForSales,
     getLimit,
     getOne,
+    getPaintingsCount,
     getPaintingsByCategory,
     getPaintingsBySize,
     getCombinedPaintings,
