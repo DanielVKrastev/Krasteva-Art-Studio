@@ -25,6 +25,11 @@ async function getInquiryCount() {
   return Object.keys(data).length;
 }
 
+async function getNotAnswered() {
+  const data = await requester.get(`${baseUrl}.json?orderBy="answered"&equalTo="no"`);
+  return Object.keys(data).length;
+}
+
 const create = async (data) => {
   try {
     const inquiryRef = push(ref(database, 'availabilityInquiry'));
@@ -62,6 +67,7 @@ export default {
   getAll,
   getOne,
   getInquiryCount,
+  getNotAnswered,
   create,
   updateData,
   deleteInquiry
