@@ -1,16 +1,20 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BookOpenIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, EnvelopeIcon, PaintBrushIcon, TagIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 import contactMessageApi from "../../../api/contactMessageApi";
 import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
+import { auth } from "../../../../firebase";
+import { signOut } from "firebase/auth";
 
 export default function Sidebar() {
     const [openCrudMenu, setOpenCrudMenu] = useState(true);
     const [openUserMenu, setOpenUserMenu] = useState(false);
     const [newMessages, setNewMessages] = useState(0);
     const [newInquiry, setNewInquiry] = useState(0);
+    const adminEmail = auth.currentUser.email;
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     const openCrudHandleMenu = () => {
         setOpenCrudMenu(state => !state);
@@ -30,6 +34,15 @@ export default function Sidebar() {
         };
         fetchInitial();
     }, [location]);
+    
+    async function logoutHandler() {
+        try{
+            await signOut(auth);
+            navigate('/admin/login');
+        }catch(err){
+            console.log(err.message);
+        }
+    }
 
     return (
         <>
@@ -91,13 +104,13 @@ export default function Sidebar() {
                                             className="text-sm text-gray-900"
                                             role="none"
                                         >
-                                            Elica Krasteva
+                                            Admin
                                         </p>
                                         <p
                                             className="text-sm font-medium text-gray-900 truncate"
                                             role="none"
                                         >
-                                            elicakrasteva@gmail.com
+                                            {adminEmail}
                                         </p>
                                     </div>
                                     <ul className="py-1" role="none">
@@ -121,6 +134,7 @@ export default function Sidebar() {
                                         </li>
                                         <li>
                                             <Link
+                                                onClick={() => logoutHandler()}
                                                 to="#"
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
                                                 role="menuitem"
