@@ -1,22 +1,30 @@
 import { data, Link } from "react-router-dom";
 import contactMessageApi from "../../api/contactMessageApi";
+import { useState } from "react";
+import MessageToast from "../partials/message-toast/MessageToast";
 
 export default function About() {
+    const [showMessageToast, setMessageShowToast] = useState(false);
 
     const handleSubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.currentTarget);
-            const messageData = Object.fromEntries(formData);
-            messageData.answered = 'no';
-            try{
-                await contactMessageApi.create(messageData);
-                
-            }catch(err){
-                console.log(err.message);
-            }
-        };
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const messageData = Object.fromEntries(formData);
+        messageData.answered = 'no';
+        try {
+            await contactMessageApi.create(messageData);
+            setMessageShowToast({type: 'success', content: 'Успешно изпратено съобщение'});
+        } catch (err) {
+            setMessageShowToast({type: 'error', content: 'Грешка в изпращането на съобщение'});
+            console.log(err.message);
+        }
+    };
     return (
         <>
+            {showMessageToast && <MessageToast
+                message={showMessageToast}
+                onClose={setMessageShowToast}
+            />}
             <div className="bg-gray-100 py-16 px-6 sm:px-16 lg:px-20">
                 <div className="container mx-auto px-4 space-y-16">
 

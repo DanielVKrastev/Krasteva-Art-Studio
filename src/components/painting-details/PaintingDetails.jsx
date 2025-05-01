@@ -8,9 +8,12 @@ import useActiveSection from "../../hooks/useActiveSection";
 import { useCartContext } from "../../contexts/CartContext";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import availabilityInquiryApi from "../../api/availabilityInquiryApi";
+import MessageToast from "../partials/message-toast/MessageToast";
 
 export default function PaintingDetails() {
     const [painting, setPainting] = useState({});
+    const [showMessageToast, setMessageShowToast] = useState(false);
+
     const { paintingId } = useParams();
 
     const { cart, setCart } = useCartContext();
@@ -62,14 +65,19 @@ export default function PaintingDetails() {
 
         try {
             await availabilityInquiryApi.create(inquiryData);
-            console.log('success inquiry');
+            setMessageShowToast({type: 'success', content: 'Успешно изпратено запитване'});
         } catch (err) {
+            setMessageShowToast({type: 'error', content: 'Грешка в изпращането на запитване'});
             console.log(err.message);
         }
     };
 
     return (
         <>
+            {showMessageToast && <MessageToast 
+                message={showMessageToast} 
+                onClose={setMessageShowToast}
+            />}
             <div className="container mx-auto py-8 mb-30">
                 {/* Breadcrumb */}
                 <div className="mb-6 text-sm text-gray-500">

@@ -13,7 +13,7 @@ export default function MessageToast({ message, onClose }) {
     return (
         <>
             <div
-                className="fixed right-4 top-20 z-50 transition px-3 py-4 pr-15  text-gray-500 bg-white rounded-lg shadow-sm"
+                className="fixed right-4 top-25 z-50 transition px-3 py-4 pr-15  text-gray-500 bg-white rounded-lg shadow-sm"
                 onClick={() => onClose(false)}
             >
                 <XMarkIcon

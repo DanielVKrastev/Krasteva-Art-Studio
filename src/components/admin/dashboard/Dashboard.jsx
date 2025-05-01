@@ -27,8 +27,8 @@ export default function Dashboard() {
             setOrders(data);
         };
         fetchInitial();
-    }, []);    
-    
+    }, []);
+
     return (
         <>
             <div className="p-4 sm:ml-64">
