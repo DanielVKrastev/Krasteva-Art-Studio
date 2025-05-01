@@ -10,17 +10,14 @@ export default function Checkout() {
     const isCartEmpty = cartItems.length === 0;
 
     const navigate = useNavigate();
-    //If cart is empty redirect to Home Page
-    useEffect(() => {
-        if(isCartEmpty){
-            navigate('/');
-        }
-    }, [isCartEmpty])
 
     const [deliveryMethod, setDeliveryMethod] = useState("econt");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        if(isCartEmpty) return;
+
         const formData = new FormData(e.currentTarget);
         let orderData = Object.fromEntries(formData);
         orderData = {
@@ -31,11 +28,10 @@ export default function Checkout() {
         const paintingIds = cartItems.map(painting => painting.id);
         
         try{
-            await orderApi.create(orderData, paintingIds);
+            const order = await orderApi.create(orderData, paintingIds);
             await paintingApi.markAsSold(cartItems);
+            navigate("/payment-success" ,{ state: { order: orderData } });
             setCart();
-            console.log('success order');
-            navigate('/');
         }catch(err){
             console.log(err.message);
         }
@@ -161,7 +157,8 @@ export default function Checkout() {
                         </Link>
                         <button
                             form="checkout-form"
-                            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer"
+                            className={`${isCartEmpty? `bg-gray-300` : `bg-indigo-600 hover:bg-indigo-700`} text-white px-6 py-2 rounded-lg  transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer`}
+                            disabled={isCartEmpty}
                         >
                             Продължи
                         </button>
