@@ -9,10 +9,12 @@ import { useCartContext } from "../../contexts/CartContext";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import availabilityInquiryApi from "../../api/availabilityInquiryApi";
 import MessageToast from "../partials/message-toast/MessageToast";
+import LoadingSpinner from "../partials/loading-spinner/LoadingSpinner";
 
 export default function PaintingDetails() {
     const [painting, setPainting] = useState({});
     const [showMessageToast, setMessageShowToast] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { paintingId } = useParams();
 
@@ -24,7 +26,9 @@ export default function PaintingDetails() {
 
     useEffect(() => {
         (async function () {
+            setIsLoading(true);
             const painting = await paintingApi.getOne(paintingId);
+            setIsLoading(false);
             setPainting(painting);
 
             if (!painting) {
@@ -55,6 +59,7 @@ export default function PaintingDetails() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const formData = new FormData(e.currentTarget);
         let inquiryData = Object.fromEntries(formData);
         inquiryData = {
@@ -69,11 +74,15 @@ export default function PaintingDetails() {
         } catch (err) {
             setMessageShowToast({type: 'error', content: 'Грешка в изпращането на запитване'});
             console.log(err.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
+
             {showMessageToast && <MessageToast 
                 message={showMessageToast} 
                 onClose={setMessageShowToast}
