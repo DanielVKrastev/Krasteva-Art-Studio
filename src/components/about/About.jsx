@@ -2,12 +2,15 @@ import { data, Link } from "react-router-dom";
 import contactMessageApi from "../../api/contactMessageApi";
 import { useState } from "react";
 import MessageToast from "../partials/message-toast/MessageToast";
+import LoadingSpinner from "../partials/loading-spinner/LoadingSpinner";
 
 export default function About() {
     const [showMessageToast, setMessageShowToast] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const formData = new FormData(e.currentTarget);
         const messageData = Object.fromEntries(formData);
         messageData.answered = 'no';
@@ -17,10 +20,14 @@ export default function About() {
         } catch (err) {
             setMessageShowToast({type: 'error', content: 'Грешка в изпращането на съобщение'});
             console.log(err.message);
+        } finally {
+            setIsLoading(false);
         }
     };
     return (
         <>
+            {isLoading && <LoadingSpinner />}
+
             {showMessageToast && <MessageToast
                 message={showMessageToast}
                 onClose={setMessageShowToast}
