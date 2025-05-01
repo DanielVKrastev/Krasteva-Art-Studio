@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import categoryApi from "../../../api/categoryApi";
+import { Link } from "react-router-dom";
 
 export default function ArtCategories() {
     const [categories, setCategories] = useState([]);
@@ -25,9 +26,9 @@ export default function ArtCategories() {
                     
                  
                     {categories.map((category, index) => (
-                        <a
+                        <Link
                             key={index}
-                            href="#"
+                            to={`/artshop?category=${category?.name}`}
                             className="relative group overflow-hidden rounded-2xl shadow-lg"
                             data-aos="fade"
                             data-aos-delay={index * 100}
@@ -46,7 +47,7 @@ export default function ArtCategories() {
                                 <span className="text-sm uppercase tracking-wide text-gray-200">Категория</span>
                                 <h3 className="text-2xl font-bold mt-2">{category?.name}</h3>
                             </div>
-                        </a>
+                        </Link>
                       
                     ))}
                 </div>
