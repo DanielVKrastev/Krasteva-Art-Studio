@@ -22,6 +22,7 @@ import ContactMessages from './components/admin/contact-messages/ContactMessages
 import Settings from './components/admin/settings/Settings';
 import Dashboard from './components/admin/dashboard/Dashboard';
 import Login from './components/admin/login/Login';
+import PaymentSuccess from './components/checkout/payment-success/PaymentSuccess';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/checkout' element={<Checkout />} />
+        <Route path='/payment-success' element={<PaymentSuccess />} />
         <Route path='/search' element={<SearchResults />} />
       </Route>
 
