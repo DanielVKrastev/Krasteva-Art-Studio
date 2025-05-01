@@ -4,6 +4,7 @@ import Filters from "../partials/filters/Filters";
 import paintingApi from "../../api/paintingApi";
 import { useCartContext } from "../../contexts/CartContext";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import LoadingSpinner from "../partials/loading-spinner/LoadingSpinner";
 
 export default function ArtShop() {
     const location = useLocation();
@@ -12,6 +13,7 @@ export default function ArtShop() {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
     const [paintings, setPaintings] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { cart, setCart } = useCartContext();
 
@@ -33,7 +35,9 @@ export default function ArtShop() {
 
     useEffect(() => {
         (async function () {
+            setIsLoading(true);
             const paintings = await paintingApi.getAllForSales();
+            setIsLoading(false);
             setPaintings(paintings);
         })();
     }, []);
@@ -63,6 +67,8 @@ export default function ArtShop() {
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
+
             <div className="bg-gray-100 py-16 px-6 sm:px-16 lg:px-20">
                 {/* Breadcrumb */}
                 <div className="mb-6 text-sm text-gray-500">
