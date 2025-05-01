@@ -6,10 +6,12 @@ import DeleteDrawer from "../partials/delete-drawer/DeleteDrawer";
 import AnswerMessage from "./answer-message/Answer-message";
 import TableMessages from "./table-messages/TableMessages";
 import contactMessageApi from "../../../api/contactMessageApi";
+import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
 
 export default function ContactMessages() {
     const [messages, setMessages] = useState([]);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
+    const [isLoading, setIsLoading] = useState(false);
     
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -32,7 +34,9 @@ export default function ContactMessages() {
 
     useEffect(() => {
         const fetchInitial = async () => {
+            setIsLoading(true);
             const data = await contactMessageApi.getAll();
+            setIsLoading(false);
             setMessages(data);
         };
         fetchInitial();
@@ -69,6 +73,8 @@ export default function ContactMessages() {
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
+
             <div className="p-6 bg-white text-gray-900 sm:ml-55 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
                 <div className="mt-14">
                     <div className="mb-4">

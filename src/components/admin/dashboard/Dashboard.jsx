@@ -5,6 +5,7 @@ import paintingApi from "../../../api/paintingApi";
 import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
 import contactMessageApi from "../../../api/contactMessageApi";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
 
 export default function Dashboard() {
     const [orders, setOrders] = useState([]);
@@ -12,14 +13,17 @@ export default function Dashboard() {
     const [totalInquiry, setTotalInquiry] = useState(0);
     const [totalMessages, setTotalMessages] = useState(0);
     const [profitData, setProfitData] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchInitial = async () => {
+            setIsLoading(true);
             const data = await orderApi.getLimit(8);
             const profitData = await orderApi.getProfitData();
             const totalPainting = await paintingApi.getPaintingsCount();
             const totalInquiry = await availabilityInquiryApi.getInquiryCount();
             const totalMessages = await contactMessageApi.getMessagesCount();
+            setIsLoading(false);
             setTotalPainting(totalPainting);
             setTotalInquiry(totalInquiry);
             setTotalMessages(totalMessages);
@@ -31,6 +35,8 @@ export default function Dashboard() {
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
+            
             <div className="p-4 sm:ml-64">
                 <div className="p-4 border-dashed rounded-lg mt-14">
                     <div className="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3">

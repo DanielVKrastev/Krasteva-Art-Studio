@@ -6,10 +6,12 @@ import DeleteDrawer from "../partials/delete-drawer/DeleteDrawer";
 import AnswerInquiry from "./answer-inquiry/Answer-inquiry";
 import TableInquiry from "./table-inquiry/TableInquiry";
 import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
+import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
 
 export default function Inquiry() {
     const [inquiry, setInquiry] = useState([]);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
+    const [isLoading, setIsLoading] = useState(false);
     
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -32,7 +34,9 @@ export default function Inquiry() {
 
     useEffect(() => {
         const fetchInitial = async () => {
+            setIsLoading(true);
             const data = await availabilityInquiryApi.getAll();
+            setIsLoading(false);
             setInquiry(data);
         };
         fetchInitial();
@@ -69,6 +73,8 @@ export default function Inquiry() {
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
+
             <div className="p-6 bg-white text-gray-900 sm:ml-55 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
                 <div className="mt-14">
                     <div className="mb-4">

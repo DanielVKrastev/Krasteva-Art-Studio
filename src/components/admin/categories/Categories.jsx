@@ -8,10 +8,12 @@ import CreateDrawer from "./create-drawer/CreateDrawer";
 import deleteImage from "../../../utils/deleteImage";
 import TableCategories from "./table-categories/TableCategories";
 import categoryApi from "../../../api/categoryApi";
+import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
 
 export default function Paintings() {
     const [categories, setCategories] = useState([]);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
+    const [isLoading, setIsLoading] = useState(false);
     
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -35,7 +37,9 @@ export default function Paintings() {
 
     useEffect(() => {
         const fetchInitial = async () => {
+            setIsLoading(true);
             const data = await categoryApi.getAll();
+            setIsLoading(false);
             setCategories(data);
         };
         fetchInitial();
@@ -86,6 +90,8 @@ export default function Paintings() {
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
+            
             <div className="p-6 bg-white text-gray-900 sm:ml-55 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
                 <div className="mt-14">
                     <div className="mb-4">
