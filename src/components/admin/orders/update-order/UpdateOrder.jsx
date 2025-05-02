@@ -4,6 +4,7 @@ import addImage from "../../../../utils/addImage";
 import orderApi from "../../../../api/orderApi";
 import PaintingListCell from "../../partials/painting-list-cell/PaintingListCell";
 import dateConvertor from "../../../../utils/dateConvertor";
+import paintingApi from "../../../../api/paintingApi";
 
 export default function UpdateOrder({
     updateId,
@@ -49,6 +50,10 @@ export default function UpdateOrder({
                 postCode,
                 status,
             };
+
+            if(status === 'отказана' || status === 'върната'){
+                await paintingApi.markForSell(order.paintingIds)
+            }
 
             console.log("Order data to update.");
 

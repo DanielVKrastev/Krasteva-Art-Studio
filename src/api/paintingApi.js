@@ -122,6 +122,21 @@ const markAsSold = async (cartItems) => {
     }
 };
 
+const markForSell = async (paintingIds) => {
+    const updates = {};
+
+    paintingIds.forEach(paintingId => {
+        const itemRef = `paintings/${paintingId}`;
+        updates[`${itemRef}/sold`] = "no";
+    });
+
+    try {
+        await update(ref(database), updates);
+        console.log("All paintings are marked for sell.");
+    } catch (error) {
+        console.error("Update sold error", error);
+    }
+};
 
 async function updateData(idPainting, data) {
     const user = auth.currentUser;
@@ -152,5 +167,6 @@ export default {
     create,
     updateData,
     markAsSold,
+    markForSell,
     deletePainting
 }
