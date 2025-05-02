@@ -25,8 +25,15 @@ export default function Size() {
     };
 
     const setRecordsPerPagePaginationHandler = (e) => {
-        setRecordsPerPage(e.target.value);
+        setRecordsPerPage(Number(e.target.value));
+        setCurrentPage(1);
     };
+
+    useEffect(() => {
+        if (currentPage > totalPages) {
+            setCurrentPage(totalPages || 1);
+        }
+    }, [totalPages, currentPage]);
 
     const [isOpenCreate, setIsOpenCreate] = useState(false);
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);

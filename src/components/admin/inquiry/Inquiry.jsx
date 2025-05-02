@@ -24,8 +24,15 @@ export default function Inquiry() {
     };
 
     const setRecordsPerPagePaginationHandler = (e) => {
-        setRecordsPerPage(e.target.value);
+        setRecordsPerPage(Number(e.target.value));
+        setCurrentPage(1);
     };
+
+    useEffect(() => {
+        if (currentPage > totalPages) {
+            setCurrentPage(totalPages || 1);
+        }
+    }, [totalPages, currentPage]);
 
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const [updateItem, setUpdateItem] = useState(null);
