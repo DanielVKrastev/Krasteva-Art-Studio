@@ -1,7 +1,7 @@
 import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
-import { database } from '../../firebase';
+import { auth, database } from '../../firebase';
 import { ref, push, serverTimestamp, set, remove } from "firebase/database";
 
 const baseUrl = `${BASE_URL}/orders`;
@@ -95,7 +95,9 @@ const create = async (data, paintingIds) => {
 };
 
 async function updateData(idOrder, data) {
-    return await requester.patch(`${baseUrl}/${idOrder}.json`, data);
+  const user = auth.currentUser;
+  const token = await user.getIdToken();
+  return await requester.patch(`${baseUrl}/${idOrder}.json?auth=${token}`, data);
 }
 
 async function deleteOrder(orderId) {

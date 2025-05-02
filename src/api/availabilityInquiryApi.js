@@ -1,7 +1,7 @@
 import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
 
-import { database } from '../../firebase';
+import { auth, database } from '../../firebase';
 import { ref, push, serverTimestamp, set, remove, get } from "firebase/database";
 
 const baseUrl = `${BASE_URL}/availabilityInquiry`;
@@ -49,7 +49,9 @@ const create = async (data) => {
 };
 
 async function updateData(idInquiry, data) {
-  return await requester.patch(`${baseUrl}/${idInquiry}.json`, data);
+  const user = auth.currentUser;
+  const token = await user.getIdToken();
+  return await requester.patch(`${baseUrl}/${idInquiry}.json?auth=${token}`, data);
 }
 
 async function deleteInquiry(inquiryId) {
