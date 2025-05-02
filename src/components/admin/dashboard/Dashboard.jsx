@@ -6,6 +6,7 @@ import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
 import contactMessageApi from "../../../api/contactMessageApi";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
+import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/16/solid";
 
 export default function Dashboard() {
     const [orders, setOrders] = useState([]);
@@ -49,20 +50,10 @@ export default function Dashboard() {
                                     {profitData.currentMonthProfit}лв
                                 </span>
                                 <p className="flex items-center text-base font-normal text-gray-500">
-                                    <span className="flex items-center mr-1.5 text-sm text-green-500">
-                                        <svg
-                                            className="w-4 h-4"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            aria-hidden="true"
-                                        >
-                                            <path
-                                                clipRule="evenodd"
-                                                fillRule="evenodd"
-                                                d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"
-                                            />
-                                        </svg>
+                                    <span className={`flex items-center mr-1.5 text-sm 
+                                        ${profitData.currentMonthProfit - profitData.lastMonthProfit > 0 ? `text-green-500` : `text-red-500`}`}>
+                                        {profitData.currentMonthProfit - profitData.lastMonthProfit > 0 && <ArrowUpIcon className="w-4 h-4" />}
+                                        {profitData.currentMonthProfit - profitData.lastMonthProfit < 0 && <ArrowDownIcon className="w-4 h-4" />}
                                         {profitData.currentMonthProfit - profitData.lastMonthProfit}лв
                                     </span>
                                     От миналия месец
@@ -111,20 +102,10 @@ export default function Dashboard() {
                                     {profitData.currentMonthOrders}
                                 </span>
                                 <p className="flex items-center text-base font-normal text-gray-500">
-                                    <span className="flex items-center mr-1.5 text-sm text-green-500">
-                                        <svg
-                                            className="w-4 h-4"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            aria-hidden="true"
-                                        >
-                                            <path
-                                                clipRule="evenodd"
-                                                fillRule="evenodd"
-                                                d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"
-                                            />
-                                        </svg>
+                                    <span className={`flex items-center mr-1.5 text-sm 
+                                        ${profitData.currentMonthOrders - profitData.lastMonthOrders > 0 ? `text-green-500` : `text-red-500`}`}>
+                                        {profitData.currentMonthOrders - profitData.lastMonthOrders > 0 && <ArrowUpIcon className="w-4 h-4" />}
+                                        {profitData.currentMonthOrders - profitData.lastMonthOrders < 0 && <ArrowDownIcon className="w-4 h-4" />}
                                         {profitData.currentMonthOrders - profitData.lastMonthOrders}
                                     </span>
                                     От миналия месец
