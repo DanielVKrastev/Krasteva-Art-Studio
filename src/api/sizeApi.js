@@ -5,8 +5,6 @@ import { auth, database } from "../../firebase";
 
 const baseUrl = `${BASE_URL}/size`;
 
-const user = auth.currentUser;
-
 async function getAll() {
     const result = await requester.get(`${baseUrl}.json`);
     const data = Object.values(result || {});
@@ -18,6 +16,7 @@ async function getOne(id) {
 }
 
 async function create(data) {
+    const user = auth.currentUser;
     const token = await user.getIdToken();
     const response = await fetch(`${baseUrl}.json?auth=${token}`, {
         method: "POST",
@@ -37,6 +36,7 @@ async function create(data) {
 }
 
 async function updateData(idSize, data) {
+    const user = auth.currentUser;
     const token = await user.getIdToken();
     return await requester.patch(`${baseUrl}/${idSize}.json?auth=${token}`, data);
 }
