@@ -1,7 +1,7 @@
 import { ref, remove, serverTimestamp } from "firebase/database";
 import { BASE_URL } from "../constants";
 import requester from "../utils/requester";
-import { database } from "../../firebase";
+import { auth, database } from "../../firebase";
 
 const baseUrl = `${BASE_URL}/category`;
 
@@ -16,7 +16,9 @@ async function getOne(id) {
     return await requester.get(`${baseUrl}/${id}.json`);
 }
 
-async function create(data, token) {
+async function create(data) {
+    const user = auth.currentUser;
+    const token = await user.getIdToken();
     const newData = {
         createdAt: serverTimestamp(),
         ...data
@@ -40,7 +42,9 @@ async function create(data, token) {
 }
 
 async function updateData(idCategory, data) {
-    return await requester.patch(`${baseUrl}/${idCategory}.json`, data);
+    const user = auth.currentUser;
+    const token = await user.getIdToken();
+    return await requester.patch(`${baseUrl}/${idCategory}.json?auth=${token}`, data);
 }
 
 async function deleteCategory(categoryId) {
