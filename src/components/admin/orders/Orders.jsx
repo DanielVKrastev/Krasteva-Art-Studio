@@ -8,6 +8,7 @@ import TableOrders from "./table-orders/TableOrders";
 import UpdateOrder from "./update-order/UpdateOrder";
 import deleteImage from "../../../utils/deleteImage";
 import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
+import paintingApi from "../../../api/paintingApi";
 
 export default function Orders() {
     const [orders, setOrders] = useState([]);
@@ -46,8 +47,9 @@ export default function Orders() {
     const deleteOrder = async (id) => {
         try{
             const order = await orderApi.getOne(id);
+            await paintingApi.markForSell(order.paintingIds);
             await orderApi.deleteOrder(id);
-            setOrders(state => state.filter(painting => painting.id !== id));
+            setOrders(state => state.filter(order => order.id !== id));
             if(order.deletehash){
                 deleteImage(order.deletehash);
             }
