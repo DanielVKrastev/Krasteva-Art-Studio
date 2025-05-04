@@ -14,7 +14,9 @@ export default function Orders() {
     const [orders, setOrders] = useState([]);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
     const [isLoading, setIsLoading] = useState(false);
-    
+    const [searchParams, setSearchParams] = useState([]);
+    const [selectedValueCriteria, setSelectedValueCriteria] = useState('telephone');
+
     const [currentPage, setCurrentPage] = useState(1);
 
     const totalPages = Math.ceil(orders.length / recordsPerPage);
@@ -44,32 +46,55 @@ export default function Orders() {
     useEffect(() => {
         const fetchInitial = async () => {
             setIsLoading(true);
-            const data = await orderApi.getAll();
-            setIsLoading(false);
-            setOrders(data);
+            if (!searchParams.search) {
+                await orderApi.getAll()
+                    .then(result => {
+                        setOrders(result);
+                        setIsLoading(false);
+                    }).catch(err => {
+                        setIsLoading(false);
+                        console.error(err.message);
+                    });
+                return;
+            }
+
+            await orderApi.getAll()
+                .then(result => {
+                    const search = searchParams.search;
+                    const criteria = searchParams.criteria;
+
+                    const searchFind = result.filter(order => order[criteria].toLowerCase() === search.toLowerCase());
+                    setOrders(searchFind);
+                    setIsLoading(false);
+                }).catch(err => {
+                    setIsLoading(false);
+                    console.error(err);
+                });
+            return;
         };
+
         fetchInitial();
-    }, [recordsPerPage, isOpenDelete, isOpenUpdate]);
+    }, [recordsPerPage, isOpenDelete, isOpenUpdate, searchParams]);
 
     const deleteOrder = async (id) => {
-        try{
+        try {
             const order = await orderApi.getOne(id);
             await paintingApi.markForSell(order.paintingIds);
             await orderApi.deleteOrder(id);
             setOrders(state => state.filter(order => order.id !== id));
-            if(order.deletehash){
+            if (order.deletehash) {
                 deleteImage(order.deletehash);
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     };
 
     const openOrderUpdate = (id, name) => {
         setIsOpenUpdate(true);
-        setUpdateItem({id, name});
+        setUpdateItem({ id, name });
     };
- 
+
     const closeOrderUpdate = () => {
         setIsOpenUpdate(false);
         setUpdateItem(null);
@@ -77,12 +102,25 @@ export default function Orders() {
 
     const openOrderDelete = (id, name) => {
         setIsOpenDelete(true);
-        setDeleteItem({id, name});
+        setDeleteItem({ id, name });
     };
 
     const closeDrawerDelete = () => {
         setIsOpenDelete(false);
         setDeleteItem(null);
+    };
+
+    const handleChangeSelectCriteria = (e) => {
+        setSelectedValueCriteria(e.target.value);
+    };
+
+    const searchClickHandler = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const search = formData.get('search');
+        const criteria = formData.get('criteria');
+
+        setSearchParams({ search, criteria });
     };
 
     return (
@@ -101,21 +139,59 @@ export default function Orders() {
 
                     <div className="items-center justify-between block sm:flex">
                         <div className="flex items-center mb-4 sm:mb-0">
-                            <form className="sm:pr-3" action="#" method="GET">
-                                <label htmlFor="products-search" className="sr-only">Търси</label>
-                                <div className="relative w-48 mt-1 sm:w-64 xl:w-96">
-                                    <input
-                                        type="text"
-                                        id="products-search"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
-                                        placeholder="Търсене на поръчки"
-                                    />
+                            <form className="w-100 mx-auto" onSubmit={searchClickHandler}>
+                                <div className="flex">
+                                    <select
+                                        className="shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 :bg-gray-700"
+                                        name="criteria"
+                                        value={selectedValueCriteria}
+                                        onChange={handleChangeSelectCriteria}
+                                    >
+                                        <option value='firstName'>Име</option>
+                                        <option value='lastName'>Фамилия</option>
+                                        <option value='email'>Email</option>
+                                        <option value='telephone'>Телефон</option>
+                                        <option value='psotCode'>Пощ. код</option>
+                                        <option value='town'>Град</option>
+                                        <option value='status'>Статус</option>
+                                    </select>
+                                    <div className="relative w-full">
+                                        <input
+                                            type="search"
+                                            name="search"
+                                            className="block p-3 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                            placeholder="Име, Email, Телефон..."
+                                            required
+                                        />
+                                        <button
+                                            type="submit"
+                                            className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                                        >
+                                            <svg
+                                                className="w-4 h-4"
+                                                aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    stroke="currentColor"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                                                />
+                                            </svg>
+                                            <span className="sr-only">Търсене</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
 
-                            <div className="flex items-center w-full sm:justify-end mr-2">
+
+                            <div className="flex items-center sm:justify-end mr-2">
                                 <div className="flex pl-2 space-x-1">
-                                    <TrashIcon onClick={() => console.log('click trash') } className="inline-flex items-center w-11 h-11 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-300" />
+                                    <TrashIcon onClick={() => console.log('click trash')} className="inline-flex items-center w-11 h-11 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-300" />
                                 </div>
                             </div>
                         </div>
@@ -160,7 +236,7 @@ export default function Orders() {
 
             </div>
 
-            {(isOpenUpdate || isOpenDelete) && <div onClick={() => { closeOrderUpdate(); closeDrawerDelete(); }} className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-49"></div>}
+            {(isOpenUpdate || isOpenDelete) && <div onClick={() => { closeOrderUpdate(); closeDrawerDelete(); }} className="bg-gray-900/50 fixed inset-0 z-49"></div>}
 
         </>
     );
