@@ -23,6 +23,7 @@ import Settings from './components/admin/settings/Settings';
 import Dashboard from './components/admin/dashboard/Dashboard';
 import Login from './components/admin/login/Login';
 import PaymentSuccess from './components/checkout/payment-success/PaymentSuccess';
+import AboutAdmin from './components/admin/about/AboutAdmin';
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
         <Route path='paintings/size' element={<Size />} />
         <Route path='inquiry' element={<Inquiry />} />
         <Route path='contact-messages' element={<ContactMessages />} />
+        <Route path='about' element={<AboutAdmin />} />
         <Route path='settings' element={<Settings />} />
       </Route>
       <Route path='/admin/login' element={<Login />} />

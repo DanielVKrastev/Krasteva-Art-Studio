@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BookOpenIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, EnvelopeIcon, PaintBrushIcon, TagIcon } from "@heroicons/react/16/solid";
+import { BookOpenIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, EnvelopeIcon, PaintBrushIcon, TagIcon, UserCircleIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 import contactMessageApi from "../../../api/contactMessageApi";
 import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
@@ -91,7 +91,7 @@ export default function Sidebar() {
                                         <span className="sr-only">Open user menu</span>
                                         <img
                                             className="w-8 h-8 rounded-full"
-                                            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                            src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                                             alt="user photo"
                                         />
                                     </button>
@@ -239,6 +239,15 @@ export default function Sidebar() {
                                 <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">
                                     {newMessages}
                                 </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/admin/about"
+                                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 "
+                            >
+                                <UserCircleIcon className="w-6 h-6 text-indigo-700" />
+                                <span className="flex-1 ms-3 whitespace-nowrap">За мен</span>
                             </Link>
                         </li>
                         <li>
