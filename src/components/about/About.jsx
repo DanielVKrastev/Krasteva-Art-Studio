@@ -39,6 +39,7 @@ export default function About() {
             setMessageShowToast({ type: 'error', content: 'Грешка в изпращането на съобщение' });
             console.log(err.message);
         } finally {
+            e.target.reset();
             setIsLoading(false);
         }
     };

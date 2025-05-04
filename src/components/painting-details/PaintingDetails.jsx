@@ -75,6 +75,7 @@ export default function PaintingDetails() {
             setMessageShowToast({type: 'error', content: 'Грешка в изпращането на запитване'});
             console.log(err.message);
         } finally {
+            e.target.reset();
             setIsLoading(false);
         }
     };

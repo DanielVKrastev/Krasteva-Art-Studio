@@ -62,7 +62,7 @@ export default function Footer() {
         {/* Footer bottom */}
         <div className="mt-12 border-t pt-6 text-center text-sm text-gray-500">
           <p>
-            &copy; {new Date().getFullYear()} Krasteva Art Gallery. Всички права запазени | Уеб дизайн Daniel Krastev
+            &copy; {new Date().getFullYear()} Krasteva Art Studio. Всички права запазени | Уеб дизайн Daniel Krastev
           </p>
         </div>
       </div>
