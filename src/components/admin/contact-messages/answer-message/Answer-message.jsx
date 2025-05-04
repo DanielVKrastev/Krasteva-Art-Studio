@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import contactMessageApi from "../../../../api/contactMessageApi";
 import dateConvertor from "../../../../utils/dateConvertor";
+import emailjs from 'emailjs-com';
+import LoadingSpinner from "../../../partials/loading-spinner/LoadingSpinner";
 
 export default function AnswerMessage({
     updateId,
@@ -8,6 +10,7 @@ export default function AnswerMessage({
     closeMessageUpdate
 }) {
     const [message, setMessage] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchInitial = async () => {
@@ -23,6 +26,7 @@ export default function AnswerMessage({
 
     const onSubmitUpdate = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const formData = new FormData(e.currentTarget);
         const reply = formData.get('reply');
         const returnCall = formData.get('return-call');
@@ -42,16 +46,36 @@ export default function AnswerMessage({
             }
             
             await contactMessageApi.updateData(updateId, updateMessageData);
-            console.log("Reply.");
 
+            const templateParams = {
+                name: 'Admin',
+                email: message.email,
+                message: reply
+              };
+
+            emailjs.send(
+                'service_g8imi0d',      // Service ID
+                'template_9m3m9nu',     // Template ID
+                templateParams,          
+                'NZ1X89rJNLyNly8xz'          // User ID (public key)
+              )
+              .then((result) => {
+                console.log(result.text); 
+                alert("Имейлът беше изпратен успешно!");
+              }, (error) => {
+                console.log(error.text);
+                alert("Грешка при изпращане на имейл.");
+              });
+            setIsLoading(false);
             closeMessageUpdate();
         } catch (err) {
-            console.log(err.message);
+            console.log(err);
         }
     }
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
             {/* Answer */}
             <div
                 className={`fixed top-0 right-0 z-50 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-0 bg-white`}
