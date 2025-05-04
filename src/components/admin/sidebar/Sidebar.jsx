@@ -1,10 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BookOpenIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, EnvelopeIcon, PaintBrushIcon, TagIcon, UserCircleIcon } from "@heroicons/react/16/solid";
+import { BookOpenIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, EnvelopeIcon, PaintBrushIcon, TagIcon, UserCircleIcon, UserIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 import contactMessageApi from "../../../api/contactMessageApi";
 import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
 import { auth } from "../../../../firebase";
 import { signOut } from "firebase/auth";
+import { UserPlusIcon } from "@heroicons/react/16/solid";
 
 export default function Sidebar() {
     const [openCrudMenu, setOpenCrudMenu] = useState(true);
@@ -89,11 +90,9 @@ export default function Sidebar() {
                                         className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
                                     >
                                         <span className="sr-only">Open user menu</span>
-                                        <img
-                                            className="w-8 h-8 rounded-full"
-                                            src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-                                            alt="user photo"
-                                        />
+                                        <div className="bg-white">
+                                            <UserCircleIcon className="w-8 h-8 text-indigo-700" />
+                                        </div>
                                     </button>
                                 </div>
                                 <div
