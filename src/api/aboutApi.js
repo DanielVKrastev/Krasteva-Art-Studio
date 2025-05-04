@@ -13,6 +13,13 @@ async function getAll() {
     return data.sort((a, b) => b.createdAt - a.createdAt);
 }
 
+async function getLimit(limit) {
+    const result = await requester.get(`${baseUrl}.json?orderBy="createdAt"&limitToLast=${limit}`);
+    const data = Object.values(result || {});
+
+    return data.sort((a, b) => b.createdAt - a.createdAt);
+}
+
 async function getOne(id) {
     return await requester.get(`${baseUrl}/${id}.json`);
 }
@@ -62,6 +69,7 @@ async function deletePainting(aboutId) {
 export default {
     getAll,
     getOne,
+    getLimit,
     create,
     updateData,
     deletePainting

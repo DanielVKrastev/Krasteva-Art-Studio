@@ -1,12 +1,30 @@
 import { data, Link } from "react-router-dom";
 import contactMessageApi from "../../api/contactMessageApi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MessageToast from "../partials/message-toast/MessageToast";
 import LoadingSpinner from "../partials/loading-spinner/LoadingSpinner";
+import aboutApi from "../../api/aboutApi";
 
 export default function About() {
+    const [about, setAbout] = useState([]);
     const [showMessageToast, setMessageShowToast] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchInitial = async () => {
+            setIsLoading(true);
+            await aboutApi.getAll()
+                .then(result => {
+                    setAbout(result[0]);
+                    setIsLoading(false);
+                }).catch(err => {
+                    setIsLoading(false);
+                    console.error(err.message);
+                });
+            return;
+        };
+        fetchInitial();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,9 +34,9 @@ export default function About() {
         messageData.answered = 'no';
         try {
             await contactMessageApi.create(messageData);
-            setMessageShowToast({type: 'success', content: 'Успешно изпратено съобщение'});
+            setMessageShowToast({ type: 'success', content: 'Успешно изпратено съобщение' });
         } catch (err) {
-            setMessageShowToast({type: 'error', content: 'Грешка в изпращането на съобщение'});
+            setMessageShowToast({ type: 'error', content: 'Грешка в изпращането на съобщение' });
             console.log(err.message);
         } finally {
             setIsLoading(false);
@@ -45,8 +63,8 @@ export default function About() {
                     {/* row 1: Image + text */}
                     <div className="grid md:grid-cols-2 gap-12 items-center bg-white p-6 rounded-lg shadow-md space-y-6">
                         <img
-                            src="./images/elicak.jpg"
-                            alt="Елица"
+                            src={about?.imageUrl}
+                            alt={about?.name}
                             className="rounded-full w-90 h-90 object-cover mx-auto shadow-lg"
                         />
                         <div>
@@ -54,14 +72,12 @@ export default function About() {
                                 Как започнах
                             </h2>
                             <div className="space-y-4 text-gray-700 leading-relaxed text-lg">
-                                <p className="indent-8">
-                                    Още от дете обичах да прекарвам часове с молив в ръка, скицирайки всичко, което ме заобикаля – от любимите ми анимационни герои до пейзажите, които виждах през прозореца. Рисуването винаги е било моят начин да изразя това, което не мога да изкажа с думи.
+                                <p className="whitespace-pre-line">
+                                    Здравейте, казвам се {about?.name}.
                                 </p>
-                                <p className="indent-8">
-                                    С времето страстта ми се превърна в цел – започнах да експериментирам с различни техники, материали и стилове. Вдъхновявам се от емоциите, природата, музиката и малките неща в ежедневието. Всяка картина за мен е история, момент или чувство, запечатано върху платното.
-                                </p>
-                                <p className="indent-8">
-                                    Създадох тази галерия с мечтата да споделям изкуството си със света и да докосна хората чрез цветовете и формите. Вярвам, че във всяка творба има частица душа – и точно това искам да предам чрез работата си.
+
+                                <p className="whitespace-pre-line">
+                                    {about?.description}
                                 </p>
                             </div>
                         </div>
