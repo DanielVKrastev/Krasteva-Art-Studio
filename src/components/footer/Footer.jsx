@@ -17,7 +17,7 @@ export default function Footer() {
               <li><Link to="/cart" className="hover:text-indigo-600">Количка</Link></li>
             </ul>
           </div>
-
+          {/* TODO: Email subscription
           <div>
             <h3 className="text-lg font-semibold mb-4">Абониране</h3>
             <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
@@ -33,6 +33,11 @@ export default function Footer() {
                 Изпрати
               </button>
             </form>
+          </div>
+          */}
+
+          <div>
+            
           </div>
 
           <div>
