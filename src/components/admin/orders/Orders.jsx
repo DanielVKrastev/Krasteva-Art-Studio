@@ -63,7 +63,9 @@ export default function Orders() {
                     const search = searchParams.search;
                     const criteria = searchParams.criteria;
 
-                    const searchFind = result.filter(order => order[criteria].toLowerCase() === search.toLowerCase());
+                    const searchFind = result.filter(order =>
+                        order[criteria]?.toLowerCase().includes(search.toLowerCase())
+                    );
                     setOrders(searchFind);
                     setIsLoading(false);
                 }).catch(err => {
