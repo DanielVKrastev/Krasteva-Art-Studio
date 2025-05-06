@@ -89,10 +89,10 @@ export default function Orders() {
             if (order.deletehash) {
                 deleteImage(order.deletehash);
             } 
-            setMessageShowToast({type: 'success', content: 'Успешно изтриване.'})
+            setMessageShowToast({type: 'success', content: 'Успешно изтриване.'});
         } catch (err) {
             console.log(err);
-            setMessageShowToast({type: 'error', content: 'Грешка в изтриването.'})
+            setMessageShowToast({type: 'error', content: 'Грешка в изтриването.'});
         }
     };
 

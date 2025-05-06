@@ -8,6 +8,7 @@ import addImage from "../../../../utils/addImage";
 const IMGUR_CLIENT_ID = "70d48422a058d29";
 
 export default function CreateDrawer({
+    setMessageShowToast,
     closeDrawerCreate
 }) {
     const [categories, setCategories] = useState([]);
@@ -115,10 +116,12 @@ export default function CreateDrawer({
             // Тук добави кода за запис във Firebase DB
             // await firebaseDbApi.save(createPaintingData)
             await paintingApi.create(createPaintingData);
-
+            setMessageShowToast({ type: 'success', content: `Успешно създадена картина.` });
             closeDrawerCreate();
         } catch (err) {
             console.error("Image upload or save failed:", err.message);
+            closeDrawerCreate();
+            closeOrderUpdate({ type: 'error', content: 'Неуспешно в създаване на картина!' });
         }
 
     }

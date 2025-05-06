@@ -61,8 +61,8 @@ export default function UpdateOrder({
             closeOrderUpdate();
         } catch (err) {
             console.log(err.message);
-            closeAboutUpdate();
-            closeOrderUpdate({ type: 'error', content: 'Неуспешно в редактирането на поръчката!' });
+            closeOrderUpdate();
+            setMessageShowToast({ type: 'error', content: 'Неуспешно редактиране на поръчка!' });
         }
 
     }

@@ -8,6 +8,7 @@ import addImage from "../../../../utils/addImage";
 export default function UpdateDrawer({
     updateId,
     item,
+    setMessageShowToast,
     closeDrawerUpdate
 }) {
     const [painting, setPainting] = useState({});
@@ -132,9 +133,12 @@ export default function UpdateDrawer({
             console.log("Painting data to update.");
             
             await paintingApi.updateData(updateId, updatePaintingData);
+            setMessageShowToast({ type: 'success', content: `Успешно редактиране на картина "${name}".` });
             closeDrawerUpdate();
         } catch (err) {
             console.log(err.message);
+            closeDrawerUpdate();
+            setMessageShowToast({ type: 'error', content: 'Неуспешно редактиране на картина!' });
         }
 
     }
