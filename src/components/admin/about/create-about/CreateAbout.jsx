@@ -4,6 +4,7 @@ import aboutApi from "../../../../api/aboutApi";
 const IMGUR_CLIENT_ID = "70d48422a058d29";
 
 export default function CreateAbout({
+    setMessageShowToast,
     closeAboutCreate
 }) {
     const onSubmitCreate = async (e) => {
@@ -33,14 +34,14 @@ export default function CreateAbout({
             }
 
             console.log("About data to save:", createAboutData);
-
-            // Тук добави кода за запис във Firebase DB
-            // await firebaseDbApi.save(createPaintingData)
             await aboutApi.create(createAboutData);
 
+            setMessageShowToast({ type: 'success', content: 'Успешно създаване "За мен"!' });
             closeAboutCreate();
         } catch (err) {
             console.error("Image upload or save failed:", err.message);
+            closeAboutCreate();
+            setMessageShowToast({ type: 'error', content: err.message });
         }
 
     }

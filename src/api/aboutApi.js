@@ -55,7 +55,7 @@ async function updateData(idAbout, data) {
     return await requester.patch(`${baseUrl}/${idAbout}.json?auth=${token}`, data);
 }
 
-async function deletePainting(aboutId) {
+async function deleteAbout(aboutId) {
     const paintingRef = ref(database, `about/${aboutId}`);
 
     try {
@@ -72,5 +72,5 @@ export default {
     getLimit,
     create,
     updateData,
-    deletePainting
+    deleteAbout
 }

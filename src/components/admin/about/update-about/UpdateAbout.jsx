@@ -5,6 +5,7 @@ import aboutApi from "../../../../api/aboutApi";
 
 export default function UpdateAbout({
     updateId,
+    setMessageShowToast,
     closeAboutUpdate
 }) {
     const [about, setAbout] = useState({});
@@ -52,9 +53,12 @@ export default function UpdateAbout({
             console.log("About data to update.");
             
             await aboutApi.updateData(updateId, updateAboutData);
+            setMessageShowToast({ type: 'success', content: 'Успешно редактиране "За мен"!' });
             closeAboutUpdate();
         } catch (err) {
             console.log(err.message);
+            closeAboutUpdate();
+            setMessageShowToast({ type: 'error', content: 'Неуспешно в редактирането "За мен"!' });
         }
 
     }

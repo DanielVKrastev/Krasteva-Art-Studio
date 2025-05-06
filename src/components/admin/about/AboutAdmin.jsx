@@ -1,6 +1,5 @@
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
-import paintingApi from "../../../api/paintingApi";
 import Pagination from "../partials/pagination/Pagination";
 import NavigationLinks from "../partials/navigation-links/NavigationLinks";
 import DeleteDrawer from "../partials/delete-drawer/DeleteDrawer";
@@ -10,11 +9,13 @@ import CreateAbout from "./create-about/CreateAbout";
 import deleteImage from "../../../utils/deleteImage";
 import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
 import aboutApi from "../../../api/aboutApi";
+import MessageToast from "../../partials/message-toast/MessageToast";
 
 export default function AboutAdmin() {
     const [about, setAbout] = useState([]);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
     const [isLoading, setIsLoading] = useState(false);
+    const [showMessageToast, setMessageShowToast] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -63,14 +64,16 @@ export default function AboutAdmin() {
 
     const deletePainting = async (id) => {
         try {
-            const painting = await paintingApi.getOne(id);
-            await paintingApi.deletePainting(id);
-            setAbout(state => state.filter(painting => painting.id !== id));
-            if (painting.deletehash) {
-                deleteImage(painting.deletehash);
+            const about = await aboutApi.getOne(id);
+            await aboutApi.deleteAbout(id);
+            setAbout(state => state.filter(a => a.id !== id));
+            if (about.deletehash) {
+                deleteImage(about.deletehash);
             }
+            setMessageShowToast({type: 'success', content: 'Успешно изтриване.'})
         } catch (err) {
             console.log(err);
+            setMessageShowToast({type: 'error', content: 'Грешка в изтриването.'})
         }
     };
 
@@ -105,6 +108,11 @@ export default function AboutAdmin() {
     return (
         <>
             {isLoading && <LoadingSpinner />}
+
+            {showMessageToast && <MessageToast
+                message={showMessageToast}
+                onClose={setMessageShowToast}
+            />}
 
             <div className="p-6 bg-white text-gray-900 sm:ml-55 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
                 <div className="mt-14">
@@ -151,6 +159,7 @@ export default function AboutAdmin() {
             <div>
                 {/* Create ABOUT */}
                 {isOpenCreate && <CreateAbout
+                    setMessageShowToast={setMessageShowToast}
                     closeAboutCreate={closeAboutCreate}
                 />
                 }
@@ -159,6 +168,7 @@ export default function AboutAdmin() {
                 {isOpenUpdate && <UpdateAbout
                     updateId={updateItem.id}
                     item={updateItem.name}
+                    setMessageShowToast={setMessageShowToast}
                     closeAboutUpdate={closeAboutUpdate}
                 />
                 }

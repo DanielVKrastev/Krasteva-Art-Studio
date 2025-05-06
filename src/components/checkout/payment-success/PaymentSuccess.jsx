@@ -30,7 +30,7 @@ export default function PaymentSuccess() {
                     <h1 className="mb-6 text-4xl font-extrabold text-green-600">
                         Успешно направена поръчка
                     </h1>
-                    <p className="mb-8 text-xl text-gray-700">Благодарим ви за поръчката.</p>
+                    <p className="mb-8 text-xl text-gray-700">Благодарим ви за поръчката. Ще получите имейл с повече информация.</p>
                     <div className="p-6 mb-8 rounded-lg bg-blue-50">
                         <p className="text-lg font-medium text-blue-700">
                             Ще се свържем скоро с Вас.
