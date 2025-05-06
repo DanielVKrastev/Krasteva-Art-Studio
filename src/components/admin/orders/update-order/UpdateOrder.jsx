@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import deleteImage from "../../../../utils/deleteImage";
-import addImage from "../../../../utils/addImage";
 import orderApi from "../../../../api/orderApi";
 import PaintingListCell from "../../partials/painting-list-cell/PaintingListCell";
 import dateConvertor from "../../../../utils/dateConvertor";
@@ -9,6 +7,7 @@ import paintingApi from "../../../../api/paintingApi";
 export default function UpdateOrder({
     updateId,
     item,
+    setMessageShowToast,
     closeOrderUpdate
 }) {
     const [order, setOrder] = useState({});
@@ -58,9 +57,12 @@ export default function UpdateOrder({
             console.log("Order data to update.");
 
             await orderApi.updateData(updateId, updateOrderData);
+            setMessageShowToast({ type: 'success', content: `Успешно редактиране на поръчка №${item}.` });
             closeOrderUpdate();
         } catch (err) {
             console.log(err.message);
+            closeAboutUpdate();
+            closeOrderUpdate({ type: 'error', content: 'Неуспешно в редактирането на поръчката!' });
         }
 
     }
