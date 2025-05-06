@@ -7,6 +7,7 @@ import AnswerInquiry from "./answer-inquiry/Answer-inquiry";
 import TableInquiry from "./table-inquiry/TableInquiry";
 import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
 import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
+import MessageToast from "../../partials/message-toast/MessageToast";
 
 export default function Inquiry() {
     const [inquiry, setInquiry] = useState([]);
@@ -14,7 +15,8 @@ export default function Inquiry() {
     const [isLoading, setIsLoading] = useState(false);
     const [searchParams, setSearchParams] = useState([]);
     const [selectedValueCriteria, setSelectedValueCriteria] = useState('telephone');
-    
+    const [showMessageToast, setMessageShowToast] = useState(false);
+
     const [currentPage, setCurrentPage] = useState(1);
 
     const totalPages = Math.ceil(inquiry.length / recordsPerPage);
@@ -42,54 +44,54 @@ export default function Inquiry() {
     const [deleteItem, setDeleteItem] = useState(null);
 
     useEffect(() => {
-            const fetchInitial = async () => {
-                setIsLoading(true);
-                if (!searchParams.search) {
-                    await availabilityInquiryApi.getAll()
-                        .then(result => {
-                            setInquiry(result);
-                            setIsLoading(false);
-                        }).catch(err => {
-                            setIsLoading(false);
-                            console.error(err.message);
-                        });
-                    return;
-                }
-    
+        const fetchInitial = async () => {
+            setIsLoading(true);
+            if (!searchParams.search) {
                 await availabilityInquiryApi.getAll()
                     .then(result => {
-                        const search = searchParams.search;
-                        const criteria = searchParams.criteria;
-    
-                        const searchFind = result.filter(order =>
-                            order[criteria]?.toLowerCase().includes(search.toLowerCase())
-                        );
-                        setInquiry(searchFind);
+                        setInquiry(result);
                         setIsLoading(false);
                     }).catch(err => {
                         setIsLoading(false);
-                        console.error(err);
+                        console.error(err.message);
                     });
                 return;
-            };
-    
-            fetchInitial();
-        }, [recordsPerPage, isOpenDelete, isOpenUpdate, searchParams]);
+            }
+
+            await availabilityInquiryApi.getAll()
+                .then(result => {
+                    const search = searchParams.search;
+                    const criteria = searchParams.criteria;
+
+                    const searchFind = result.filter(order =>
+                        order[criteria]?.toLowerCase().includes(search.toLowerCase())
+                    );
+                    setInquiry(searchFind);
+                    setIsLoading(false);
+                }).catch(err => {
+                    setIsLoading(false);
+                    console.error(err);
+                });
+            return;
+        };
+
+        fetchInitial();
+    }, [recordsPerPage, isOpenDelete, isOpenUpdate, searchParams]);
 
     const deleteInquiry = async (id) => {
-        try{
+        try {
             await availabilityInquiryApi.deleteInquiry(id);
             setInquiry(state => state.filter(painting => painting.id !== id));
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     };
 
     const openInquiryUpdate = (id, name) => {
         setIsOpenUpdate(true);
-        setUpdateItem({id, name});
+        setUpdateItem({ id, name });
     };
- 
+
     const closeInquiryUpdate = () => {
         setIsOpenUpdate(false);
         setUpdateItem(null);
@@ -97,7 +99,7 @@ export default function Inquiry() {
 
     const openInquiryDelete = (id, name) => {
         setIsOpenDelete(true);
-        setDeleteItem({id, name});
+        setDeleteItem({ id, name });
     };
 
     const closeInquiryDelete = () => {
@@ -121,6 +123,11 @@ export default function Inquiry() {
     return (
         <>
             {isLoading && <LoadingSpinner />}
+
+            {showMessageToast && <MessageToast
+                message={showMessageToast}
+                onClose={setMessageShowToast}
+            />}
 
             <div className="p-6 bg-white text-gray-900 sm:ml-55 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
                 <div className="mt-14">
@@ -213,6 +220,7 @@ export default function Inquiry() {
                 {isOpenUpdate && <AnswerInquiry
                     updateId={updateItem.id}
                     item={updateItem.name}
+                    setMessageShowToast={setMessageShowToast}
                     closeInquiryUpdate={closeInquiryUpdate}
                 />
                 }

@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
-import sizeApi from "../../../../api/sizeApi";
 import availabilityInquiryApi from "../../../../api/availabilityInquiryApi";
 import paintingApi from "../../../../api/paintingApi";
 import dateConvertor from "../../../../utils/dateConvertor";
+import sendEmail from "../../../../utils/sendEmail";
+import LoadingSpinner from "../../../partials/loading-spinner/LoadingSpinner";
 
 export default function AnswerInquiry({
     updateId,
     item,
+    setMessageShowToast,
     closeInquiryUpdate
 }) {
+    const [message, setMessage] = useState({});
     const [inquiry, setInquiry] = useState({});
     const [painting, setPainting] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchInitial = async () => {
             try {
                 const inquiryData = await availabilityInquiryApi.getOne(updateId);
+                setMessage(inquiryData);
                 setInquiry(inquiryData);
                 const paintingData = await paintingApi.getOne(inquiryData.paintingId);
                 setPainting(paintingData);
@@ -26,15 +31,16 @@ export default function AnswerInquiry({
         fetchInitial();
     }, []);
 
-const onSubmitUpdate = async (e) => {
+    const onSubmitUpdate = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const formData = new FormData(e.currentTarget);
         const reply = formData.get('reply');
         const returnCall = formData.get('return-call');
-4
-        if(inquiry.answered === 'yes') { return };
-        if(returnCall === null && reply === '') { return };
-        
+        4
+        if (inquiry.answered === 'yes') { return };
+        if (returnCall === null && reply === '') { return };
+
         try {
 
             const updateInquiryData = {
@@ -42,21 +48,40 @@ const onSubmitUpdate = async (e) => {
                 answered: 'yes'
             };
 
-            if(returnCall !== null && reply === '') {
+            if (returnCall !== null && reply === '') {
                 updateInquiryData.reply = '(Позвънено)';
-            }            
-            
-            await availabilityInquiryApi.updateData(updateId, updateInquiryData);
-            console.log("Reply.");
+            }
 
+            await availabilityInquiryApi.updateData(updateId, updateInquiryData);
+
+            const templateId = 'template_9m3m9nu';
+
+            const templateParams = {
+                name: 'Admin',
+                email: message.email,
+                message: reply
+            };
+
+            const sendReply = await sendEmail(templateId, templateParams);
+
+            if (!sendReply) {
+                throw new Error('Грешка при изпращане на имейл.');
+            }
+
+            setIsLoading(false);
             closeInquiryUpdate();
+            setMessageShowToast({ type: 'success', content: 'Успешно изпратен имейл!' });
         } catch (err) {
-            console.log(err.message);
+            console.log(err);
+            setIsLoading(false);
+            closeInquiryUpdate();
+            setMessageShowToast({ type: 'error', content: err.message });
         }
     }
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
             {/* Answer */}
             <div
                 className={`fixed top-0 right-0 z-50 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-0 bg-white`}
