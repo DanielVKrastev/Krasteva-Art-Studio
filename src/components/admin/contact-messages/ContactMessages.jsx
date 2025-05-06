@@ -7,6 +7,7 @@ import AnswerMessage from "./answer-message/Answer-message";
 import TableMessages from "./table-messages/TableMessages";
 import contactMessageApi from "../../../api/contactMessageApi";
 import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
+import MessageToast from "../../partials/message-toast/MessageToast";
 
 export default function ContactMessages() {
     const [messages, setMessages] = useState([]);
@@ -14,7 +15,8 @@ export default function ContactMessages() {
     const [isLoading, setIsLoading] = useState(false);
     const [searchParams, setSearchParams] = useState([]);
     const [selectedValueCriteria, setSelectedValueCriteria] = useState('telephone');
-    
+    const [showMessageToast, setMessageShowToast] = useState(false);
+
     const [currentPage, setCurrentPage] = useState(1);
 
     const totalPages = Math.ceil(messages.length / recordsPerPage);
@@ -35,61 +37,61 @@ export default function ContactMessages() {
             setCurrentPage(totalPages || 1);
         }
     }, [totalPages, currentPage]);
-    
+
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const [updateItem, setUpdateItem] = useState(null);
     const [isOpenDelete, setIsOpenDelete] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
 
-useEffect(() => {
-            const fetchInitial = async () => {
-                setIsLoading(true);
-                if (!searchParams.search) {
-                    await contactMessageApi.getAll()
-                        .then(result => {
-                            setMessages(result);
-                            setIsLoading(false);
-                        }).catch(err => {
-                            setIsLoading(false);
-                            console.error(err.message);
-                        });
-                    return;
-                }
-    
+    useEffect(() => {
+        const fetchInitial = async () => {
+            setIsLoading(true);
+            if (!searchParams.search) {
                 await contactMessageApi.getAll()
                     .then(result => {
-                        const search = searchParams.search;
-                        const criteria = searchParams.criteria;
-    
-                        const searchFind = result.filter(order =>
-                            order[criteria]?.toLowerCase().includes(search.toLowerCase())
-                        );
-                        setMessages(searchFind);
+                        setMessages(result);
                         setIsLoading(false);
                     }).catch(err => {
                         setIsLoading(false);
-                        console.error(err);
+                        console.error(err.message);
                     });
                 return;
-            };
-    
-            fetchInitial();
-        }, [recordsPerPage, isOpenDelete, isOpenUpdate, searchParams]);
+            }
+
+            await contactMessageApi.getAll()
+                .then(result => {
+                    const search = searchParams.search;
+                    const criteria = searchParams.criteria;
+
+                    const searchFind = result.filter(order =>
+                        order[criteria]?.toLowerCase().includes(search.toLowerCase())
+                    );
+                    setMessages(searchFind);
+                    setIsLoading(false);
+                }).catch(err => {
+                    setIsLoading(false);
+                    console.error(err);
+                });
+            return;
+        };
+
+        fetchInitial();
+    }, [recordsPerPage, isOpenDelete, isOpenUpdate, searchParams]);
 
     const deleteMessage = async (id) => {
-        try{
+        try {
             await contactMessageApi.deleteMessage(id);
             setMessages(state => state.filter(message => message.id !== id));
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     };
 
     const openMessageUpdate = (id, name) => {
         setIsOpenUpdate(true);
-        setUpdateItem({id, name});
+        setUpdateItem({ id, name });
     };
- 
+
     const closeMessageUpdate = () => {
         setIsOpenUpdate(false);
         setUpdateItem(null);
@@ -97,7 +99,7 @@ useEffect(() => {
 
     const openMessageDelete = (id, name) => {
         setIsOpenDelete(true);
-        setDeleteItem({id, name});
+        setDeleteItem({ id, name });
     };
 
     const closeMessageDelete = () => {
@@ -121,6 +123,11 @@ useEffect(() => {
     return (
         <>
             {isLoading && <LoadingSpinner />}
+
+            {showMessageToast && <MessageToast
+                message={showMessageToast}
+                onClose={setMessageShowToast}
+            />}
 
             <div className="p-6 bg-white text-gray-900 sm:ml-55 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
                 <div className="mt-14">
@@ -213,6 +220,7 @@ useEffect(() => {
                 {isOpenUpdate && <AnswerMessage
                     updateId={updateItem.id}
                     item={updateItem.name}
+                    setMessageShowToast={setMessageShowToast}
                     closeMessageUpdate={closeMessageUpdate}
                 />
                 }

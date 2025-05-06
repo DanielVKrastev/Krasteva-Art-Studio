@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import contactMessageApi from "../../../../api/contactMessageApi";
 import dateConvertor from "../../../../utils/dateConvertor";
-import emailjs from 'emailjs-com';
 import LoadingSpinner from "../../../partials/loading-spinner/LoadingSpinner";
+import sendEmail from "../../../../utils/sendEmail";
 
 export default function AnswerMessage({
     updateId,
     item,
+    setMessageShowToast,
     closeMessageUpdate
 }) {
     const [message, setMessage] = useState({});
@@ -31,8 +32,8 @@ export default function AnswerMessage({
         const reply = formData.get('reply');
         const returnCall = formData.get('return-call');
 
-        if(message.answered === 'yes') { return };
-        if(returnCall === null && reply === '') { return };
+        if (message.answered === 'yes') { return };
+        if (returnCall === null && reply === '') { return };
 
         try {
 
@@ -41,41 +42,42 @@ export default function AnswerMessage({
                 answered: 'yes'
             };
 
-            if(returnCall !== null && reply === '') {
+            if (returnCall !== null && reply === '') {
                 updateMessageData.reply = '(Позвънено)';
             }
-            
+
             await contactMessageApi.updateData(updateId, updateMessageData);
+
+            const templateId = 'template_9m3m9nu';
 
             const templateParams = {
                 name: 'Admin',
                 email: message.email,
                 message: reply
-              };
+            };
 
-            emailjs.send(
-                'service_g8imi0d',      // Service ID
-                'template_9m3m9nu',     // Template ID
-                templateParams,          
-                'NZ1X89rJNLyNly8xz'          // User ID (public key)
-              )
-              .then((result) => {
-                console.log(result.text); 
-                alert("Имейлът беше изпратен успешно!");
-              }, (error) => {
-                console.log(error.text);
-                alert("Грешка при изпращане на имейл.");
-              });
+            const sendReply = await sendEmail(templateId, templateParams);
+
+            if (!sendReply) {
+                throw new Error('Грешка при изпращане на имейл.');
+            }
+
             setIsLoading(false);
             closeMessageUpdate();
+            setMessageShowToast({ type: 'success', content: 'Успешно изпратен имейл!' });
+
         } catch (err) {
             console.log(err);
+            setIsLoading(false);
+            closeMessageUpdate();
+            setMessageShowToast({ type: 'error', content: err.message });
         }
     }
 
     return (
         <>
             {isLoading && <LoadingSpinner />}
+
             {/* Answer */}
             <div
                 className={`fixed top-0 right-0 z-50 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-0 bg-white`}
