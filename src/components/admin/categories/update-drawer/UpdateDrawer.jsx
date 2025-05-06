@@ -7,6 +7,7 @@ import categoryApi from "../../../../api/categoryApi";
 export default function UpdateDrawer({
     updateId,
     item,
+    setMessageShowToast,
     closeDrawerUpdate
 }) {
     const [category, setCategory] = useState({});
@@ -52,9 +53,12 @@ export default function UpdateDrawer({
             console.log("Painting data to update.");
             
             await categoryApi.updateData(updateId, updateCategoryData);
+            setMessageShowToast({ type: 'success', content: `Успешно редактиране на категория "${name}".` });
             closeDrawerUpdate();
         } catch (err) {
             console.log(err.message);
+            closeDrawerUpdate();
+            setMessageShowToast({ type: 'error', content: 'Неуспешно редактиране на категория!' });
         }
 
     }

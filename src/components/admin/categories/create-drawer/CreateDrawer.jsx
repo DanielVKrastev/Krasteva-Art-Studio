@@ -2,6 +2,7 @@ import categoryApi from "../../../../api/categoryApi";
 import addImage from "../../../../utils/addImage";
 
 export default function CreateDrawer({
+    setMessageShowToast,
     closeDrawerCreate
 }) {
     const onSubmitCreate = async (e) => {
@@ -31,10 +32,12 @@ export default function CreateDrawer({
             console.log("Category data to save:", createCategoryData);
 
             await categoryApi.create(createCategoryData);
-
+            setMessageShowToast({ type: 'success', content: `Успешно създаване на категория "${name}".` });
             closeDrawerCreate();
         } catch (err) {
             console.error("Image upload or save failed:", err.message);
+            closeDrawerCreate();
+            setMessageShowToast({ type: 'error', content: 'Неуспешно създаване на категория!' });
         }
 
     }
