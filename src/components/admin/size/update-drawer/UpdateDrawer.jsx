@@ -4,6 +4,7 @@ import sizeApi from "../../../../api/sizeApi";
 export default function UpdateDrawer({
     updateId,
     item,
+    setMessageShowToast,
     closeDrawerUpdate
 }) {
     const [size, setSize] = useState({});
@@ -33,9 +34,12 @@ export default function UpdateDrawer({
             console.log("Size data to update.");
             
             await sizeApi.updateData(updateId, updateSizeData);
+            setMessageShowToast({ type: 'success', content: `Успешно редактиране на размер "${size}".` });
             closeDrawerUpdate();
         } catch (err) {
             console.log(err.message);
+            closeDrawerUpdate();
+            setMessageShowToast({ type: 'error', content: 'Неуспешно редактиране на размер!' });
         }
 
     }

@@ -1,6 +1,7 @@
 import sizeApi from "../../../../api/sizeApi";
 
 export default function CreateDrawer({
+    setMessageShowToast,
     closeDrawerCreate
 }) {
     const onSubmitCreate = async (e) => {
@@ -17,9 +18,12 @@ export default function CreateDrawer({
 
             await sizeApi.create(createSizeData);
 
+            setMessageShowToast({ type: 'success', content: `Успешно създаване на размер "${size}".` });
             closeDrawerCreate();
         } catch (err) {
             console.error(err.message);
+            closeDrawerCreate();
+            setMessageShowToast({ type: 'error', content: 'Неуспешно създаване на размер!' });
         }
 
     }

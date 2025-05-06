@@ -8,13 +8,15 @@ import CreateDrawer from "./create-drawer/CreateDrawer";
 import TableSize from "./table-size/TableSize";
 import sizeApi from "../../../api/sizeApi";
 import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
+import MessageToast from "../../partials/message-toast/MessageToast";
 
 export default function Size() {
     const [size, setSize] = useState([]);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
     const [isLoading, setIsLoading] = useState(false);
     const [searchParams, setSearchParams] = useState([]);
-    
+    const [showMessageToast, setMessageShowToast] = useState(false);
+
     const [currentPage, setCurrentPage] = useState(1);
 
     const totalPages = Math.ceil(size.length / recordsPerPage);
@@ -42,62 +44,64 @@ export default function Size() {
     const [isOpenDelete, setIsOpenDelete] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
 
-     useEffect(() => {
-            const fetchInitial = async () => {
-                setIsLoading(true);
-                if (!searchParams.search) {
-                    await sizeApi.getAll()
-                        .then(result => {
-                            setSize(result);
-                            setIsLoading(false);
-                        }).catch(err => {
-                            setIsLoading(false);
-                            console.error(err.message);
-                        });
-                    return;
-                }
-    
+    useEffect(() => {
+        const fetchInitial = async () => {
+            setIsLoading(true);
+            if (!searchParams.search) {
                 await sizeApi.getAll()
                     .then(result => {
-                        const search = searchParams.search;
-                        const criteria = 'size';
-    
-                        const searchFind = result.filter(category =>
-                            category[criteria]?.toLowerCase().includes(search.toLowerCase())
-                        );
-                        setSize(searchFind);
+                        setSize(result);
                         setIsLoading(false);
                     }).catch(err => {
                         setIsLoading(false);
-                        console.error(err);
+                        console.error(err.message);
                     });
                 return;
-            };
-            fetchInitial();
-        }, [recordsPerPage, isOpenDelete, isOpenCreate, isOpenUpdate, searchParams]);
+            }
+
+            await sizeApi.getAll()
+                .then(result => {
+                    const search = searchParams.search;
+                    const criteria = 'size';
+
+                    const searchFind = result.filter(category =>
+                        category[criteria]?.toLowerCase().includes(search.toLowerCase())
+                    );
+                    setSize(searchFind);
+                    setIsLoading(false);
+                }).catch(err => {
+                    setIsLoading(false);
+                    console.error(err);
+                });
+            return;
+        };
+        fetchInitial();
+    }, [recordsPerPage, isOpenDelete, isOpenCreate, isOpenUpdate, searchParams]);
 
     const deleteSize = async (id) => {
-        try{
+        try {
             await sizeApi.deleteSize(id);
             setSize(state => state.filter(painting => painting.id !== id));
-        }catch(err){
+            setMessageShowToast({ type: 'success', content: 'Успешно изтриване.' });
+        } catch (err) {
             console.log(err);
+            setMessageShowToast({ type: 'error', content: 'Грешка в изтриването.' });
         }
     };
 
     const openDrawerCreate = () => {
         setIsOpenCreate(true);
     };
- 
+
     const closeDrawerCreate = () => {
         setIsOpenCreate(false);
     };
 
     const openDrawerUpdate = (id, name) => {
         setIsOpenUpdate(true);
-        setUpdateItem({id, name});
+        setUpdateItem({ id, name });
     };
- 
+
     const closeDrawerUpdate = () => {
         setIsOpenUpdate(false);
         setUpdateItem(null);
@@ -105,7 +109,7 @@ export default function Size() {
 
     const openDrawerDelete = (id, name) => {
         setIsOpenDelete(true);
-        setDeleteItem({id, name});
+        setDeleteItem({ id, name });
     };
 
     const closeDrawerDelete = () => {
@@ -125,6 +129,11 @@ export default function Size() {
     return (
         <>
             {isLoading && <LoadingSpinner />}
+
+            {showMessageToast && <MessageToast
+                message={showMessageToast}
+                onClose={setMessageShowToast}
+            />}
 
             <div className="p-6 bg-white text-gray-900 sm:ml-55 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
                 <div className="mt-14">
@@ -212,6 +221,7 @@ export default function Size() {
             <div>
                 {/* Create DRAWER */}
                 {isOpenCreate && <CreateDrawer
+                    setMessageShowToast={setMessageShowToast}
                     closeDrawerCreate={closeDrawerCreate}
                 />
                 }
@@ -220,6 +230,7 @@ export default function Size() {
                 {isOpenUpdate && <UpdateDrawer
                     updateId={updateItem.id}
                     item={updateItem.name}
+                    setMessageShowToast={setMessageShowToast}
                     closeDrawerUpdate={closeDrawerUpdate}
                 />
                 }
