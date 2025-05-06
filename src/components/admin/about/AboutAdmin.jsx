@@ -1,6 +1,5 @@
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
-import Pagination from "../partials/pagination/Pagination";
 import NavigationLinks from "../partials/navigation-links/NavigationLinks";
 import DeleteDrawer from "../partials/delete-drawer/DeleteDrawer";
 import TableAbout from "./table-about/TableAbout";
@@ -13,30 +12,8 @@ import MessageToast from "../../partials/message-toast/MessageToast";
 
 export default function AboutAdmin() {
     const [about, setAbout] = useState([]);
-    const [recordsPerPage, setRecordsPerPage] = useState(10);
     const [isLoading, setIsLoading] = useState(false);
     const [showMessageToast, setMessageShowToast] = useState(false);
-
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const totalPages = Math.ceil(about.length / recordsPerPage);
-    const startIndex = (currentPage - 1) * recordsPerPage;
-    const currentPaintings = about.slice(startIndex, startIndex + recordsPerPage);
-
-    const handlePagination = (page) => {
-        setCurrentPage(page);
-    };
-
-    const setRecordsPerPagePaginationHandler = (e) => {
-        setRecordsPerPage(Number(e.target.value));
-        setCurrentPage(1);
-    };
-
-    useEffect(() => {
-        if (currentPage > totalPages) {
-            setCurrentPage(totalPages || 1);
-        }
-    }, [totalPages, currentPage]);
 
     const [isOpenCreate, setIsOpenCreate] = useState(false);
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
@@ -60,7 +37,7 @@ export default function AboutAdmin() {
 
         };
         fetchInitial();
-    }, [recordsPerPage, isOpenDelete, isOpenCreate, isOpenUpdate]);
+    }, [isOpenDelete, isOpenCreate, isOpenUpdate]);
 
     const deletePainting = async (id) => {
         try {
@@ -129,9 +106,10 @@ export default function AboutAdmin() {
                         <div className="flex items-center mb-4 sm:mb-0">
 
                             <button
-                                className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                                className={`text-white ${about.length > 0 ? 'bg-gray-400' : 'bg-indigo-700 hover:bg-indigo-800'} focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
                                 type="button"
                                 onClick={openAboutCreate}
+                                disabled={about.length > 0}
                             >
                                 Добави за мен
                             </button>
@@ -141,19 +119,10 @@ export default function AboutAdmin() {
             </div>
 
             <TableAbout
-                currentPaintings={currentPaintings}
-                startIndex={startIndex}
+                currentPaintings={about}
+                startIndex={0}
                 openDrawerUpdate={openAboutUpdate}
                 openDrawerDelete={openAboutDelete}
-            />
-
-            <Pagination
-                item={about}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                currentItem={currentPaintings}
-                setRecordsPerPagePaginationHandler={setRecordsPerPagePaginationHandler}
-                handlePagination={handlePagination}
             />
 
             <div>
