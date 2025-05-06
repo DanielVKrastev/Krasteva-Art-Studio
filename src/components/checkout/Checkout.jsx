@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCartContext } from "../../contexts/CartContext";
 import orderApi from "../../api/orderApi";
 import paintingApi from "../../api/paintingApi";
+import sendEmail from "../../utils/sendEmail";
 
 export default function Checkout() {
     const { cart: cartItems, setCart, removeFromCart } = useCartContext();
@@ -15,8 +16,8 @@ export default function Checkout() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        if(isCartEmpty) return;
+
+        if (isCartEmpty) return;
 
         const formData = new FormData(e.currentTarget);
         let orderData = Object.fromEntries(formData);
@@ -26,13 +27,27 @@ export default function Checkout() {
         }
 
         const paintingIds = cartItems.map(painting => painting.id);
-        
-        try{
+
+        try {
             const order = await orderApi.create(orderData, paintingIds);
             await paintingApi.markAsSold(cartItems);
-            navigate("/payment-success" ,{ state: { order: orderData } });
+
+            const templateId = 'template_9m3m9nu';
+
+            const templateParams = {
+                name: 'Admin',
+                email: orderData.email,
+                message: 'Вашата поръчка е приета успешно'
+            };
+
+            const sendReply = await sendEmail(templateId, templateParams);
+            if (!sendReply) {
+                throw new Error('Грешка при изпращане на имейл.');
+            }
+
+            navigate("/payment-success", { state: { order: orderData } });
             setCart();
-        }catch(err){
+        } catch (err) {
             console.log(err.message);
         }
     };
@@ -157,7 +172,7 @@ export default function Checkout() {
                         </Link>
                         <button
                             form="checkout-form"
-                            className={`${isCartEmpty? `bg-gray-300` : `bg-indigo-600 hover:bg-indigo-700`} text-white px-6 py-2 rounded-lg  transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer`}
+                            className={`${isCartEmpty ? `bg-gray-300` : `bg-indigo-600 hover:bg-indigo-700`} text-white px-6 py-2 rounded-lg  transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer`}
                             disabled={isCartEmpty}
                         >
                             Продължи
