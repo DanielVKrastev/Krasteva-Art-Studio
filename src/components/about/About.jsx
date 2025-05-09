@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import MessageToast from "../partials/message-toast/MessageToast";
 import LoadingSpinner from "../partials/loading-spinner/LoadingSpinner";
 import aboutApi from "../../api/aboutApi";
+import PhoneInput from "react-phone-number-input/input";
 
 export default function About() {
     const [about, setAbout] = useState([]);
     const [showMessageToast, setMessageShowToast] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [phoneValue, setPhoneValue] = useState('+359');
 
     useEffect(() => {
         const fetchInitial = async () => {
@@ -31,6 +33,7 @@ export default function About() {
         setIsLoading(true);
         const formData = new FormData(e.currentTarget);
         const messageData = Object.fromEntries(formData);
+        messageData.telephone = phoneValue;
         messageData.answered = 'no';
         try {
             await contactMessageApi.create(messageData);
@@ -40,6 +43,7 @@ export default function About() {
             console.log(err.message);
         } finally {
             e.target.reset();
+            setPhoneValue('+359');
             setIsLoading(false);
         }
     };
@@ -105,7 +109,13 @@ export default function About() {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Телефон</label>
-                                <input type="text" name="telephone" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" />
+                                <PhoneInput
+                                 className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500"
+                                    name="telephone"
+                                    value={phoneValue}
+                                    onChange={setPhoneValue} 
+                                    required
+                                />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Тема</label>
