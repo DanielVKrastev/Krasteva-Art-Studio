@@ -1,10 +1,10 @@
 import { data, Link } from "react-router-dom";
+import PhoneInput from "react-phone-number-input/input";
 import contactMessageApi from "../../api/contactMessageApi";
 import { useEffect, useState } from "react";
 import MessageToast from "../partials/message-toast/MessageToast";
 import LoadingSpinner from "../partials/loading-spinner/LoadingSpinner";
 import aboutApi from "../../api/aboutApi";
-import PhoneInput from "react-phone-number-input/input";
 
 export default function About() {
     const [about, setAbout] = useState([]);
@@ -33,7 +33,6 @@ export default function About() {
         setIsLoading(true);
         const formData = new FormData(e.currentTarget);
         const messageData = Object.fromEntries(formData);
-        messageData.telephone = phoneValue;
         messageData.answered = 'no';
         try {
             await contactMessageApi.create(messageData);

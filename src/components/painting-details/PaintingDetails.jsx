@@ -1,4 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import PhoneInput from "react-phone-number-input/input";
 import { useEffect, useState } from "react";
 
 import paintingApi from "../../api/paintingApi";
@@ -15,6 +16,7 @@ export default function PaintingDetails() {
     const [painting, setPainting] = useState({});
     const [showMessageToast, setMessageShowToast] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [phoneValue, setPhoneValue] = useState('+359');
 
     const { paintingId } = useParams();
 
@@ -70,11 +72,12 @@ export default function PaintingDetails() {
 
         try {
             await availabilityInquiryApi.create(inquiryData);
-            setMessageShowToast({type: 'success', content: 'Успешно изпратено запитване'});
+            setMessageShowToast({ type: 'success', content: 'Успешно изпратено запитване' });
         } catch (err) {
-            setMessageShowToast({type: 'error', content: 'Грешка в изпращането на запитване'});
+            setMessageShowToast({ type: 'error', content: 'Грешка в изпращането на запитване' });
             console.log(err.message);
         } finally {
+            setPhoneValue('+359');
             e.target.reset();
             setIsLoading(false);
         }
@@ -84,8 +87,8 @@ export default function PaintingDetails() {
         <>
             {isLoading && <LoadingSpinner />}
 
-            {showMessageToast && <MessageToast 
-                message={showMessageToast} 
+            {showMessageToast && <MessageToast
+                message={showMessageToast}
                 onClose={setMessageShowToast}
             />}
             <div className="container mx-auto py-8 mb-30">
@@ -156,6 +159,7 @@ export default function PaintingDetails() {
                                                 type="text"
                                                 required
                                                 className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                placeholder="Име"
                                             />
                                         </div>
 
@@ -169,6 +173,7 @@ export default function PaintingDetails() {
                                                 type="text"
                                                 required
                                                 className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                placeholder="Фамилия"
                                             />
                                         </div>
                                     </div>
@@ -184,6 +189,7 @@ export default function PaintingDetails() {
                                                 type="email"
                                                 required
                                                 className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                placeholder="example@example.com"
                                             />
                                         </div>
 
@@ -191,14 +197,13 @@ export default function PaintingDetails() {
                                             <label htmlFor="telephone" className="block text-sm font-medium text-gray-700 mb-1">
                                                 Телефон <span className="text-red-500">*</span>
                                             </label>
-                                            <input
-                                                defaultValue={"+359"}
-                                                maxLength={16}
-                                                id="telephone"
-                                                name="telephone"
-                                                type="text"
-                                                required
+                                            <PhoneInput
                                                 className="bg-white w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                name="telephone"
+                                                value={phoneValue}
+                                                onChange={setPhoneValue}
+                                                placeholder="+359..."
+                                                required
                                             />
                                         </div>
                                     </div>
