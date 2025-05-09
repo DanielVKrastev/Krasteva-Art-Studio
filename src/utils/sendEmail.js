@@ -3,7 +3,7 @@ import emailjs from 'emailjs-com';
 export default async function sendEmail(templateId, templateParams) {
     try {
         await emailjs.send(
-            'service_g8imi0d',
+            'service_84vk66c',
             templateId,
             templateParams,
             'NZ1X89rJNLyNly8xz'
