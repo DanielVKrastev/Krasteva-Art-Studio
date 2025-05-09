@@ -30,8 +30,14 @@ export default function About() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsLoading(true);
         const formData = new FormData(e.currentTarget);
+        
+        if (formData.get('telephone').length < 14) {
+            setMessageShowToast({ type: 'error', content: 'Моля въведете валиден телефонен номер.' });
+            return;
+        }
+        setIsLoading(true);
+
         const messageData = Object.fromEntries(formData);
         messageData.answered = 'no';
         try {

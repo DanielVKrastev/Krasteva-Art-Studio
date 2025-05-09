@@ -61,8 +61,13 @@ export default function PaintingDetails() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsLoading(true);
         const formData = new FormData(e.currentTarget);
+        if (formData.get('telephone').length < 14) {
+            setMessageShowToast({ type: 'error', content: 'Моля въведете валиден телефонен номер.' });
+            return;
+        }
+        
+        setIsLoading(true);
         let inquiryData = Object.fromEntries(formData);
         inquiryData = {
             paintingId,
