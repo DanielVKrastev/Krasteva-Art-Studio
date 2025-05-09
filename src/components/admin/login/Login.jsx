@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../../firebase";
 import { useContext, useState } from "react";
 import { AdminContext } from "../../../contexts/AdminContext";
+import LoadingSpinner from "../../partials/loading-spinner/LoadingSpinner";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -12,11 +13,15 @@ export default function Login() {
     const { setAdmin } = useContext(AdminContext);
 
     const [emailInput, setEmailInput] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     async function loginFormSubmit(e) {
         e.preventDefault();
+
+        setIsLoading(true);
         const formData = new FormData(e.currentTarget);
         const {email, password } = Object.fromEntries(formData);
+        setEmailInput(email);
 
         try {
           const result = await signInWithEmailAndPassword(auth, email, password);
@@ -28,20 +33,23 @@ export default function Login() {
               email: user.email,
               isAdmin: true,
             });
-    
+            setIsLoading(false);
             navigate("/admin");
           } else {
+            setIsLoading(false);
             alert("Нямате достъп до админ панела");
           }
         } catch (error) {
             console.log(error);
-            
-          alert("Грешен имейл или парола");
+            setIsLoading(false);
+            alert("Грешен имейл или парола");
         }
       };
     
     return (
         <>
+            {isLoading && <LoadingSpinner />}
+
             <section
                 className="mt-10 flex items-center justify-center"
             >
