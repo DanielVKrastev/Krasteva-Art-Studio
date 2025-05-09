@@ -1,9 +1,7 @@
-import { useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function PaymentSuccess() {
     const location = useLocation();
-    const navigate = useNavigate();
     const { order } = location.state || {};
 
     return (
@@ -30,7 +28,7 @@ export default function PaymentSuccess() {
                     <h1 className="mb-6 text-4xl font-extrabold text-green-600">
                         Успешно направена поръчка
                     </h1>
-                    <p className="mb-8 text-xl text-gray-700">Благодарим ви за поръчката. Ще получите имейл с повече информация.</p>
+                    <p className="mb-8 text-xl text-gray-700">Благодарим ви за поръчката! Изпратихме ви имейл с допълнителна информация. Ако не го откриете в пощата си, проверете и папка "Спам"</p>
                     <div className="p-6 mb-8 rounded-lg bg-blue-50">
                         <p className="text-lg font-medium text-blue-700">
                             Ще се свържем скоро с Вас.
@@ -60,7 +58,7 @@ export default function PaymentSuccess() {
                             href="krasteva-art-studio@gmail.com"
                             className="inline-block mt-2 text-xl font-medium text-blue-600 transition-colors duration-200 hover:text-blue-800"
                         >
-                            krasteva-art-studio@gmail.com
+                            krasteva.art.studio@gmail.com
                         </a>
                     </div>
                     {/* Back to Home Button */}
