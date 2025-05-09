@@ -96,16 +96,16 @@ export default function About() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Име <span className="text-red-500">*</span></label>
-                                    <input type="text" name="firstName" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" required />
+                                    <input type="text" name="firstName" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" placeholder="Име" required />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Фамилия <span className="text-red-500">*</span></label>
-                                    <input type="text" name="lastName" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" required />
+                                    <input type="text" name="lastName" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" placeholder="Фамилия" required />
                                 </div>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Имейл <span className="text-red-500">*</span></label>
-                                <input type="email" name="email" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" required />
+                                <input type="email" name="email" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" placeholder="example@example.com" required />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Телефон</label>
@@ -113,7 +113,8 @@ export default function About() {
                                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500"
                                     name="telephone"
                                     value={phoneValue}
-                                    onChange={setPhoneValue} 
+                                    onChange={setPhoneValue}
+                                    placeholder="+359..."
                                     required
                                 />
                             </div>
