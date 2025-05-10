@@ -54,7 +54,7 @@ export default function AnswerInquiry({
 
             await availabilityInquiryApi.updateData(updateId, updateInquiryData);
 
-            const templateId = 'template_9m3m9nu';
+            const templateId = 'template_fjwg7hi';
 
             const templateParams = {
                 name: 'Admin',

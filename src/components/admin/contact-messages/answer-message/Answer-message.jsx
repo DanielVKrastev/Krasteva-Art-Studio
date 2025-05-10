@@ -48,7 +48,7 @@ export default function AnswerMessage({
 
             await contactMessageApi.updateData(updateId, updateMessageData);
 
-            const templateId = 'template_9m3m9nu';
+            const templateId = 'template_fjwg7hi';
 
             const templateParams = {
                 name: 'Admin',
