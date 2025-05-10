@@ -10,6 +10,7 @@ import { UserPlusIcon } from "@heroicons/react/16/solid";
 export default function Sidebar() {
     const [openCrudMenu, setOpenCrudMenu] = useState(true);
     const [openUserMenu, setOpenUserMenu] = useState(false);
+    const [openSidebar, setOpenSidebar] = useState(false);
     const [newMessages, setNewMessages] = useState(0);
     const [newInquiry, setNewInquiry] = useState(0);
     const adminEmail = auth.currentUser.email;
@@ -24,6 +25,13 @@ export default function Sidebar() {
     const openUserDropMenu = () => {
         setOpenUserMenu(state => !state);
     };
+
+    const openSidebarMenu = () => {
+        setOpenSidebar(state => !state);
+    };
+
+    console.log(openSidebar);
+    
 
     useEffect(() => {
         const fetchInitial = async () => {
@@ -57,6 +65,7 @@ export default function Sidebar() {
                                 aria-controls="logo-sidebar"
                                 type="button"
                                 className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                                onClick={openSidebarMenu}
                             >
                                 <span className="sr-only">Open sidebar</span>
                                 <svg
@@ -150,7 +159,7 @@ export default function Sidebar() {
             </nav>
             <aside
                 id="logo-sidebar"
-                className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 "
+                className={`${!openSidebar ? 'hidden' : ''} fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-white border-r border-gray-200 `} 
                 aria-label="Sidebar"
             >
                 <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
@@ -159,6 +168,7 @@ export default function Sidebar() {
                             <Link
                                 to="/admin"
                                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+                                onClick={openSidebarMenu}
                             >
                                 <ChartPieIcon className="w-6 h-6 text-indigo-700" />
                                 <span className="ms-3">Табло</span>
@@ -168,6 +178,7 @@ export default function Sidebar() {
                             <Link
                                 to="/admin/orders"
                                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
+                                onClick={openSidebarMenu}
                             >
                                 <BookOpenIcon className="w-6 h-6 text-indigo-700" />
                                 <span className="flex-1 ms-3 whitespace-nowrap">Поръчки</span>
@@ -190,6 +201,7 @@ export default function Sidebar() {
                                     <Link
                                         to="/admin/paintings"
                                         className="flex items-center w-full p-2 pl-11 rounded-lg hover:bg-gray-300"
+                                        onClick={openSidebarMenu}
                                     >
                                         <PaintBrushIcon className="w-6 h-6 text-indigo-700" />
                                         <span className="flex-1 ms-3 whitespace-nowrap">Картини</span>
@@ -199,6 +211,7 @@ export default function Sidebar() {
                                     <Link
                                         to="/admin/paintings/categories"
                                         className="flex items-center w-full p-2 pl-11 rounded-lg hover:bg-gray-300"
+                                        onClick={openSidebarMenu}
                                     >
                                         <TagIcon className="w-6 h-6 text-indigo-700" />
                                         <span className="flex-1 ms-3 whitespace-nowrap">Категории</span>
@@ -208,6 +221,7 @@ export default function Sidebar() {
                                     <Link
                                         to="/admin/paintings/size"
                                         className="flex items-center w-full p-2 pl-11 rounded-lg hover:bg-gray-300"
+                                        onClick={openSidebarMenu}
                                     >
                                         <TagIcon className="w-6 h-6 text-indigo-700" />
                                         <span className="flex-1 ms-3 whitespace-nowrap">Размери</span>
@@ -220,6 +234,7 @@ export default function Sidebar() {
                             <Link
                                 to="/admin/inquiry"
                                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 "
+                                onClick={openSidebarMenu}
                             >
                                 <EnvelopeIcon className="w-6 h-6 text-indigo-700" />
                                 <span className="flex-1 ms-3 whitespace-nowrap">Запитвания</span>
@@ -232,6 +247,7 @@ export default function Sidebar() {
                             <Link
                                 to="/admin/contact-messages"
                                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 "
+                                onClick={openSidebarMenu}
                             >
                                 <ChatBubbleBottomCenterIcon className="w-6 h-6 text-indigo-700" />
                                 <span className="flex-1 ms-3 whitespace-nowrap">Съобщения</span>
@@ -244,6 +260,7 @@ export default function Sidebar() {
                             <Link
                                 to="/admin/about"
                                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 "
+                                onClick={openSidebarMenu}
                             >
                                 <UserCircleIcon className="w-6 h-6 text-indigo-700" />
                                 <span className="flex-1 ms-3 whitespace-nowrap">За мен</span>
