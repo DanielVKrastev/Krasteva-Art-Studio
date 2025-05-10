@@ -5,7 +5,6 @@ import contactMessageApi from "../../../api/contactMessageApi";
 import availabilityInquiryApi from "../../../api/availabilityInquiryApi";
 import { auth } from "../../../../firebase";
 import { signOut } from "firebase/auth";
-import { UserPlusIcon } from "@heroicons/react/16/solid";
 
 export default function Sidebar() {
     const [openCrudMenu, setOpenCrudMenu] = useState(true);
@@ -102,7 +101,7 @@ export default function Sidebar() {
                                     </button>
                                 </div>
                                 <div
-                                    className={`${!openUserMenu ? 'hidden' : ''} absolute right-0 z-50 mt-2 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-lg`}
+                                    className={`${!openUserMenu ? 'hidden' : ''} absolute right-0 z-50 mt-2 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-lg -translate-x-full sm:translate-x-0`}
                                 >
                                     <div className="px-4 py-3" role="none">
                                         <p
@@ -156,7 +155,7 @@ export default function Sidebar() {
             </nav>
             <aside
                 id="logo-sidebar"
-                className={`${!openSidebar ? 'hidden' : ''} fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-white border-r border-gray-200 `} 
+                className={`${!openSidebar ? 'hidden sm:block' : ''} fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-white border-r border-gray-200`} 
                 aria-label="Sidebar"
             >
                 <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
