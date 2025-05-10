@@ -30,9 +30,6 @@ export default function Sidebar() {
         setOpenSidebar(state => !state);
     };
 
-    console.log(openSidebar);
-    
-
     useEffect(() => {
         const fetchInitial = async () => {
             const newMessagesCount = await contactMessageApi.getNotAnswered();

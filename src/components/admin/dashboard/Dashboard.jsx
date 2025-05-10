@@ -54,7 +54,7 @@ export default function Dashboard() {
                                         ${profitData.currentMonthProfit - profitData.lastMonthProfit > 0 ? `text-green-500` : `text-red-500`}`}>
                                         {profitData.currentMonthProfit - profitData.lastMonthProfit > 0 && <ArrowUpIcon className="w-4 h-4" />}
                                         {profitData.currentMonthProfit - profitData.lastMonthProfit < 0 && <ArrowDownIcon className="w-4 h-4" />}
-                                        {profitData.currentMonthProfit - profitData.lastMonthProfit}лв
+                                        {(profitData.currentMonthProfit - profitData.lastMonthProfit).toFixed(2)}лв
                                     </span>
                                     От миналия месец
                                 </p>
