@@ -20,12 +20,12 @@ export default function NavbarMenu() {
 
   function submitHandlerSearch(e) {
     e.preventDefault();
-
+    closeOpenHandlerMobileMenu();
     const formData = new FormData(e.target);
     const searchParams = formData.get('search');
     e.target.reset();
-    
-    if(!searchParams) {
+
+    if (!searchParams) {
       return;
     }
 
@@ -46,7 +46,7 @@ export default function NavbarMenu() {
         <div className="flex md:order-2">
 
           <div className="relative hidden md:block">
-            <form onSubmit={submitHandlerSearch}>
+            <form id="search-form" onSubmit={submitHandlerSearch}>
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                 <svg
                   className="w-4 h-4 text-gray-500"
@@ -133,12 +133,16 @@ export default function NavbarMenu() {
                 />
               </svg>
             </div>
-            <input
-              type="text"
-              id="search-navbar"
-              className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-indigo-700 focus:border-indigo-700"
-              placeholder="Search..."
-            />
+            <form onSubmit={submitHandlerSearch}>
+              <input
+                type="text"
+                id="search"
+                name="search"
+                className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-indigo-700 focus:border-indigo-700"
+                placeholder="Търсене..."
+              />
+            </form>
+
           </div>
 
           <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
@@ -150,6 +154,7 @@ export default function NavbarMenu() {
                     : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
                 aria-current="page"
+                onClick={closeOpenHandlerMobileMenu}
               >
                 Начало
               </Link>
@@ -162,6 +167,7 @@ export default function NavbarMenu() {
                     : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
                 aria-current="page"
+                onClick={closeOpenHandlerMobileMenu}
               >
                 Магазин
               </Link>
@@ -174,6 +180,7 @@ export default function NavbarMenu() {
                     : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
                 aria-current="page"
+                onClick={closeOpenHandlerMobileMenu}
               >
                 Портфолио
               </Link>
@@ -185,6 +192,7 @@ export default function NavbarMenu() {
                   activeSection === 'about' ? "block py-2 px-3 text-white bg-indigo-700 rounded-sm md:bg-transparent md:text-indigo-700 md:p-0"
                     : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-indigo-700 md:p-0"
                 }
+                onClick={closeOpenHandlerMobileMenu}
               >
                 За мен
               </Link>
