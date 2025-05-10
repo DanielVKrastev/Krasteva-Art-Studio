@@ -15,7 +15,9 @@ async function getAll() {
 
 async function getLimit(limit) {
   const result = await requester.get(`${baseUrl}.json?orderBy="createdAt"&limitToFirst=${limit}`);
-  return Object.values(result);
+  const data = Object.values(result || {});
+
+  return data.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 async function getOne(id) {
