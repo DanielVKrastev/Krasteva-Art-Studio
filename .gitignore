@@ -1,3 +1,5 @@
 /node_modules
 firebase.js
 /server/node_modules
+/dist
+/.firebase
