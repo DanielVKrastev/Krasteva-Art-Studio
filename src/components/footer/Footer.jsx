@@ -37,15 +37,19 @@ export default function Footer() {
           */}
 
           <div>
-            
+
           </div>
 
           <div>
             <h3 className="text-lg font-semibold mb-4">Контакти</h3>
             <ul className="space-y-2 text-sm">
-              <li className="text-gray-600">България, Попово, ул. Фейк</li>
-              <li><a href="tel://23923929210" className="text-indigo-600 hover:underline">+359 89 392 9210</a></li>
-              <li className="text-gray-600">info@krastevagallery.com</li>
+              <li className="text-gray-600">България, Попово, ул. Ястребино 4</li>
+              <li><a href="tel:+359897796887" className="text-indigo-600 hover:underline">+359 89 779 6887</a></li>
+              <li className="text-gray-600">
+                <a href="mailto:krasteva.art.studio@gmail.com" className="text-indigo-600 hover:underline">
+                  krasteva.art.studio@gmail.com
+                </a>
+              </li>
             </ul>
           </div>
 

@@ -141,15 +141,19 @@ export default function About() {
                         <div className="space-y-6">
                             <div className="p-4 border bg-white border-gray-200 rounded-md shadow-sm">
                                 <span className="text-indigo-600 font-semibold uppercase">Попово</span>
-                                <p className="text-gray-700 mt-1">България, Попово, ул. Фейк</p>
+                                <p className="text-gray-700 mt-1">България, Попово, ул. Ястребино 4</p>
                             </div>
                             <div className="p-4 border bg-white border-gray-200 rounded-md shadow-sm">
                                 <span className="text-indigo-600 font-semibold uppercase">Телефон</span>
-                                <p className="text-gray-700 mt-1">+359 89 392 9210</p>
+                                <a href="tel:+359897796887">
+                                    <p className="text-gray-700 mt-1">+359 89 779 6887</p>
+                                </a>
                             </div>
                             <div className="p-4 border bg-white border-gray-200 rounded-md shadow-sm">
                                 <span className="text-indigo-600 font-semibold uppercase">Имейл</span>
-                                <p className="text-gray-700 mt-1">info@krastevagallery.com</p>
+                                <a href="mailto:krasteva.art.studio@gmail.com" >
+                                    <p className="text-gray-700 mt-1">krasteva.art.studio@gmail.com</p>
+                                </a>
                             </div>
                         </div>
                     </div>
