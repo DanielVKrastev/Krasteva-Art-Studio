@@ -37,9 +37,13 @@ export default function FeaturesServices() {
                         <div>
                             <h2 className="uppercase text-lg font-semibold text-indigo-700">Контакти</h2>
                             <ul className="text-gray-600">
-                                <li className="text-gray-600">България, Попово, ул. Фейк</li>
-                                <li><a href="tel://23923929210" className="text-indigo-600 hover:underline">+359 89 392 9210</a></li>
-                                <li className="text-gray-600">info@krastevagallery.com</li>
+                                <li className="text-gray-600">България, Попово, ул. Ястребино 4</li>
+                                <li><a href="tel://23923929210" className="text-indigo-600 hover:underline">+359 89 779 6887</a></li>
+                                <li className="text-gray-600">
+                                    <a href="mailto:krasteva.art.studio@gmail.com" className="text-indigo-600 hover:underline">
+                                        krasteva.art.studio@gmail.com
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
