@@ -53,3 +53,8 @@ Go to <a href="http://localhost:5173">http://localhost:5173</a> (or the displaye
 - Firebase Database: Cloud-based NoSQL database used to store and sync application data in real time.
 - Firebase Auth: Authentication module used for user registration, login, and session management.
 - Vite: Next-generation, fast build tool for modern web applications, used to bundle and serve the project.
+
+## 🚀 Features
+### Authentication
+   - Guest users: Can browse artworks by category and size, search, place orders, and send messages to the administration.
+   - Admin users (login only): Only administrators can log in. They have permissions to manage artworks, orders, user messages, and edit the About page. Navigate to /admin to access the administration interface.
