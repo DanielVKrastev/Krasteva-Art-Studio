@@ -42,3 +42,14 @@ npm start
 
 6. Open the app:
 Go to <a href="http://localhost:5173">http://localhost:5173</a> (or the displayed port) in your browser.
+
+## 🛠 Used Technologies
+- JavaScript: Core language for the functionality of the application.
+- React: Front-end framework used for building the user interface and handling the application logic.
+- TailwindCSS: Utility-first CSS framework for fast styling and responsive design.
+- Heroicons: A set of free, open-source high-quality SVG icons, designed to work seamlessly with TailwindCSS.
+- React Router: Routing library for handling navigation within a React application, providing dynamic routing capabilities.
+- React Router DOM: The DOM bindings for React Router, allowing seamless client-side routing in web applications.
+- Firebase Database: Cloud-based NoSQL database used to store and sync application data in real time.
+- Firebase Auth: Authentication module used for user registration, login, and session management.
+- Vite: Next-generation, fast build tool for modern web applications, used to bundle and serve the project.
