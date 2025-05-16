@@ -31,13 +31,14 @@ npm run dev
 
 4. Change Base URL in "./src/constants.js" with your Firebase Database.
 
-5. Install dependencies, and start the server for upload images in imgur.com:
-   2. Install dependencies and run the app:
+5. Open new Terminal. Install dependencies, and start the server for upload images in imgur.com:
 ```sh
 cd server
 npm install
 npm start
 ```
+
+ <p>Important: Do not shutting down the terminal where the app (React) is running.</p>
 
 6. Open the app:
 Go to <a href="http://localhost:5173">http://localhost:5173</a> (or the displayed port) in your browser.
