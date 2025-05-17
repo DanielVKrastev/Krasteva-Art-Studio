@@ -54,11 +54,11 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-4">Последвай ни:</h3>
+            <h3 className="text-lg font-semibold mb-4">Последвай ме:</h3>
             <div className="flex space-x-4">
-              <a href="#"><img width="40" height="40" src="https://img.icons8.com/color/48/facebook-new--v1.png" alt="Facebook" /></a>
-              <a href="#"><img width="40" height="40" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
-              <a href="#"><img width="40" height="40" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="Twitter" /></a>
+              <a href="https://www.facebook.com/share/1YDS3DiE7F/" target="_blank"><img width="40" height="40" src="https://img.icons8.com/color/48/facebook-new--v1.png" alt="Facebook" /></a>
+              <a href="https://www.instagram.com/loved._.in._.sun/" target="_blank"><img width="40" height="40" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
+              <a href="https://www.tiktok.com/@el0_v?_t=ZN-8wRNHs95peo&_r=1" target="_blank"><img width="40" height="40" src="https://img.icons8.com/color/48/tiktok--v1.png" alt="TikTok" /></a>
             </div>
           </div>
         </div>
