@@ -91,8 +91,10 @@ const create = async (data, paintingIds) => {
 
     await set(orderRef, newOrder);
     console.log("The order is saved");
+    return newOrder; 
   } catch (error) {
     console.error("Error while saving order:", error);
+    throw error;
   }
 };
 
