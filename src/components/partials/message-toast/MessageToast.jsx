@@ -5,7 +5,7 @@ export default function MessageToast({ message, onClose }) {
     useEffect(() => {
         const timer = setTimeout(() => {
             onClose(false);
-        }, 5000);
+        }, 7000);
 
         return () => clearTimeout(timer); // Clear - unmount
     }, [onClose]);

@@ -6,9 +6,11 @@ import paintingApi from "../../api/paintingApi";
 import sendEmail from "../../utils/sendEmail";
 import PhoneInput from "react-phone-number-input/input";
 import MessageToast from "../partials/message-toast/MessageToast";
+import LoadingSpinner from "../partials/loading-spinner/LoadingSpinner";
 
 export default function Checkout() {
     const [phoneValue, setPhoneValue] = useState('+359');
+    const [isLoading, setIsLoading] = useState(false);
     const [showMessageToast, setMessageShowToast] = useState(false);
 
     const { cart: cartItems, setCart, removeFromCart } = useCartContext();
@@ -22,7 +24,9 @@ export default function Checkout() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (isCartEmpty) return;
+        if (isCartEmpty) {
+            return;
+        }
 
         const formData = new FormData(e.currentTarget);
 
@@ -39,6 +43,23 @@ export default function Checkout() {
 
         const paintingIds = cartItems.map(painting => painting.id);
         try {
+            setIsLoading(true);
+
+            const unavailable = await paintingApi.checkCartAvailability(cartItems);
+
+            if (unavailable.length > 0) {
+                unavailable.forEach(paintingId => {
+                    removeFromCart(paintingId);
+                });
+
+                setMessageShowToast({
+                    type: 'error',
+                    content: 'Някои продукти вече са продадени и бяха премахнати от количката.'
+                });
+                setIsLoading(false);
+                return;
+            }
+
             const order = await orderApi.create(orderData, paintingIds);
             await paintingApi.markAsSold(cartItems);
 
@@ -59,6 +80,8 @@ export default function Checkout() {
             setCart();
         } catch (err) {
             console.log(err.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -68,6 +91,8 @@ export default function Checkout() {
                 message={showMessageToast}
                 onClose={setMessageShowToast}
             />}
+
+            {isLoading && <LoadingSpinner />}
 
             <div className="container mx-auto py-10 px-4 md:px-8">
                 <h1 className="text-3xl font-bold text-black mb-6 border-l-4 border-indigo-600 pl-4">Финализиране на поръчка</h1>
