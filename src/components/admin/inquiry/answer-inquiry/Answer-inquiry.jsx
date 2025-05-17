@@ -11,7 +11,6 @@ export default function AnswerInquiry({
     setMessageShowToast,
     closeInquiryUpdate
 }) {
-    const [message, setMessage] = useState({});
     const [inquiry, setInquiry] = useState({});
     const [painting, setPainting] = useState({});
     const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +19,6 @@ export default function AnswerInquiry({
         const fetchInitial = async () => {
             try {
                 const inquiryData = await availabilityInquiryApi.getOne(updateId);
-                setMessage(inquiryData);
                 setInquiry(inquiryData);
                 const paintingData = await paintingApi.getOne(inquiryData.paintingId);
                 setPainting(paintingData);
@@ -57,9 +55,13 @@ export default function AnswerInquiry({
             const templateId = 'template_fjwg7hi';
 
             const templateParams = {
-                name: 'Admin',
-                email: message.email,
-                message: reply
+                name: 'Krasteva Art Studio',
+                email: inquiry.email,
+                firstName: inquiry.firstName,
+                lastName: inquiry.lastName,
+                theme: painting.name,
+                client_message: `Запитване за картина "${painting.name}"`,
+                admin_reply: reply
             };
 
             const sendReply = await sendEmail(templateId, templateParams);
