@@ -155,6 +155,28 @@ async function deletePainting(paintingId) {
     }
 }
 
+const checkProductAvailability = async (paintingId) => {
+  const snapshot = await get(ref(database, `paintings/${paintingId}`));
+
+  if (!snapshot.exists()) return false;
+
+  const product = snapshot.val();
+  return product.sold !== "yes";
+};
+
+const checkCartAvailability = async (cart) => {
+  const unavailable = [];
+
+  for (const painting of cart) {
+    const isAvailable = await checkProductAvailability(painting.id);
+    if (!isAvailable) {
+      unavailable.push(painting.id);
+    }
+  }
+
+  return unavailable;
+};
+
 export default {
     getAll,
     getAllForSales,
@@ -168,5 +190,6 @@ export default {
     updateData,
     markAsSold,
     markForSell,
-    deletePainting
+    deletePainting,
+    checkCartAvailability
 }
