@@ -65,10 +65,27 @@ export default function Checkout() {
 
             const templateId = 'template_9m3m9nu';
 
+            const itemsHTML = cartItems.map((painting) => `
+            <div style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                <img src="${painting.imageUrl}" alt="${painting.name}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-right: 15px;" />
+                <div>
+                <p style="margin: 0; font-size: 16px; font-weight: bold;">${painting.name}</p>
+                <p style="margin: 5px 0; color: #6b7280;">${painting.description || ''}</p>
+                <p style="margin: 0; font-size: 15px; color: #111827;">Цена: <strong>${painting.price} лв.</strong></p>
+                </div>
+            </div>
+            `).join('');
+
             const templateParams = {
-                name: 'Admin',
-                email: orderData.email,
-                message: 'Вашата поръчка е приета успешно'
+                name: 'Krasteva Art Studio',
+                email: order.email,
+                firstName: order.firstName,
+                lastName: order.lastName,
+                telephone: order.telephone,
+                town: order.town,
+                address: order.address,
+                delivery: order.delivery,
+                itemsHTML
             };
 
             const sendReply = await sendEmail(templateId, templateParams);
