@@ -51,9 +51,13 @@ export default function AnswerMessage({
             const templateId = 'template_fjwg7hi';
 
             const templateParams = {
-                name: 'Admin',
+                name: 'Krasteva Art Studio',
                 email: message.email,
-                message: reply
+                firstName: message.firstName,
+                lastName: message.lastName,
+                theme: message.theme,
+                client_message: message.message,
+                admin_reply: reply
             };
 
             const sendReply = await sendEmail(templateId, templateParams);
