@@ -3,6 +3,7 @@ import { useCartContext } from "../../contexts/CartContext";
 import paintingApi from "../../api/paintingApi";
 import { useState } from "react";
 import MessageToast from "../partials/message-toast/MessageToast";
+import LoadingSpinner from "../partials/loading-spinner/LoadingSpinner";
 
 export default function Cart() {
 
@@ -11,12 +12,14 @@ export default function Cart() {
     const isCartEmpty = cartItems.length === 0;
     const navigate = useNavigate();
     const [showMessageToast, setMessageShowToast] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleRemoveItem = (id) => {
         removeFromCart(id);
     }
 
     const handleCheckout = async () => {
+        setIsLoading(true);
         const unavailable = await paintingApi.checkCartAvailability(cartItems);
         
         if (unavailable.length > 0) {
@@ -28,9 +31,10 @@ export default function Cart() {
                 type: 'error',
                 content: 'Някои продукти вече са продадени и бяха премахнати от количката.'
             });
+            setIsLoading(false);
             return;
         }
-
+        setIsLoading(false);
         navigate('/checkout');
     }
 
@@ -40,6 +44,8 @@ export default function Cart() {
                 message={showMessageToast}
                 onClose={setMessageShowToast}
             />}
+
+            {isLoading && <LoadingSpinner />}
 
             <div className="container mx-auto py-10 px-4 md:px-8">
                 <h1 className="text-3xl font-bold text-black mb-6 border-l-4 border-indigo-600 pl-4">Вашата количка</h1>
