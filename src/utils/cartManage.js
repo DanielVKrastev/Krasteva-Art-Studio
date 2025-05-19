@@ -1,17 +1,29 @@
+const CART_KEY = 'cart';
+
 export const saveCartData = (cartData) => {
-    localStorage.setItem('items', JSON.stringify(cartData));
-}
+    localStorage.setItem(CART_KEY, JSON.stringify({ items: cartData }));
+};
 
 export const getCartData = () => {
-    const items = JSON.parse(localStorage.getItem('items')) || [];
-    
-    return {
-        items,
+    try {
+        const raw = localStorage.getItem(CART_KEY);
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.items)) {
+            return { items: parsed.items };
+        }
+        return { items: [] };
+    } catch (e) {
+        return { items: [] };
     }
-}
+};
 
 export const addItemInCart = (item) => {
     const { items } = getCartData();
+
+    if (!item?.id) {
+        console.warn('Добавен item без id:', item);
+        return { items };
+    }
 
     const exists = items.find(i => i.id === item.id);
     if (!exists) {
@@ -21,19 +33,15 @@ export const addItemInCart = (item) => {
     }
 
     return { items };
-}
+};
 
 export const removeItemFromCart = (id) => {
     const { items } = getCartData();
-
     const updatedItems = items.filter(item => item.id !== id);
-
     saveCartData(updatedItems);
-
     return { items: updatedItems };
-}
-
+};
 
 export const clearCartData = () => {
-    localStorage.removeItem('items');
-}
+    localStorage.removeItem(CART_KEY);
+};
