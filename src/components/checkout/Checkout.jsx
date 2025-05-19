@@ -61,7 +61,7 @@ export default function Checkout() {
             }
 
             const order = await orderApi.create(orderData, paintingIds);
-            await paintingApi.markAsSold(cartItems);
+            const markAsSold = await paintingApi.markAsSold(cartItems);
 
             const templateId = 'template_9m3m9nu';
 
