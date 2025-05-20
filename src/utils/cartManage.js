@@ -1,29 +1,47 @@
-const CART_KEY = 'cart';
+// Check if sessionStorage is available
+const isStorageAvailable = (() => {
+    try {
+        const test = '__storage_test__';
+        sessionStorage.setItem(test, test);
+        sessionStorage.removeItem(test);
+        return true;
+    } catch {
+        return false;
+    }
+})();
+
+// If sessionStorage is false, fallback with in-memory object
+const storage = isStorageAvailable
+    ? sessionStorage
+    : {
+        _data: {},
+        setItem(key, value) { this._data[key] = value; },
+        getItem(key) { return this._data.hasOwnProperty(key) ? this._data[key] : null; },
+        removeItem(key) { delete this._data[key]; },
+    };
+
+const STORAGE_KEY = 'items';
 
 export const saveCartData = (cartData) => {
-    localStorage.setItem(CART_KEY, JSON.stringify({ items: cartData }));
+     try {
+        storage.setItem(STORAGE_KEY, JSON.stringify(cartData));
+    } catch (error) {
+        console.warn("Failed to save cart data:", error);
+    }
 };
 
 export const getCartData = () => {
     try {
-        const raw = localStorage.getItem(CART_KEY);
-        const parsed = JSON.parse(raw);
-        if (parsed && Array.isArray(parsed.items)) {
-            return { items: parsed.items };
-        }
-        return { items: [] };
-    } catch (e) {
+        const items = JSON.parse(storage.getItem(STORAGE_KEY)) || [];
+        return { items };
+    } catch (error) {
+        console.warn("Failed to get cart data:", error);
         return { items: [] };
     }
 };
 
 export const addItemInCart = (item) => {
     const { items } = getCartData();
-
-    if (!item?.id) {
-        console.warn('Добавен item без id:', item);
-        return { items };
-    }
 
     const exists = items.find(i => i.id === item.id);
     if (!exists) {
@@ -43,5 +61,9 @@ export const removeItemFromCart = (id) => {
 };
 
 export const clearCartData = () => {
-    localStorage.removeItem(CART_KEY);
+    try {
+        storage.removeItem(STORAGE_KEY);
+    } catch (e) {
+        console.warn("Failed to clear cart data:", e);
+    }
 };

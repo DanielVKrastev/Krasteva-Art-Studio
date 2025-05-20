@@ -106,29 +106,25 @@ async function create(data) {
     return result;
 }
 
-const markAsSold = async (cartItems) => {
+const markAsSold = async (paintingIds) => {
     const updates = {};
 
-    cartItems.forEach(item => {
-        if (item?.id && typeof item.id === "string") {
-            const itemRef = `paintings/${item.id}`;
-            updates[`${itemRef}/sold`] = "yes";
-        } else {
-            console.warn("Невалиден артикул без ID:", item);
-        }
+    paintingIds.forEach(paintingId => {
+        const itemRef = `paintings/${paintingId}`;
+        updates[`${itemRef}/sold`] = "yes";
     });
 
     if (Object.keys(updates).length === 0) {
-        console.warn("Няма валидни артикули за маркиране като продадени.");
+        console.warn("There are no valid items to mark as sold.");
         return;
     }
 
     try {
-        console.log("Маркиране като продадени:", updates);
+        console.log("Mark as sold:", updates);
         await update(ref(database), updates);
-        console.log("Всички артикули са маркирани като продадени.");
+        console.log("All items are marked as sold.");
     } catch (error) {
-        console.error("Грешка при обновяване на продадени артикули:", error);
+        console.error("Error updating sold items:", error);
     }
 };
 
