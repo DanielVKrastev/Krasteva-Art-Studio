@@ -1,4 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
+import { lazy } from 'react'
+
 import "./App.css";
 
 import Home from './components/home/Home';
@@ -12,18 +14,19 @@ import SearchResults from './components/search/SearchResults';
 import PageNotFound from './components/page-not-found/PageNotFound';
 import UserLayout from './layouts/user-layout/UserLayout';
 
-import AdminLayout from './layouts/admin-layout/AdminLayout';
-import Orders from './components/admin/orders/Orders';
-import Paintings from './components/admin/paitings/Paintings';
-import Categories from './components/admin/categories/Categories';
-import Size from './components/admin/size/Size';
-import Inquiry from './components/admin/inquiry/Inquiry';
-import ContactMessages from './components/admin/contact-messages/ContactMessages';
-import Settings from './components/admin/settings/Settings';
-import Dashboard from './components/admin/dashboard/Dashboard';
-import Login from './components/admin/login/Login';
+const AdminLayout = lazy(() => import('./layouts/admin-layout/AdminLayout'));
+const Dashboard = lazy(() => import('./components/admin/dashboard/Dashboard'));
+const Orders = lazy(() => import('./components/admin/orders/Orders'));
+const Paintings = lazy(() => import('./components/admin/paitings/Paintings'));
+const Categories = lazy(() => import('./components/admin/categories/Categories'));
+const Size = lazy(() => import('./components/admin/size/Size'));
+const Inquiry = lazy(() => import('./components/admin/inquiry/Inquiry'));
+const ContactMessages = lazy(() => import('./components/admin/contact-messages/ContactMessages'));
+const Settings = lazy(() => import('./components/admin/settings/Settings'));
+const AboutAdmin = lazy(() => import('./components/admin/about/AboutAdmin'));
+const Login = lazy(() => import('./components/admin/login/Login'));
+
 import PaymentSuccess from './components/checkout/payment-success/PaymentSuccess';
-import AboutAdmin from './components/admin/about/AboutAdmin';
 
 function App() {
 
