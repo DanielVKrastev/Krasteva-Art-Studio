@@ -1,6 +1,26 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import aboutApi from '../../api/aboutApi';
 
 export default function Footer() {
+  const [about, setAbout] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchInitial = async () => {
+      setIsLoading(true);
+      await aboutApi.getAll()
+        .then(result => {
+          setAbout(result[0]);
+          setIsLoading(false);
+        }).catch(err => {
+          setIsLoading(false);
+          console.error(err.message);
+        });
+      return;
+    };
+    fetchInitial();
+  }, []);
   return (
     <footer className="border-t border-gray-300 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -43,11 +63,14 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Контакти</h3>
             <ul className="space-y-2 text-sm">
-              <li className="text-gray-600">България, Попово, ул. Ястребино 4</li>
-              <li><a href="tel:+359897796887" className="text-indigo-600 hover:underline">+359 89 779 6887</a></li>
+              {about.showAddress === 'true' && (
+                <li className="text-gray-600">{about?.address}</li>
+              )}
+
+              <li><a href={`tel:${about?.telephone}`} className="text-indigo-600 hover:underline">{about?.telephone}</a></li>
               <li className="text-gray-600">
-                <a href="mailto:krasteva.art.studio@gmail.com" className="text-indigo-600 hover:underline">
-                  krasteva.art.studio@gmail.com
+                <a href={`mailto:${about?.email}`} className="text-indigo-600 hover:underline">
+                  {about?.email}
                 </a>
               </li>
             </ul>
