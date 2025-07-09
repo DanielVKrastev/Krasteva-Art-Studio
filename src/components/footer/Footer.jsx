@@ -28,7 +28,7 @@ export default function Footer() {
 
           <div>
             <h3 className="text-lg font-semibold mb-4">Навигация</h3>
-            <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
+            <ul className="grid grid-cols-3 gap-x-6 gap-y-2">
               <li><Link to="/" className="hover:text-indigo-600">Начало</Link></li>
               <li><Link to="/artshop" className="hover:text-indigo-600">Магазин</Link></li>
               <li><Link to="/portfolio" className="hover:text-indigo-600">Портфолио</Link></li>
@@ -37,6 +37,16 @@ export default function Footer() {
               <li><Link to="/cart" className="hover:text-indigo-600">Количка</Link></li>
             </ul>
           </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Връзки</h3>
+            <ul className="grid grid-cols-1 gap-x-6 gap-y-2">
+              <li><Link to="/terms" className="hover:text-indigo-600">Общи условия</Link></li>
+              <li><Link to="/privacy" className="hover:text-indigo-600">Политика за поверителност</Link></li>
+              <li><Link to="/delivery-policy" className="hover:text-indigo-600">Политика за доставка</Link></li>
+            </ul>
+          </div>
+
           {/* TODO: Email subscription
           <div>
             <h3 className="text-lg font-semibold mb-4">Абониране</h3>
@@ -55,10 +65,6 @@ export default function Footer() {
             </form>
           </div>
           */}
-
-          <div>
-
-          </div>
 
           <div>
             <h3 className="text-lg font-semibold mb-4">Контакти</h3>

@@ -27,6 +27,9 @@ const AboutAdmin = lazy(() => import('./components/admin/about/AboutAdmin'));
 const Login = lazy(() => import('./components/admin/login/Login'));
 
 import PaymentSuccess from './components/checkout/payment-success/PaymentSuccess';
+import Terms from './components/terms/Terms';
+import Privacy from './components/privacy/Privacy';
+import DeliveryPolicy from './components/delivery-policy/DeliveryPolicy';
 
 function App() {
 
@@ -43,6 +46,9 @@ function App() {
         <Route path='/checkout' element={<Checkout />} />
         <Route path='/payment-success' element={<PaymentSuccess />} />
         <Route path='/search' element={<SearchResults />} />
+        <Route path='/terms' element={<Terms />} />
+        <Route path='/privacy' element={<Privacy />} />
+        <Route path='/delivery-policy' element={<DeliveryPolicy />} />
       </Route>
 
       {/* Admin layout */}
