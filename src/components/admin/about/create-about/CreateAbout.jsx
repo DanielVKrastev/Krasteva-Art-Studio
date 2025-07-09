@@ -1,5 +1,7 @@
 import addImage from "../../../../utils/addImage";
 import aboutApi from "../../../../api/aboutApi";
+import PhoneInput from "react-phone-number-input/input";
+import { useState } from "react";
 
 const IMGUR_CLIENT_ID = "70d48422a058d29";
 
@@ -7,23 +9,36 @@ export default function CreateAbout({
     setMessageShowToast,
     closeAboutCreate
 }) {
+    const [phoneValue, setPhoneValue] = useState('+359');
+    const [selectedValueShowAddress, setSelectedValueShowAddress] = useState(false);
+
+    const handleChangeSelectShowAddress = (e) => {
+        setSelectedValueShowAddress(e.target.value);
+    };
+
     const onSubmitCreate = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const name = formData.get('name');
         const description = formData.get('description');
+        const telephone = formData.get('telephone');
+        const address = formData.get('address');
+        const email = formData.get('email');
         const image = formData.get('image');
 
         try {
             const createAboutData = {
                 name,
                 description,
+                telephone,
+                address,
+                email,
                 imageUrl: '',
                 deletehash: ''
             };
 
             // Качване в Imgur
-            if(image.size !== 0){
+           if(image.size !== 0){
                 const imageData = new FormData();
                 imageData.append("image", image);
                 
@@ -48,7 +63,7 @@ export default function CreateAbout({
 
     return (
         <>
-            {/* UPDATE DRAWER */}
+            {/* Create */}
             <div
                 className={`fixed top-0 right-0 z-50 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-0 bg-white`}
                 tabIndex="-1"
@@ -91,6 +106,62 @@ export default function CreateAbout({
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
                         </div>
+                        <div className="space-y-4">
+                            <label htmlFor="update-telephone" className="block mb-2 text-sm font-medium text-gray-900">
+                                Телефон
+                            </label>
+                            <PhoneInput
+                                className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500"
+                                name="telephone"
+                                value={phoneValue}
+                                onChange={setPhoneValue}
+                                placeholder="+359..."
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="update-email" className="block mb-2 text-sm font-medium text-gray-900">
+                                E-mail
+                            </label>
+                            <input
+                                type="text"
+                                id="update-email"
+                                name="email"
+                                placeholder="Email"
+                                required
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="update-address" className="block mb-2 text-sm font-medium text-gray-900">
+                                Адрес
+                            </label>
+                            <input
+                                type="text"
+                                id="update-address"
+                                name="address"
+                                placeholder="Адрес"
+                                required
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="update-active" className="block mb-2 text-sm font-medium text-gray-900">
+                                Да се показва ли адреса в сайта?
+                            </label>
+                            <select
+                                id="update-active"
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                                name="active"
+                                value={selectedValueShowAddress}
+                                onChange={handleChangeSelectShowAddress}
+                            >
+                                <option value={false}>No</option>
+                                <option value={true}>Yes</option>
+                            </select>
+                        </div>
+
                         <div>
                             <label htmlFor="update-description" className="block mb-2 text-sm font-medium text-gray-900">
                                 Описание
@@ -98,8 +169,8 @@ export default function CreateAbout({
                             <textarea
                                 id="update-description"
                                 name="description"
-                                rows="4"
-                                placeholder="описание..."
+                                rows="25"
+                                placeholder="Описание"
                                 className="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                             />
                         </div>
@@ -113,6 +184,8 @@ export default function CreateAbout({
                                 name="image"
                                 className="hidden"
                             />
+
+                            <input type="hidden" name="imageUrl"/>
 
                             <label
                                 htmlFor="update-image"

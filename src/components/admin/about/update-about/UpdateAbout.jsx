@@ -9,6 +9,11 @@ export default function UpdateAbout({
     closeAboutUpdate
 }) {
     const [about, setAbout] = useState({});
+    const [selectedValueShowAddress, setSelectedValueShowAddress] = useState(about?.showAddress || false);
+
+    const handleChangeSelectShowAddress = (e) => {
+        setSelectedValueShowAddress(e.target.value);
+    };
 
     useEffect(() => {
         const fetchInitial = async () => {
@@ -27,6 +32,9 @@ export default function UpdateAbout({
         const formData = new FormData(e.currentTarget);
         const name = formData.get('name');
         const description = formData.get('description');
+        const telephone = formData.get('telephone');
+        const address = formData.get('address');
+        const email = formData.get('email');
         const image = formData.get('image');
         const imageUrl = formData.get('imageUrl');
 
@@ -34,13 +42,16 @@ export default function UpdateAbout({
             const updateAboutData = {
                 name,
                 description,
+                telephone,
+                address,
+                email,
                 imageUrl,
                 deletehash: about?.deletehash
             };
 
             // Качване в Imgur
             if (image.size !== 0) {
-                if(about.imageUrl != ""){
+                if (about.imageUrl != "") {
                     deleteImage(about.deletehash);
                 }
 
@@ -51,7 +62,7 @@ export default function UpdateAbout({
             }
 
             console.log("About data to update.");
-            
+
             await aboutApi.updateData(updateId, updateAboutData);
             setMessageShowToast({ type: 'success', content: 'Успешно редактиране "За мен"!' });
             closeAboutUpdate();
@@ -109,6 +120,65 @@ export default function UpdateAbout({
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
                             />
                         </div>
+                        <div className="space-y-4">
+                            <label htmlFor="update-telephone" className="block mb-2 text-sm font-medium text-gray-900">
+                                Телефон
+                            </label>
+                            <input
+                                type="text"
+                                id="update-telephone"
+                                name="telephone"
+                                defaultValue={about?.telephone}
+                                placeholder="Телефон"
+                                required
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="update-email" className="block mb-2 text-sm font-medium text-gray-900">
+                                E-mail
+                            </label>
+                            <input
+                                type="text"
+                                id="update-email"
+                                name="email"
+                                defaultValue={about?.email}
+                                placeholder="Email"
+                                required
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="update-address" className="block mb-2 text-sm font-medium text-gray-900">
+                                Адрес
+                            </label>
+                            <input
+                                type="text"
+                                id="update-address"
+                                name="address"
+                                defaultValue={about?.address}
+                                placeholder="Адрес"
+                                required
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="update-active" className="block mb-2 text-sm font-medium text-gray-900">
+                                Да се показва ли адреса в сайта?
+                            </label>
+                            <select
+                                id="update-active"
+                                className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                                name="active"
+                                value={selectedValueShowAddress}
+                                onChange={handleChangeSelectShowAddress}
+                            >
+                                <option value={false}>No</option>
+                                <option value={true}>Yes</option>
+                            </select>
+                        </div>
+
                         <div>
                             <label htmlFor="update-description" className="block mb-2 text-sm font-medium text-gray-900">
                                 Описание
