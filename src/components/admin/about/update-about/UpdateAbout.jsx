@@ -19,6 +19,7 @@ export default function UpdateAbout({
         const fetchInitial = async () => {
             try {
                 const aboutData = await aboutApi.getOne(updateId);
+                setSelectedValueShowAddress(aboutData.showAddress)
                 setAbout(aboutData);
             } catch (err) {
                 console.log(err.message);
@@ -34,6 +35,7 @@ export default function UpdateAbout({
         const description = formData.get('description');
         const telephone = formData.get('telephone');
         const address = formData.get('address');
+        const showAddress = formData.get('show-address');
         const email = formData.get('email');
         const image = formData.get('image');
         const imageUrl = formData.get('imageUrl');
@@ -44,6 +46,7 @@ export default function UpdateAbout({
                 description,
                 telephone,
                 address,
+                showAddress,
                 email,
                 imageUrl,
                 deletehash: about?.deletehash
@@ -164,18 +167,18 @@ export default function UpdateAbout({
                         </div>
 
                         <div>
-                            <label htmlFor="update-active" className="block mb-2 text-sm font-medium text-gray-900">
+                            <label htmlFor="update-show-address" className="block mb-2 text-sm font-medium text-gray-900">
                                 Да се показва ли адреса в сайта?
                             </label>
                             <select
-                                id="update-active"
+                                id="update-show-address"
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                                name="active"
+                                name="show-address"
                                 value={selectedValueShowAddress}
                                 onChange={handleChangeSelectShowAddress}
                             >
-                                <option value={false}>No</option>
-                                <option value={true}>Yes</option>
+                                <option value='false'>No</option>
+                                <option value='true'>Yes</option>
                             </select>
                         </div>
 

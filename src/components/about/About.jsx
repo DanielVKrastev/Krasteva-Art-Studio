@@ -31,7 +31,7 @@ export default function About() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        
+
         if (formData.get('telephone').length < 14) {
             setMessageShowToast({ type: 'error', content: 'Моля въведете валиден телефонен номер.' });
             return;
@@ -115,7 +115,7 @@ export default function About() {
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Телефон</label>
                                 <PhoneInput
-                                 className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500"
+                                    className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500"
                                     name="telephone"
                                     value={phoneValue}
                                     onChange={setPhoneValue}
@@ -139,20 +139,23 @@ export default function About() {
                         {/* Contacts */}
 
                         <div className="space-y-6">
-                            <div className="p-4 border bg-white border-gray-200 rounded-md shadow-sm">
-                                <span className="text-indigo-600 font-semibold uppercase">Попово</span>
-                                <p className="text-gray-700 mt-1">България, Попово, ул. Ястребино 4</p>
-                            </div>
+                            {about?.showAddress === 'true' && (
+                                <div className="p-4 border bg-white border-gray-200 rounded-md shadow-sm">
+                                    <span className="text-indigo-600 font-semibold uppercase">Адрес</span>
+                                    <p className="text-gray-700 mt-1">{about?.address}</p>
+                                </div>
+                            )}
+
                             <div className="p-4 border bg-white border-gray-200 rounded-md shadow-sm">
                                 <span className="text-indigo-600 font-semibold uppercase">Телефон</span>
-                                <a href="tel:+359897796887">
-                                    <p className="text-gray-700 mt-1">+359 89 779 6887</p>
+                                <a href={`tel:${about?.telephone}`}>
+                                    <p className="text-gray-700 mt-1">{about?.telephone}</p>
                                 </a>
                             </div>
                             <div className="p-4 border bg-white border-gray-200 rounded-md shadow-sm">
                                 <span className="text-indigo-600 font-semibold uppercase">Имейл</span>
-                                <a href="mailto:krasteva.art.studio@gmail.com" >
-                                    <p className="text-gray-700 mt-1">krasteva.art.studio@gmail.com</p>
+                                <a href={`mailto:${about?.email}`} >
+                                    <p className="text-gray-700 mt-1">{about?.email}</p>
                                 </a>
                             </div>
                         </div>

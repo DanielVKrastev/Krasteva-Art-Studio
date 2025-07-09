@@ -23,6 +23,7 @@ export default function CreateAbout({
         const description = formData.get('description');
         const telephone = formData.get('telephone');
         const address = formData.get('address');
+        const showAddress = formData.get('show-address');
         const email = formData.get('email');
         const image = formData.get('image');
 
@@ -32,6 +33,7 @@ export default function CreateAbout({
                 description,
                 telephone,
                 address,
+                showAddress,
                 email,
                 imageUrl: '',
                 deletehash: ''
@@ -147,13 +149,13 @@ export default function CreateAbout({
                         </div>
 
                         <div>
-                            <label htmlFor="update-active" className="block mb-2 text-sm font-medium text-gray-900">
+                            <label htmlFor="update-show-address" className="block mb-2 text-sm font-medium text-gray-900">
                                 Да се показва ли адреса в сайта?
                             </label>
                             <select
-                                id="update-active"
+                                id="update-show-address"
                                 className="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                                name="active"
+                                name="show-address"
                                 value={selectedValueShowAddress}
                                 onChange={handleChangeSelectShowAddress}
                             >
