@@ -131,7 +131,7 @@ export default function PaintingDetails() {
 
                         {painting?.sold !== 'yes' ?
                             <>
-                                <p className="mt-4 text-2xl text-primary font-semibold text-indigo-600">Цена: {painting?.price} лв.</p>
+                                <p className="mt-4 text-2xl text-primary font-semibold text-indigo-600">Цена: {painting?.price} лв. / {(painting?.price / 1.95583).toFixed(2) } €</p>
 
                                 <div className="mt-6 flex gap-2">
                                     <button onClick={() => handleBuyPainting(painting)} className="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer">Купи</button>

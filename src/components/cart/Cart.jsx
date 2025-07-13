@@ -19,9 +19,14 @@ export default function Cart() {
     }
 
     const handleCheckout = async () => {
+        if (isCartEmpty) {
+            return;
+        }
+
         setIsLoading(true);
+
         const unavailable = await paintingApi.checkCartAvailability(cartItems);
-        
+
         if (unavailable.length > 0) {
             unavailable.forEach(paintingId => {
                 removeFromCart(paintingId);
@@ -63,7 +68,7 @@ export default function Cart() {
                                     <img src={painting.imageUrl} alt={painting.name} className="w-24 h-24 object-cover rounded" />
                                     <div>
                                         <h2 className="text-lg font-semibold">{painting.name}</h2>
-                                        <p className="text-gray-600">{painting.price} лв.</p>
+                                        <p className="text-gray-600">{painting.price} лв. / {(painting?.price / 1.95583).toFixed(2) } €</p>
                                     </div>
                                 </div>
                                 <button onClick={() => handleRemoveItem(painting.id)} className="text-red-500 hover:underline text-sm">
@@ -87,7 +92,7 @@ export default function Cart() {
                             </p>
                             <p className="flex justify-between font-medium text-lg">
                                 <span>Общо:</span>
-                                <span>{totalPrice.toFixed(2)} лв.</span>
+                                <span>{totalPrice.toFixed(2)} лв.  / {(totalPrice / 1.95583).toFixed(2) } €</span>
                             </p>
                         </div>
 

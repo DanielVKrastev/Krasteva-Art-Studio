@@ -216,7 +216,7 @@ export default function Checkout() {
                                             <p className="text-gray-500">{painting.size}</p>
                                         </div>
                                         <div className="text-base font-semibold text-gray-700">
-                                            {painting.price} лв.
+                                            {painting.price} лв. / {(painting?.price / 1.95583).toFixed(2)} €
                                         </div>
                                     </div>
                                 </div>
@@ -225,7 +225,7 @@ export default function Checkout() {
 
                         <div className="flex justify-between text-lg font-semibold mt-6 pt-4 border-gray-500  border-t text-gray-700">
                             <span>Общо:</span>
-                            <span>{total.toFixed(2)} лв.</span>
+                            <span>{total.toFixed(2)} лв. / {(total / 1.95583).toFixed(2)} €</span>
                         </div>
 
                         <div className="mt-6 flex gap-2">

@@ -138,7 +138,7 @@ export default function ArtShop() {
                                                 <Link to={`/artshop/details/${painting.id}`} className="hover:text-indigo-600">{painting.name}</Link>
                                             </h3>
                                             <p className="text-sm text-gray-500">Размери: {painting.size}</p>
-                                            <p className="text-indigo-600 font-bold">{painting.price} лв.</p>
+                                            <p className="text-indigo-600 font-bold">{painting.price} лв. / {(painting.price / 1.95583).toFixed(2) } €</p>
                                             <div className="mt-4 flex justify-center gap-2">
                                                 <Link type="button" to={`/artshop/details/${painting.id}`} className="px-4 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Детайли</Link>
                                                 <button
